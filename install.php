@@ -35,6 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($statement !== '') $pdo->exec($statement);
         }
 
+        $uploadDir=$root.'/uploads';
+        if(!is_dir($uploadDir) && !mkdir($uploadDir,0775,true) && !is_dir($uploadDir)){
+            throw new RuntimeException('uploads klasörü oluşturulamadı. Kök klasör yazma iznini kontrol edin.');
+        }
+        if(!is_writable($uploadDir)){
+            @chmod($uploadDir,0775);
+        }
+        if(!is_writable($uploadDir)){
+            throw new RuntimeException('uploads klasörü yazılabilir değil. cPanel File Manager üzerinden izinleri 775/755 olarak kontrol edin.');
+        }
+
         $stmt = $pdo->prepare('UPDATE admins SET email=?, password_hash=?, name=? WHERE id=1');
         $stmt->execute([$adminEmail,password_hash($adminPassword,PASSWORD_DEFAULT),'NetVera Admin']);
 
