@@ -1,7 +1,27 @@
 <?php
 require_once __DIR__.'/app/bootstrap.php';
 $page=one_by_slug('pages','hakkimizda') ?: ['eyebrow'=>'Kurumsal','title'=>'Hakkımızda','intro'=>'','body'=>'','hero_image'=>'','meta_title'=>'Hakkımızda','meta_description'=>''];
-$active='about';$metaTitle=$page['meta_title'] ?: $page['title'];$metaDescription=$page['meta_description'] ?: $page['intro'];$ogImage=$page['hero_image'];
+$active='about';
+$metaTitle=$page['meta_title'] ?: $page['title'];
+$metaDescription=$page['meta_description'] ?: $page['intro'];
+$canonical=seo_absolute_url($page['canonical_url']??'',app_url('hakkimizda'));
+$robots=$page['robots'] ?: 'index,follow,max-image-preview:large';
+$ogTitle=$page['og_title'] ?: $metaTitle;
+$ogDescription=$page['og_description'] ?: $metaDescription;
+$ogImage=$page['og_image'] ?: $page['hero_image'];
+$ogImageAlt=$page['image_alt'] ?: $page['title'];
+$breadcrumbs=[['name'=>'Ana Sayfa','url'=>app_url()],['name'=>'Hakkımızda','url'=>$canonical]];
+$pageSchema=[
+  '@type'=>seo_clean_schema_type($page['schema_type']??'','AboutPage'),
+  '@id'=>$canonical.'#webpage',
+  'url'=>$canonical,
+  'name'=>$page['title'],
+  'description'=>$page['aio_summary'] ?: $metaDescription,
+  'about'=>['@id'=>rtrim(app_url(),'/').'#business'],
+  'mainEntity'=>['@id'=>rtrim(app_url(),'/').'#business'],
+  'inLanguage'=>'tr-TR',
+];
+if($ogImage!=='') $pageSchema['primaryImageOfPage']=media_url($ogImage);
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik"><section class="page-hero-modern"><div class="container"><div class="page-breadcrumb"><a href="<?= e(app_url()) ?>">Ana Sayfa</a><span>/</span><span>Hakkımızda</span></div><div class="home-kicker"><?= e($page['eyebrow']) ?></div><h1><?= e($page['title']) ?></h1><p><?= e($page['intro']) ?></p></div></section>
