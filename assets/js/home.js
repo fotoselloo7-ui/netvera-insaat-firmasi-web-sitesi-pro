@@ -85,7 +85,7 @@ if(header){
 
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
   const revealTargets=document.querySelectorAll(
-    '.home-section-head,.home-about-photo,.home-about-copy,.service-clean article,.project-clean,.why-clean-photo,.why-clean-copy,.process-step,.testimonial-clean,.trust-strip,.area-clean-copy,.area-list,.insight-featured,.insight-side,.home-faq details,.home-contact-card,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside'
+    '.home-section-head,.home-about-photo,.home-about-copy,.service-clean article,.project-clean,.why-clean-photo,.why-clean-copy,.process-step,.testimonial-clean,.trust-strip,.area-clean-copy,.area-list,.insight-featured,.insight-side,.home-faq details,.home-contact-card,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
   );
   revealTargets.forEach(el=>el.classList.add('reveal-ready'));
   const revealObserver=new IntersectionObserver(entries=>{
