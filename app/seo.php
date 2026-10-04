@@ -128,6 +128,7 @@ function ensure_seo_schema(): void {
     foreach($defaultPages as $page) $pageStmt->execute($page);
 
     db()->prepare("INSERT INTO settings (setting_key,setting_value) VALUES ('schema_version',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)")->execute([$targetVersion]);
+    clear_settings_cache();
 }
 
 function seo_clean_schema_type(?string $type, string $fallback='WebPage'): string {
