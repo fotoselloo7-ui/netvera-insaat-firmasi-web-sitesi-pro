@@ -334,7 +334,7 @@ $blogFallbacks=[
       <div class="home-kicker is-light">Proje Görüşmesi</div>
       <h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3>
       <p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p>
-      <form class="home-form form-v5" data-home-form data-whatsapp="<?= e($wa) ?>">
+      <form class="home-form form-v5" data-home-form data-whatsapp="<?= e($wa) ?>" data-site-name="<?= e(setting('site_name','Vera Yapı')) ?>">
         <div class="home-field"><label>Ad Soyad<input name="name" required></label></div>
         <div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div>
         <div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div>
