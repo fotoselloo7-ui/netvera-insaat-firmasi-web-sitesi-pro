@@ -31,7 +31,6 @@
     </div>
     <div class="home-topbar-right">
       <a href="mailto:info@example.com">info@example.com</a>
-      <a href="#teklif">Teklif ve keşif talebi</a>
     </div>
   </div>
 </div>
@@ -56,22 +55,54 @@
 </header>
 
 <main id="icerik">
-<section class="home-hero">
-  <img src="https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=82&w=2200" width="2200" height="1400" alt="Yüksek yapı inşaatında vinçler ve şantiye görünümü" fetchpriority="high">
-  <div class="container">
-    <div class="home-hero-copy">
-      <div class="home-eyebrow">Alanya'da inşaat ve taahhüt hizmetleri</div>
-      <h1>Projenizi sağlam bir planla, doğru ekiple hayata geçirin.</h1>
-      <p>Konut, villa, ticari yapı ve renovasyon projelerinde keşiften teslimata kadar şeffaf bütçe, düzenli saha takibi ve ölçülebilir kalite standardı.</p>
-      <div class="home-hero-actions">
-        <a class="home-btn home-btn-primary" href="#teklif">Projem İçin Teklif Al</a>
-        <a class="home-btn home-btn-secondary" href="projeler.html">Tamamlanan Projeleri Gör</a>
+<section class="home-slider" aria-label="Öne çıkan içerikler">
+  <div class="home-slides" data-slider>
+    <article class="home-slide is-active">
+      <img src="https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=82&w=2200" width="2200" height="1400" alt="Yüksek yapı inşaatında vinçler ve şantiye görünümü" fetchpriority="high">
+      <div class="home-slide-overlay"></div>
+      <div class="container home-slide-content">
+        <div class="home-slide-copy">
+          <div class="home-eyebrow">Alanya'da inşaat ve taahhüt hizmetleri</div>
+          <h1>Projenizi sağlam bir planla, doğru ekiple hayata geçirin.</h1>
+          <p>Konut, villa, ticari yapı ve renovasyon projelerinde keşiften teslimata kadar şeffaf bütçe, düzenli saha takibi ve ölçülebilir kalite standardı.</p>
+          <div class="home-hero-actions"><a class="home-btn home-btn-primary" href="#teklif">Projem İçin Teklif Al</a><a class="home-btn home-btn-secondary" href="projeler.html">Projeleri İncele</a></div>
+        </div>
       </div>
-      <div class="home-hero-trust">
-        <span>Ücretsiz ön görüşme</span>
-        <span>Şeffaf keşif ve bütçe</span>
-        <span>Planlı teslim süreci</span>
+    </article>
+    <article class="home-slide">
+      <img src="https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=82&w=2200" width="2200" height="1400" alt="Modern konut projesi ve çok katlı yapı" loading="lazy">
+      <div class="home-slide-overlay"></div>
+      <div class="container home-slide-content">
+        <div class="home-slide-copy">
+          <div class="home-eyebrow">Konut ve villa projeleri</div>
+          <h2>Yaşam alanlarını uzun vadeli değer için tasarlıyoruz.</h2>
+          <p>Arsa değerlendirmesinden uygulama detayına kadar mimari kararları, mühendislik disiplini ve saha deneyimiyle birlikte ele alıyoruz.</p>
+          <div class="home-hero-actions"><a class="home-btn home-btn-primary" href="hizmet-konut-projeleri.html">Konut Hizmetini İncele</a><a class="home-btn home-btn-secondary" href="proje-park-residence.html">Örnek Projeyi Gör</a></div>
+        </div>
       </div>
+    </article>
+    <article class="home-slide">
+      <img src="https://images.unsplash.com/photo-1773427457869-6fbded8b89b9?auto=format&fit=crop&q=82&w=2200" width="2200" height="1400" alt="Modern koyu cepheli konut yapısı" loading="lazy">
+      <div class="home-slide-overlay"></div>
+      <div class="container home-slide-content">
+        <div class="home-slide-copy">
+          <div class="home-eyebrow">Anahtar teslim uygulama</div>
+          <h2>Tek ekip, net sorumluluk, kontrollü teslim.</h2>
+          <p>Keşif, bütçe, tedarik, uygulama ve son kontrolleri tek koordinasyon altında yürüterek projenin her aşamasını görünür kılıyoruz.</p>
+          <div class="home-hero-actions"><a class="home-btn home-btn-primary" href="hizmet-anahtar-teslim.html">Hizmeti İncele</a><a class="home-btn home-btn-secondary" href="#teklif">Keşif Talebi Oluştur</a></div>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="container home-slider-ui">
+    <div class="home-slider-dots" role="tablist" aria-label="Slider seçimi">
+      <button class="is-active" type="button" aria-label="1. slayt" data-slide-to="0"></button>
+      <button type="button" aria-label="2. slayt" data-slide-to="1"></button>
+      <button type="button" aria-label="3. slayt" data-slide-to="2"></button>
+    </div>
+    <div class="home-slider-arrows">
+      <button type="button" aria-label="Önceki slayt" data-slide-prev>←</button>
+      <button type="button" aria-label="Sonraki slayt" data-slide-next>→</button>
     </div>
   </div>
 </section>
@@ -115,12 +146,12 @@
       <p>Konut projelerinden ticari yapılara, anahtar teslim taahhütten renovasyona kadar temel inşaat hizmetleri tek çatı altında.</p>
     </div>
     <div class="service-clean">
-      <article><div class="service-clean-icon">01</div><h3>Konut Projeleri</h3><p>Apartman, rezidans ve toplu konut projelerinde planlama ve uygulama.</p><a href="hizmetler.html#konut">Detayları incele →</a></article>
-      <article><div class="service-clean-icon">02</div><h3>Villa Yapımı</h3><p>Müstakil ve butik villa projelerinde anahtar teslim uygulama.</p><a href="hizmetler.html">Detayları incele →</a></article>
-      <article><div class="service-clean-icon">03</div><h3>Ticari Yapılar</h3><p>Ofis, mağaza, otel ve işletme yapılarında fonksiyon odaklı çözümler.</p><a href="hizmetler.html#ticari">Detayları incele →</a></article>
-      <article><div class="service-clean-icon">04</div><h3>Anahtar Teslim Taahhüt</h3><p>Keşif, tedarik, saha, kalite kontrol ve teslim süreçlerinin tek yönetimi.</p><a href="hizmetler.html#taahhut">Detayları incele →</a></article>
-      <article><div class="service-clean-icon">05</div><h3>Renovasyon</h3><p>Mevcut yapıların teknik, işlevsel ve estetik olarak yenilenmesi.</p><a href="hizmetler.html">Detayları incele →</a></article>
-      <article><div class="service-clean-icon">06</div><h3>Proje Uygulama</h3><p>Hazır mimari ve mühendislik projelerinin sahada doğru uygulanması.</p><a href="hizmetler.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">01</div><h3><a href="hizmet-konut-projeleri.html">Konut Projeleri</a></h3><p>Apartman, rezidans ve toplu konut projelerinde planlama ve uygulama.</p><a href="hizmet-konut-projeleri.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">02</div><h3><a href="hizmet-villa-yapimi.html">Villa Yapımı</a></h3><p>Müstakil ve butik villa projelerinde anahtar teslim uygulama.</p><a href="hizmet-villa-yapimi.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">03</div><h3><a href="hizmet-ticari-yapilar.html">Ticari Yapılar</a></h3><p>Ofis, mağaza, otel ve işletme yapılarında fonksiyon odaklı çözümler.</p><a href="hizmet-ticari-yapilar.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">04</div><h3><a href="hizmet-anahtar-teslim.html">Anahtar Teslim Taahhüt</a></h3><p>Keşif, tedarik, saha, kalite kontrol ve teslim süreçlerinin tek yönetimi.</p><a href="hizmet-anahtar-teslim.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">05</div><h3><a href="hizmet-renovasyon.html">Renovasyon</a></h3><p>Mevcut yapıların teknik, işlevsel ve estetik olarak yenilenmesi.</p><a href="hizmet-renovasyon.html">Detayları incele →</a></article>
+      <article><div class="service-clean-icon">06</div><h3><a href="hizmet-proje-uygulama.html">Proje Uygulama</a></h3><p>Hazır mimari ve mühendislik projelerinin sahada doğru uygulanması.</p><a href="hizmet-proje-uygulama.html">Detayları incele →</a></article>
     </div>
   </div>
 </section>
@@ -135,17 +166,17 @@
       <article class="project-clean">
         <img src="https://images.unsplash.com/photo-1771366260867-7e07094579d7?auto=format&fit=crop&q=80&w=1200" width="1200" height="750" alt="Modern beyaz villa projesi" loading="lazy">
         <div class="project-clean-top"><span>Tamamlandı</span><span>Alanya</span></div>
-        <h3>Marina Villa</h3><p>Modern çizgiler ve yüksek malzeme standardı.</p><div class="project-clean-meta"><span>Villa</span><span>640 m²</span><span>2026</span></div>
+        <h3><a href="proje-marina-villa.html">Marina Villa</a></h3><p>Modern çizgiler ve yüksek malzeme standardı.</p><div class="project-clean-meta"><span>Villa</span><span>640 m²</span><span>2026</span></div>
       </article>
       <article class="project-clean">
         <img src="https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1200" width="1200" height="750" alt="Çok katlı modern konut projesi" loading="lazy">
         <div class="project-clean-top"><span>Devam Ediyor</span><span>Antalya</span></div>
-        <h3>Park Residence</h3><p>Çağdaş cephe ve fonksiyonel konut planlaması.</p><div class="project-clean-meta"><span>Konut</span><span>8.900 m²</span><span>2026</span></div>
+        <h3><a href="proje-park-residence.html">Park Residence</a></h3><p>Çağdaş cephe ve fonksiyonel konut planlaması.</p><div class="project-clean-meta"><span>Konut</span><span>8.900 m²</span><span>2026</span></div>
       </article>
       <article class="project-clean">
         <img src="https://images.unsplash.com/photo-1773427457869-6fbded8b89b9?auto=format&fit=crop&q=80&w=1200" width="1200" height="750" alt="Taş ve koyu cepheli modern konut projesi" loading="lazy">
         <div class="project-clean-top"><span>Tamamlandı</span><span>Kestel</span></div>
-        <h3>Kestel House</h3><p>Doğal taş ile çağdaş cephe detaylarını birleştiren konut.</p><div class="project-clean-meta"><span>Konut</span><span>420 m²</span><span>2026</span></div>
+        <h3><a href="proje-kestel-house.html">Kestel House</a></h3><p>Doğal taş ile çağdaş cephe detaylarını birleştiren konut.</p><div class="project-clean-meta"><span>Konut</span><span>420 m²</span><span>2026</span></div>
       </article>
     </div>
     <div style="margin-top:24px"><a class="home-btn home-btn-secondary" href="projeler.html">Tüm Projeleri İncele</a></div>
