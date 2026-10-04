@@ -2958,3 +2958,69 @@
     padding:17px!important;
   }
 }
+
+
+/* ==========================================================
+   V19 — inner-page touch parity + mobile QA
+   ========================================================== */
+@media(hover:none),(pointer:coarse){
+  .fact-ribbon>div.is-touch-active,
+  .project-facts>div.is-touch-active,
+  .contact-expectation>div.is-touch-active,
+  .principle-card.is-touch-active,
+  .scope-card.is-touch-active,
+  .region-card.is-touch-active,
+  .project-case-card.is-touch-active,
+  .related-project-card.is-touch-active,
+  .blog-side-card.is-touch-active,
+  .list-card.is-touch-active,
+  .service-method-card.is-touch-active,
+  .service-directory-row.is-touch-active{
+    transform:translateY(-3px)!important;
+    border-color:rgba(201,121,59,.34)!important;
+    box-shadow:0 14px 30px rgba(16,44,64,.08)!important;
+    background:#fffaf5!important;
+  }
+  .fact-ribbon>div.is-touch-active strong,
+  .project-facts>div.is-touch-active strong,
+  .contact-expectation>div.is-touch-active small,
+  .service-method-card.is-touch-active>span{
+    background:var(--ip-copper)!important;
+    border-color:var(--ip-copper)!important;
+    color:#fff!important;
+  }
+  .contact-channel.is-touch-active{
+    transform:translateX(3px)!important;
+    background:rgba(255,255,255,.05)!important;
+  }
+  .contact-channel.is-touch-active i{
+    background:var(--ip-copper)!important;
+    color:#fff!important;
+  }
+}
+
+@media(max-width:768px){
+  .page-hero-modern,
+  .detail-hero,
+  .project-detail-hero,
+  .article-hero,
+  .page-section{
+    overflow:hidden;
+  }
+  .page-title-row{
+    min-width:0!important;
+  }
+  .page-title-row h2,
+  .page-hero-modern h1,
+  .detail-hero h1,
+  .project-detail-head h1,
+  .article-hero h1{
+    overflow-wrap:anywhere;
+  }
+  .content-layout,
+  .contact-premium-grid,
+  .editorial-intro,
+  .case-story{
+    min-width:0!important;
+  }
+}
