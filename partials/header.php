@@ -65,13 +65,14 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <?php if($schemaJson): ?><script type="application/ld+json"><?= $schemaJson ?></script><?php endif; ?>
 <link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=21">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=19">
+<?php if($faviconImage!==''): ?><link rel="icon" href="<?= e(media_url($faviconImage)) ?>"><?php endif; ?>
 <?= $extraHead ?? '' ?>
 </head>
 <body>
 <a class="skip-link" href="#icerik">İçeriğe geç</a>
 <div class="home-topbar"><div class="container"><div class="home-topbar-left"><a href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>"><?= e($phone) ?></a><span><?= e($address) ?></span><span><?= e($hours) ?></span></div><div class="home-topbar-right"><a href="mailto:<?= e($email) ?>"><?= e($email) ?></a></div></div></div>
 <header class="home-header"><div class="container home-nav">
-<a class="home-logo" href="<?= e(app_url()) ?>"><span class="home-logo-mark"><?= e(setting('logo_mark','VY')) ?></span><span><?= e($siteName) ?><small><?= e(setting('tagline','İNŞAAT & TAAHHÜT')) ?></small></span></a>
+<a class="home-logo" href="<?= e(app_url()) ?>"><?php if($logoImage!==''): ?><span class="home-logo-image"><img src="<?= e(media_url($logoImage)) ?>" alt="<?= e($siteName) ?> logo"></span><?php else: ?><span class="home-logo-mark"><?= e(setting('logo_mark','VY')) ?></span><?php endif; ?><span><?= e($siteName) ?><small><?= e(setting('tagline','İNŞAAT & TAAHHÜT')) ?></small></span></a>
 <nav class="home-menu" aria-label="Ana menü">
 <a href="<?= e(app_url()) ?>"<?= $active==='home'?' aria-current="page"':'' ?>><?= e(setting('nav_home_label','Ana Sayfa')) ?></a>
 <a href="<?= e(app_url('hakkimizda')) ?>"<?= $active==='about'?' aria-current="page"':'' ?>><?= e(setting('nav_about_label','Kurumsal')) ?></a>
