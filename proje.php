@@ -26,17 +26,17 @@ include __DIR__.'/partials/header.php';
 
 <section class="page-section"><div class="container">
   <div class="project-facts"><div><small>Konum</small><strong><?= e($item['location']) ?></strong></div><div><small>Proje Türü</small><strong><?= e($item['category']) ?></strong></div><div><small>Uygulama Alanı</small><strong><?= e($item['area']) ?></strong></div><div><small>Yıl</small><strong><?= e($item['project_year']) ?></strong></div></div>
-  <div class="case-story">
-    <aside class="case-story-nav"><span><?= e($secStory['eyebrow']) ?></span><h2><?= e($secStory['title']) ?></h2></aside>
+  <?php if((int)$secStory['is_active']===1 || (int)$secApproach['is_active']===1 || (int)$secQuality['is_active']===1): ?><div class="case-story">
+    <?php if((int)$secStory['is_active']===1): ?><aside class="case-story-nav"><span><?= e($secStory['eyebrow']) ?></span><h2><?= e($secStory['title']) ?></h2></aside><?php endif; ?>
     <article class="case-story-copy"><p class="lead"><?= e($item['aio_summary'] ?: $item['summary']) ?></p><?= render_content_blocks((string)$item['body']) ?>
-      <h2><?= e($secApproach['title']) ?></h2><p><?= e($secApproach['body']) ?></p>
-      <h2><?= e($secQuality['title']) ?></h2><p><?= e($secQuality['body']) ?></p>
+      <?php if((int)$secApproach['is_active']===1): ?><h2><?= e($secApproach['title']) ?></h2><p><?= e($secApproach['body']) ?></p><?php endif; ?>
+      <?php if((int)$secQuality['is_active']===1): ?><h2><?= e($secQuality['title']) ?></h2><p><?= e($secQuality['body']) ?></p><?php endif; ?>
       <?php if($gallery): ?><div class="project-gallery-wide"><?php foreach($gallery as $img): ?><img src="<?= e(media_url((string)$img)) ?>" alt="<?= e($item['image_alt'] ?: ($item['title'].' proje görseli')) ?>" loading="lazy"><?php endforeach; ?></div><?php endif; ?>
     </article>
-  </div>
+  </div><?php endif; ?>
 </div></section>
 
-<?php if($related): ?><section class="page-section soft"><div class="container">
+<?php if($related && (int)$secRelated['is_active']===1): ?><section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secRelated['eyebrow']) ?></div><h2><?= e($secRelated['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url($secRelated['button_url'] ?: 'projeler')) ?>"><?= e($secRelated['button_label'] ?: 'Tüm Portföy') ?></a></div>
   <div class="project-case-grid"><?php foreach($related as $p): ?><a class="project-case-card" href="<?= e(app_url('proje/'.$p['slug'])) ?>"><figure><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></figure><small class="home-kicker"><?= e($p['location']) ?> · <?= e($p['category']) ?></small><h2><?= e($p['title']) ?></h2><p><?= e($p['summary']) ?></p></a><?php endforeach; ?></div>
 </div></section><?php endif; ?>
