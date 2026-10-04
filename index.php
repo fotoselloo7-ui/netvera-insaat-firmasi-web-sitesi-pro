@@ -174,18 +174,19 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <?php $sec=section('process'); if($sec['is_active']): ?>
-<section class="home-section process-editorial-v5">
+<section class="home-section process-editorial-v6">
   <div class="container">
-    <div class="home-section-head-v5">
+    <div class="home-section-head-v6">
       <div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div>
       <p><?= e($sec['body']) ?></p>
     </div>
-    <div class="process-track-v5">
+    <div class="process-grid-v6">
       <?php foreach($process as $i=>$f): ?>
-        <div class="process-step-v5">
-          <div class="process-step-head"><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><?php if($i<count($process)-1): ?><svg viewBox="0 0 48 12" aria-hidden="true"><path d="M1 6h43M39 2l5 4-5 4"/></svg><?php endif; ?></div>
-          <h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p>
-        </div>
+        <article class="process-card-v6">
+          <span class="process-no-v6"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
+          <h3><?= e($f['title']) ?></h3>
+          <p><?= e($f['body']) ?></p>
+        </article>
       <?php endforeach; ?>
     </div>
   </div>
@@ -193,36 +194,55 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <?php $testimonialSec=section('testimonials'); $trustSec=section('trust'); $areasSec=section('areas'); if($testimonialSec['is_active'] || ($trustSec['is_active'] && $trust) || $areasSec['is_active']): ?>
-<section class="home-section reputation-editorial-v5">
+<section class="home-section reputation-v6">
   <div class="container">
     <?php if($testimonialSec['is_active']): ?>
-      <div class="home-section-head-v5"><div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div><p><?= e($testimonialSec['body']) ?></p></div>
+      <div class="home-section-head-v6">
+        <div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div>
+        <p><?= e($testimonialSec['body']) ?></p>
+      </div>
       <?php $tts=array_slice($testimonials,0,3); $mainT=$tts[0]??null; ?>
       <?php if($mainT): ?>
-      <div class="testimonial-layout-v5">
-        <blockquote class="testimonial-featured-v5">
-          <span class="quote-symbol-v5">“</span>
+      <div class="testimonials-grid-v6">
+        <blockquote class="testimonial-main-v6">
+          <span class="quote-v6">“</span>
           <p><?= e($mainT['quote_text']) ?></p>
           <footer><strong><?= e($mainT['name']) ?></strong><span><?= e($mainT['role']) ?></span></footer>
         </blockquote>
-        <div class="testimonial-side-stack-v5">
+        <div class="testimonial-side-v6">
           <?php foreach(array_slice($tts,1,2) as $t): ?>
-            <blockquote class="testimonial-side-v5"><p>“<?= e($t['quote_text']) ?>”</p><footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer></blockquote>
+            <blockquote><p>“<?= e($t['quote_text']) ?>”</p><footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer></blockquote>
           <?php endforeach; ?>
         </div>
       </div>
       <?php endif; ?>
     <?php endif; ?>
-    <div class="trust-area-v5">
+
+    <div class="trust-region-v6">
       <?php if($trustSec['is_active'] && $trust): ?>
-        <div class="trust-column-v5"><div class="home-kicker"><?= e($trustSec['eyebrow']) ?></div><h3><?= e($trustSec['title']) ?></h3><p><?= e($trustSec['body']) ?></p>
-          <div class="trust-list-v5"><?php foreach(array_slice($trust,0,3) as $f): ?><div><strong><?= e($f['title']) ?></strong><span><?= e($f['body']) ?></span></div><?php endforeach; ?></div>
+      <article class="trust-panel-v6">
+        <div class="home-kicker"><?= e($trustSec['eyebrow']) ?></div>
+        <h3><?= e($trustSec['title']) ?></h3>
+        <p><?= e($trustSec['body']) ?></p>
+        <div class="trust-list-v6">
+          <?php foreach(array_slice($trust,0,3) as $i=>$f): ?>
+            <div><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><p><strong><?= e($f['title']) ?></strong><small><?= e($f['body']) ?></small></p></div>
+          <?php endforeach; ?>
         </div>
+      </article>
       <?php endif; ?>
+
       <?php if($areasSec['is_active']): ?>
-        <div class="areas-column-v5"><div class="home-kicker"><?= e($areasSec['eyebrow']) ?></div><h3><?= e($areasSec['title']) ?></h3><p><?= e($areasSec['body']) ?></p>
-          <div class="area-list-v5"><?php foreach($areas as $a): ?><a href="<?= e(app_url('bolge/'.($a['slug'] ?: slugify($a['title'])))) ?>"><strong><?= e($a['title']) ?></strong><span><?= e($a['services_text']) ?></span></a><?php endforeach; ?></div>
+      <article class="region-panel-v6">
+        <div class="home-kicker"><?= e($areasSec['eyebrow']) ?></div>
+        <h3><?= e($areasSec['title']) ?></h3>
+        <p><?= e($areasSec['body']) ?></p>
+        <div class="region-links-v6">
+          <?php foreach($areas as $a): ?>
+            <a href="<?= e(app_url('bolge/'.($a['slug'] ?: slugify($a['title'])))) ?>"><span><strong><?= e($a['title']) ?></strong><small><?= e($a['services_text']) ?></small></span><b>›</b></a>
+          <?php endforeach; ?>
         </div>
+      </article>
       <?php endif; ?>
     </div>
   </div>
@@ -239,13 +259,13 @@ $blogFallbacks=[
 ];
 ?>
 <section class="home-section"><div class="container">
-<div class="home-section-head blog-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url('blog')) ?>">Tüm Yazılar</a></div>
+<div class="home-section-head blog-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><a class="micro-link-v6" href="<?= e(app_url('blog')) ?>">Tüm Yazılar <span aria-hidden="true">›</span></a></div>
 <?php if($blogItems): $featured=$blogItems[0]; ?>
 <div class="insights-premium">
 <article class="insight-featured"><a href="<?= e(app_url('blog/'.$featured['slug'])) ?>" aria-label="<?= e($featured['title']) ?>"><img src="<?= e(media_url($featured['cover_image'] ?: $blogFallbacks[0])) ?>" alt="<?= e($featured['image_alt'] ?: $featured['title']) ?>"<?php if(!empty($featured['image_title'])): ?> title="<?= e($featured['image_title']) ?>"<?php endif; ?> loading="lazy"><div class="insight-featured-content"><time><?= e($featured['published_at']?date('d.m.Y',strtotime($featured['published_at'])):'Rehber') ?></time><h3><?= e($featured['title']) ?></h3><p><?= e($featured['excerpt']) ?></p></div></a></article>
 <div class="insight-side-list">
 <?php foreach(array_slice($blogItems,1,2) as $i=>$p): ?>
-<article class="insight-side"><a class="insight-side-image" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'] ?: $blogFallbacks[$i+1])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>"<?php if(!empty($p['image_title'])): ?> title="<?= e($p['image_title']) ?>"<?php endif; ?> loading="lazy"></a><div class="insight-side-content"><time><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></time><h3><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h3><a class="read-more" href="<?= e(app_url('blog/'.$p['slug'])) ?>">Yazıyı oku →</a></div></article>
+<article class="insight-side"><a class="insight-side-image" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'] ?: $blogFallbacks[$i+1])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>"<?php if(!empty($p['image_title'])): ?> title="<?= e($p['image_title']) ?>"<?php endif; ?> loading="lazy"></a><div class="insight-side-content"><time><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></time><h3><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h3><a class="micro-link-v6 read-more-v6" href="<?= e(app_url('blog/'.$p['slug'])) ?>">Yazıyı oku <span aria-hidden="true">›</span></a></div></article>
 <?php endforeach; ?>
 </div></div>
 <?php endif; ?>
@@ -273,15 +293,23 @@ $blogFallbacks=[
         <div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div>
         <div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div>
       </form>
-      <div class="contact-links-v5">
-        <a href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>">
+      <div class="social-contact-v6">
+        <a class="social-btn-v6 is-call" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg>
           Hemen ara
         </a>
-        <a href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, projem hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">
+        <a class="social-btn-v6 is-whatsapp" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, projem hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3A13 13 0 0 0 5 22.9L3.6 29 9.8 27.6A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.7.9.9-3.6-.2-.4A10.6 10.6 0 1 1 16 26.6Z"/></svg>
-          WhatsApp'tan yaz
+          WhatsApp
         </a>
+        <?php if($instagram!==''): ?><a class="social-btn-v6 is-instagram" href="<?= e($instagram) ?>" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          Instagram
+        </a><?php endif; ?>
+        <?php if($facebook!==''): ?><a class="social-btn-v6 is-facebook" href="<?= e($facebook) ?>" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.7.3-1 1-1Z"/></svg>
+          Facebook
+        </a><?php endif; ?>
       </div>
     </aside>
   </div>
