@@ -40,6 +40,15 @@ include __DIR__.'/partials/header.php';
   </div>
 </div></section>
 
+<section class="page-section service-method-section"><div class="container">
+  <div class="page-title-row"><div><div class="home-kicker">Çalışma Modeli</div><h2>Projenin bulunduğu aşamaya göre doğru yerden başlarız.</h2></div><p>Hazır projeniz olabilir, yalnızca arsanız olabilir veya mevcut yapınızı yenilemek isteyebilirsiniz. Süreci ihtiyaçtan başlatırız.</p></div>
+  <div class="service-method-grid">
+    <article class="service-method-card"><span>01</span><div><h3>Fikir / Arsa Aşaması</h3><p>İhtiyaç programı, yapı tipi, yaklaşık kapsam ve ilk teknik kararlar birlikte netleştirilir.</p></div><a href="<?= e(app_url('hizmet/konut-projeleri')) ?>">Kapsamı incele <b>›</b></a></article>
+    <article class="service-method-card"><span>02</span><div><h3>Hazır Proje Aşaması</h3><p>Mimari ve mühendislik projeleri saha uygulanabilirliği, takvim ve koordinasyon açısından değerlendirilir.</p></div><a href="<?= e(app_url('hizmet/proje-uygulama')) ?>">Uygulamayı incele <b>›</b></a></article>
+    <article class="service-method-card"><span>03</span><div><h3>Mevcut Yapı Aşaması</h3><p>Teknik durum, kullanım hedefi ve yenileme kapsamı üzerinden kontrollü renovasyon planı oluşturulur.</p></div><a href="<?= e(app_url('hizmet/renovasyon')) ?>">Renovasyonu incele <b>›</b></a></article>
+  </div>
+</div></section>
+
 <section class="page-section"><div class="container"><div class="inline-editorial-cta">
   <div><div class="home-kicker">Kararsız mısınız?</div><h3>Hangi hizmetin projenize uyduğunu birlikte belirleyelim.</h3><p>Kısa proje bilgisini gönderin; doğru hizmet modelini ve sonraki adımı netleştirelim.</p></div>
   <a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Detaylı Bilgi Al</a>
