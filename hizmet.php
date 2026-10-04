@@ -15,12 +15,12 @@ $pageSchema=['@type'=>seo_clean_schema_type($item['schema_type']??'','Service'),
 if($ogImage!=='') $pageSchema['image']=media_url($ogImage);
 $process=feature_group('process');
 $projects=array_slice(rows('projects'),0,3);
-$scope=[
- ['Keşif & ihtiyaç','Mevcut durumu, hedefleri ve karar verilmesi gereken kritik başlıkları netleştiririz.'],
- ['Kapsam & bütçe','İş kalemlerini, sorumlulukları ve maliyet çerçevesini mümkün olduğunca görünür hale getiririz.'],
- ['Saha & koordinasyon','Uygulama sırasını, ekipleri ve teknik kontrolleri tek koordinasyon altında yürütürüz.'],
- ['Kalite & teslim','İmalat kontrolleri, eksiklerin kapanışı ve teslim kriterleri planın parçasıdır.'],
-];
+$scope=feature_group('service_scope');
+$secScope=page_section('hizmet-detay','scope');
+$secProof=page_section('hizmet-detay','proof');
+$secProcess=page_section('hizmet-detay','process');
+$secProjects=page_section('hizmet-detay','projects');
+$secAside=page_section('hizmet-detay','aside');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -37,20 +37,20 @@ include __DIR__.'/partials/header.php';
   <article class="content-prose">
     <p class="lead"><?= e($item['aio_summary'] ?: $item['summary']) ?></p>
     <?= render_content_blocks((string)$item['body']) ?>
-    <h2>Bu hizmette neyi birlikte yönetiyoruz?</h2>
-    <div class="scope-grid"><?php foreach($scope as $i=>$s): ?><div class="scope-card"><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><strong><?= e($s[0]) ?></strong><p><?= e($s[1]) ?></p></div><?php endforeach; ?></div>
-    <div class="service-proof"><div class="home-kicker">Karar Prensibi</div><h3>Önce kapsam, sonra fiyat.</h3><p>Sağlıklı teklif; yapı tipi, proje durumu, konum, hedef kalite ve uygulama kapsamı netleştiğinde anlamlı hale gelir.</p></div>
+    <h2><?= e($secScope['title']) ?></h2>
+    <div class="scope-grid"><?php foreach($scope as $s): ?><div class="scope-card"><span><?= e($s['icon']) ?></span><strong><?= e($s['title']) ?></strong><p><?= e($s['body']) ?></p></div><?php endforeach; ?></div>
+    <div class="service-proof"><div class="home-kicker"><?= e($secProof['eyebrow']) ?></div><h3><?= e($secProof['title']) ?></h3><p><?= e($secProof['body']) ?></p></div>
   </article>
-  <aside class="detail-aside"><h3><?= e($item['title']) ?> için ilk değerlendirme</h3><p>Konum, yaklaşık alan ve mevcut proje durumunu paylaşın; doğru çalışma modelini birlikte belirleyelim.</p><a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Detaylı Bilgi Al</a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e(preg_replace('/\D+/','',setting('whatsapp',setting('phone')))) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, '.$item['title'].' hizmeti hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">WhatsApp'tan Sor</a></aside>
+  <aside class="detail-aside"><h3><?= e($item['title'].' '.$secAside['title']) ?></h3><p><?= e($secAside['body']) ?></p><a class="home-btn home-btn-primary" href="<?= e(app_url($secAside['button_url'] ?: 'iletisim')) ?>"><?= e($secAside['button_label'] ?: 'Detaylı Bilgi Al') ?></a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e(preg_replace('/\D+/','',setting('whatsapp',setting('phone')))) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, '.$item['title'].' hizmeti hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">WhatsApp'tan Sor</a></aside>
 </div></section>
 
 <section class="page-section soft"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Uygulama Akışı</div><h2>Sürecin her aşamasında sıradaki adım belli.</h2></div><p>Hizmet türü değişse de çalışma disiplinini aynı tutuyoruz.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
 </div></section>
 
 <?php if($projects): ?><section class="page-section"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Proje Kanıtı</div><h2>Uygulama yaklaşımını projelerde görün.</h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url('projeler')) ?>">Tüm Projeler</a></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secProjects['eyebrow']) ?></div><h2><?= e($secProjects['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url($secProjects['button_url'] ?: 'projeler')) ?>"><?= e($secProjects['button_label'] ?: 'Tüm Projeler') ?></a></div>
   <div class="related-projects"><?php foreach($projects as $p): ?><a class="related-project-card" href="<?= e(app_url('proje/'.$p['slug'])) ?>"><figure><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></figure><small><?= e($p['location']) ?> · <?= e($p['category']) ?></small><strong><?= e($p['title']) ?></strong></a><?php endforeach; ?></div>
 </div></section><?php endif; ?>
 </main>
