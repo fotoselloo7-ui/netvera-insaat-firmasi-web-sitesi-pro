@@ -155,6 +155,10 @@ INSERT IGNORE INTO settings (setting_key,setting_value) VALUES
 ('site_name','VERA YAPI'),('logo_mark','VY'),('tagline','İNŞAAT & TAAHHÜT'),
 ('phone','+90 500 000 00 00'),('whatsapp','905000000000'),('email','info@example.com'),
 ('address','Alanya / Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
+('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'),
+('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'),
+('contact_title','Projenizi bize anlatın.'),
+('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.'),
 ('meta_description','Alanya ve Antalya’da konut, villa, ticari yapı, renovasyon ve anahtar teslim taahhüt hizmetleri.'),
 ('footer_text','Konut, villa, ticari yapı, renovasyon ve anahtar teslim taahhüt projelerinde planlı ve güvenilir uygulama.');
 
@@ -166,6 +170,7 @@ INSERT IGNORE INTO home_sections (section_key,eyebrow,title,body,is_active,sort_
 ('why','Neden Vera Yapı?','İnşaat sürecinde sürprizleri değil, netliği tercih ediyoruz.','Kalite yalnızca malzemeyle değil; doğru plan, düzenli kontrol ve zamanında iletişimle oluşur.',1,50),
 ('process','Çalışma Sürecimiz','İlk görüşmeden anahtar teslimine dört net adım.','Sürecin neresinde olduğunuzu ve sıradaki adımı her zaman bilirsiniz.',1,60),
 ('testimonials','Müşteri Deneyimleri','Güven, teslim edilen projeden sonra da devam eder.','İletişim, bütçe disiplini ve teslim kalitesi müşterilerimizin en çok önem verdiği başlıklar.',1,70),
+('trust','Kurumsal Güven','Kaliteyi süreç boyunca koruyoruz.','Planlama, iş güvenliği, saha kontrolü ve teknik ekip koordinasyonu aynı standardın parçasıdır.',1,75),
 ('areas','Hizmet Bölgelerimiz','Alanya ve çevresinde yerel saha deneyimi.','Bölgenin koşullarını dikkate alarak proje sürecini yerel şartlara göre planlıyoruz.',1,80),
 ('blog','Bilgi Merkezi','Projeniz başlamadan önce doğru soruları sorun.','',1,90),
 ('faq','Sık Sorulan Sorular','İlk görüşme öncesi merak edilenler.','',1,100);
