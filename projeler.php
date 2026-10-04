@@ -29,9 +29,9 @@ include __DIR__.'/partials/header.php';
 </a><?php endforeach; ?></div>
 </div></section>
 
-<section class="page-section soft"><div class="container"><div class="inline-editorial-cta">
+<?php if((int)$secCta['is_active']===1): ?><section class="page-section soft"><div class="container"><div class="inline-editorial-cta">
   <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
   <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Projeyi Değerlendir') ?></a>
-</div></div></section>
+</div></div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
