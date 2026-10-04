@@ -4417,3 +4417,76 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     padding:21px 16px!important;
   }
 }
+
+
+/* ==========================================================
+   V21 — mobile menu stacking context fix
+   Blur must stay behind header/menu, never above it.
+   ========================================================== */
+@media(max-width:980px){
+  /* Backdrop sits above page content, below the complete navigation layer */
+  .home-menu-backdrop{
+    z-index:120!important;
+    backdrop-filter:blur(4px)!important;
+    -webkit-backdrop-filter:blur(4px)!important;
+  }
+
+  /* Sticky header creates its own stacking context; raise the whole context. */
+  body.menu-open .home-header{
+    z-index:140!important;
+    isolation:isolate!important;
+    background:#fff!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    box-shadow:0 1px 0 rgba(16,44,64,.08)!important;
+  }
+
+  body.menu-open .home-nav{
+    position:relative!important;
+    z-index:142!important;
+  }
+
+  body.menu-open .home-menu-btn{
+    position:relative!important;
+    z-index:146!important;
+  }
+
+  .home-menu,
+  body.menu-open .home-menu{
+    z-index:150!important;
+    isolation:isolate!important;
+    opacity:1!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    background:#fff!important;
+  }
+
+  /* Ensure all menu children render above any pseudo/background effects */
+  .home-menu>*{
+    position:relative;
+    z-index:2;
+  }
+
+  .home-menu-mobile-extra{
+    position:relative!important;
+    z-index:3!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+}
+
+/* Safari/WebKit extra isolation for fixed child inside sticky header */
+@supports (-webkit-touch-callout:none){
+  @media(max-width:980px){
+    body.menu-open .home-header{
+      transform:translateZ(0)!important;
+      -webkit-transform:translateZ(0)!important;
+    }
+    body.menu-open .home-menu{
+      transform:translateZ(0)!important;
+      -webkit-transform:translateZ(0)!important;
+    }
+  }
+}
