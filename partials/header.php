@@ -2,7 +2,7 @@
 $active = $active ?? '';
 $siteName = setting('site_name', 'Vera Yapı');
 $logoImage = trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.png';
-$faviconImage = trim(setting('favicon_image','')) ?: 'assets/brand/favicon-32.png';
+$faviconImage = trim(setting('favicon_image','')) ?: 'assets/brand/netvera-mark.png';
 $phone = setting('phone', '+90 500 000 00 00');
 $email = setting('email', 'info@example.com');
 $address = setting('address', 'Alanya / Antalya');
@@ -65,12 +65,12 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <?php if(!empty($articleModified)): ?><meta property="article:modified_time" content="<?= e($articleModified) ?>"><?php endif; ?>
 <meta name="theme-color" content="#102c40">
 <?php if($schemaJson): ?><script type="application/ld+json"><?= $schemaJson ?></script><?php endif; ?>
-<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=22">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=23">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=20">
 <?php if($faviconImage!==''): ?>
 <link rel="icon" type="image/png" sizes="32x32" href="<?= e(media_url($faviconImage)) ?>">
 <link rel="shortcut icon" href="<?= e(media_url($faviconImage)) ?>">
-<link rel="apple-touch-icon" href="<?= e(media_url(setting('apple_touch_icon','assets/brand/apple-touch-icon.png'))) ?>">
+<link rel="apple-touch-icon" href="<?= e(media_url(setting('apple_touch_icon','assets/brand/netvera-mark.png'))) ?>">
 <?php endif; ?>
 <?= $extraHead ?? '' ?>
 </head>
