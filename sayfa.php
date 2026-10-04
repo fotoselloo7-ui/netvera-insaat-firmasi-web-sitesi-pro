@@ -47,7 +47,7 @@ include __DIR__.'/partials/header.php';
 <section class="page-section">
   <div class="container legal-layout">
     <aside class="legal-aside">
-      <span>VERA YAPI</span>
+      <span><?= e(mb_strtoupper(setting('site_name','Vera Yapı'))) ?></span>
       <h2>Şeffaflık ve veri güvenliği.</h2>
       <p>Bu sayfadaki metinler yönetim panelindeki <strong>Sayfalar / Landing</strong> modülünden güncellenebilir.</p>
       <div class="legal-meta">
