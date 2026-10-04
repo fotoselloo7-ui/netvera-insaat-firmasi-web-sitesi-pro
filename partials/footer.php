@@ -11,7 +11,7 @@ $wa = preg_replace('/\D+/', '', setting('whatsapp',$phone));
 <div><h4><?= e(setting('footer_services_title','Hizmetler')) ?></h4><?php foreach(array_slice(rows('services'),0,4) as $s): ?><a href="<?= e(app_url('hizmet/'.$s['slug'])) ?>"><?= e($s['title']) ?></a><?php endforeach; ?></div>
 <div><h4><?= e(setting('footer_contact_title','İletişim')) ?></h4><p><?= e(setting('address','Alanya / Antalya')) ?></p><a href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>"><?= e($phone) ?></a><a href="mailto:<?= e($email) ?>"><?= e($email) ?></a><a href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener">WhatsApp</a></div>
 </div>
-<div class="home-footer-bottom"><span>© <span data-year></span> <?= e($siteName) ?>. Tüm hakları saklıdır.</span><span>KVKK • Gizlilik • Çerez Politikası</span></div>
+<div class="home-footer-bottom"><span>© <span data-year></span> <?= e($siteName) ?>. Tüm hakları saklıdır.</span><span class="home-footer-legal"><a href="<?= e(app_url('kvkk-aydinlatma-metni')) ?>">KVKK</a><a href="<?= e(app_url('gizlilik-politikasi')) ?>">Gizlilik</a><a href="<?= e(app_url('cerez-politikasi')) ?>">Çerez Politikası</a></span></div>
 </div></footer>
 <div class="home-float-actions" aria-label="Hızlı iletişim">
 <a class="home-float home-float-phone" href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>" aria-label="Telefonla ara"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></a>
