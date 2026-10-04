@@ -63,7 +63,7 @@ $modules = [
         'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'SEO Slug','type'=>'text'],'category'=>['label'=>'Kategori','type'=>'text'],
         'location'=>['label'=>'Konum','type'=>'text'],'status'=>['label'=>'Durum','type'=>'text'],'area'=>['label'=>'Alan','type'=>'text'],'project_year'=>['label'=>'Yıl','type'=>'text'],
         'summary'=>['label'=>'Kısa Açıklama','type'=>'textarea'],'body'=>['label'=>'Detay İçerik','type'=>'textarea'],
-        'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],'gallery_json'=>['label'=>'Galeri JSON (URL listesi)','type'=>'textarea'],
+        'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],'gallery_json'=>['label'=>'Proje Galerisi','type'=>'gallery','help'=>'Bilgisayardan birden fazla görsel seçebilirsiniz. Mevcut görseller korunur; yeni seçilenler galeriye eklenir.'],
         ...$seoFields,
         'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Proje sayfalarında CreativeWork kullanılabilir.'],
         'is_featured'=>['label'=>'Ana Sayfada Göster','type'=>'checkbox'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
@@ -155,14 +155,14 @@ $modules = [
 
 $settingsGroups = [
     'Marka & İletişim'=>[
-        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','tagline'=>'Alt Slogan',
+        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Site Logo Görseli','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
         'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
         'instagram_url'=>'Instagram URL','facebook_url'=>'Facebook URL',
         'twitter_url'=>'X / Twitter URL','youtube_url'=>'YouTube URL',
         'google_maps_url'=>'Google Harita Linki / Embed URL / Konum',
         'working_hours'=>'Çalışma Saatleri','footer_text'=>'Footer Açıklaması',
-        'about_image'=>'Hakkımızda Görsel URL','about_image_alt'=>'Hakkımızda Görsel Alt Metni','about_image_title'=>'Hakkımızda Görsel Başlığı',
-        'why_image'=>'Neden Biz Görsel URL','why_image_alt'=>'Neden Biz Görsel Alt Metni','why_image_title'=>'Neden Biz Görsel Başlığı',
+        'about_image'=>'Hakkımızda Görseli','about_image_alt'=>'Hakkımızda Görsel Alt Metni','about_image_title'=>'Hakkımızda Görsel Başlığı',
+        'why_image'=>'Neden Biz Görseli','why_image_alt'=>'Neden Biz Görsel Alt Metni','why_image_title'=>'Neden Biz Görsel Başlığı',
     ],
     'Navigasyon & Footer'=>[
         'nav_home_label'=>'Menü · Ana Sayfa',
@@ -192,7 +192,7 @@ $settingsGroups = [
         'business_legal_name'=>'Resmî İşletme Adı',
         'business_type'=>'Schema İşletme Türü',
         'business_description'=>'İşletme Açıklaması',
-        'business_logo'=>'Logo URL',
+        'business_logo'=>'Schema / İşletme Logo Görseli',
         'street_address'=>'Açık Adres',
         'address_locality'=>'İlçe / Şehir',
         'address_region'=>'İl / Bölge',
@@ -228,6 +228,14 @@ $settingsGroups = [
 ];
 $settingsFields=[];
 foreach($settingsGroups as $groupFields) $settingsFields=array_merge($settingsFields,$groupFields);
+$settingsImageFields = [
+    'logo_image'=>'Site Logo Görseli',
+    'favicon_image'=>'Favicon / Tarayıcı İkonu',
+    'about_image'=>'Hakkımızda Görseli',
+    'why_image'=>'Neden Biz Görseli',
+    'seo_default_og_image'=>'Varsayılan OG / Paylaşım Görseli',
+    'business_logo'=>'Schema / İşletme Logo Görseli',
+];
 
 $module = $_GET['module'] ?? 'dashboard';
 $notice = '';
@@ -239,6 +247,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'save_settings') {
         foreach ($settingsFields as $key => $label) {
             $value = trim((string)($_POST[$key] ?? ''));
+            if (isset($settingsImageFields[$key])) {
+                $uploaded = upload_image($key.'_upload');
+                if ($uploaded) $value = $uploaded;
+            }
             if ($key === 'home_testimonials_limit') {
                 $value = (string)max(1, (int)$value);
             }
@@ -270,6 +282,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($type === 'image') {
                 $uploaded = upload_image($field.'_upload');
                 $data[$field] = $uploaded ?: trim((string)($_POST[$field] ?? ''));
+            } elseif ($type === 'gallery') {
+                $existingRaw=trim((string)($_POST[$field] ?? '[]'));
+                $existing=json_decode($existingRaw,true);
+                if(!is_array($existing)){
+                    $existing=array_values(array_filter(array_map('trim',preg_split('/\R|,/', $existingRaw) ?: [])));
+                }
+                $newImages=upload_images($field.'_upload',16);
+                $data[$field]=json_encode(array_values(array_unique(array_merge($existing,$newImages))),JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
             } elseif ($type === 'number') {
                 $number = (int)($_POST[$field] ?? 0);
                 if (isset($meta['min'])) $number = max((int)$meta['min'], $number);
@@ -628,7 +648,7 @@ $navGroups = [
       </section>
 
     <?php elseif($module==='settings'): ?>
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
         <input type="hidden" name="action" value="save_settings">
         <?php
@@ -653,6 +673,12 @@ $navGroups = [
                   <?php if($key==='home_testimonials_limit'): ?>
                     <input type="number" name="<?= e($key) ?>" min="1" step="1" value="<?= e(setting($key,'8')) ?>">
                     <small>Toplam yorum kaydı sınırsızdır. Buradaki sayı yalnızca ana sayfada kayan şeritte kaç aktif yorum kullanılacağını belirler.</small>
+                  <?php elseif(isset($settingsImageFields[$key])): ?>
+                    <?php $currentImage=setting($key); ?>
+                    <?php if($currentImage!==''): ?><div class="admin-setting-image-preview"><img src="<?= e(media_url($currentImage)) ?>" alt=""></div><?php endif; ?>
+                    <input name="<?= e($key) ?>" value="<?= e($currentImage) ?>" placeholder="uploads/... veya https://...">
+                    <input class="admin-file" type="file" name="<?= e($key) ?>_upload" accept="image/jpeg,image/png,image/webp,image/avif">
+                    <small>URL girebilir veya bilgisayardan JPG, PNG, WebP, AVIF yükleyebilirsiniz.</small>
                   <?php elseif(in_array($key,$longSettings,true)): ?>
                     <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
                   <?php else: ?>
