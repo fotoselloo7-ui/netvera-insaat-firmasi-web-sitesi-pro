@@ -198,20 +198,37 @@ function module_icon(string $key): string {
 }
 
 function admin_field(array $meta, string $name, $value): string {
-    $label=e($meta['label'] ?? $name);
-    $type=$meta['type'] ?? 'text';
-    $v=e((string)$value);
-    if($type==='textarea') return "<label class="admin-field full"><span>{$label}</span><textarea name="{$name}">{$v}</textarea></label>";
-    if($type==='checkbox') return "<label class="admin-toggle"><input type="checkbox" name="{$name}" value="1" ".($value?'checked':'')."><span class="admin-toggle-ui"></span><span>{$label}</span></label>";
-    if($type==='select'){
-        $out="<label class="admin-field"><span>{$label}</span><select name="{$name}">";
-        foreach(($meta['options']??[]) as $k=>$txt){$sel=((string)$value===(string)$k)?' selected':'';$out.="<option value="".e($k).""{$sel}>".e($txt)."</option>";}
-        return $out."</select></label>";
+    $label = e($meta['label'] ?? $name);
+    $type = $meta['type'] ?? 'text';
+    $v = e((string)$value);
+
+    if ($type === 'textarea') {
+        return '<label class="admin-field full"><span>'.$label.'</span><textarea name="'.e($name).'">'.$v.'</textarea></label>';
     }
-    if($type==='image') return "<label class="admin-field full"><span>{$label}</span><input type="text" name="{$name}" value="{$v}" placeholder="https://... veya uploads/..."><small>URL kullanabilir veya aşağıdan dosya yükleyebilirsiniz.</small><input class="admin-file" type="file" name="{$name}_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>";
-    $htmlType=$type==='datetime-local'?'datetime-local':($type==='number'?'number':'text');
-    if($type==='datetime-local' && $value) $v=e(str_replace(' ','T',substr((string)$value,0,16)));
-    return "<label class="admin-field"><span>{$label}</span><input type="{$htmlType}" name="{$name}" value="{$v}"></label>";
+
+    if ($type === 'checkbox') {
+        return '<label class="admin-toggle"><input type="checkbox" name="'.e($name).'" value="1" '.($value ? 'checked' : '').'><span class="admin-toggle-ui"></span><span>'.$label.'</span></label>';
+    }
+
+    if ($type === 'select') {
+        $out = '<label class="admin-field"><span>'.$label.'</span><select name="'.e($name).'">';
+        foreach (($meta['options'] ?? []) as $k => $txt) {
+            $sel = ((string)$value === (string)$k) ? ' selected' : '';
+            $out .= '<option value="'.e((string)$k).'"'.$sel.'>'.e((string)$txt).'</option>';
+        }
+        return $out.'</select></label>';
+    }
+
+    if ($type === 'image') {
+        return '<label class="admin-field full"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/..."><small>URL kullanabilir veya aşağıdan dosya yükleyebilirsiniz.</small><input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>';
+    }
+
+    $htmlType = $type === 'datetime-local' ? 'datetime-local' : ($type === 'number' ? 'number' : 'text');
+    if ($type === 'datetime-local' && $value) {
+        $v = e(str_replace(' ', 'T', substr((string)$value, 0, 16)));
+    }
+
+    return '<label class="admin-field"><span>'.$label.'</span><input type="'.$htmlType.'" name="'.e($name).'" value="'.$v.'"></label>';
 }
 
 $counts=[];
