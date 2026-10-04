@@ -68,6 +68,34 @@ function media_url(?string $value): string {
     return app_url($value);
 }
 
+function ensure_v17_content_seed(): void {
+    try {
+        $marker = db()->prepare('SELECT setting_value FROM settings WHERE setting_key=? LIMIT 1');
+        $marker->execute(['content_seed_v17']);
+        if ($marker->fetchColumn()) return;
+
+        $check = db()->prepare('SELECT id FROM projects WHERE slug=? LIMIT 1');
+        $check->execute(['oba-courtyard']);
+        if (!$check->fetchColumn()) {
+            $stmt = db()->prepare('INSERT INTO projects (title,slug,category,location,status,area,project_year,summary,body,cover_image,gallery_json,meta_title,meta_description,is_featured,is_active,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+            $stmt->execute([
+                'Oba Courtyard','oba-courtyard','Villa','Oba','Tamamlandı','1.180 m²','2026',
+                'Avlu, gölge ve iç-dış yaşam ilişkisini merkeze alan çağdaş konut projesi.',
+                'Oba Courtyard projesinde mahremiyet, doğal ışık, gölgelendirme ve açık yaşam alanları tek mimari kurgu içinde ele alındı.',
+                'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1400',
+                '[]','Oba Courtyard | Vera Yapı','Alanya Oba bölgesinde çağdaş villa ve avlulu konut proje detayı.',
+                0,1,40
+            ]);
+        }
+
+        $save = db()->prepare('INSERT INTO settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)');
+        $save->execute(['content_seed_v17','1']);
+        clear_settings_cache();
+    } catch (Throwable $e) {
+        // İçerik migrationı sayfayı asla bloke etmemeli.
+    }
+}
+
 function google_maps_embed_url(?string $value, string $fallbackAddress = ''): string {
     $value = trim((string)$value);
     $fallbackAddress = trim($fallbackAddress);
