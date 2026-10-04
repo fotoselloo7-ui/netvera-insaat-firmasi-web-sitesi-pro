@@ -2,6 +2,28 @@
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 require_admin();
 
+$seoFields = [
+    'meta_title'=>['label'=>'SEO Başlık (Title)','type'=>'text','help'=>'Sayfayı ve arama niyetini net anlatan benzersiz başlık.'],
+    'meta_description'=>['label'=>'Meta Açıklama','type'=>'textarea','help'=>'Sayfayı doğru özetleyen, tıklama niyetini destekleyen açıklama.'],
+    'focus_keyword'=>['label'=>'Odak Anahtar Kelime','type'=>'text','help'=>'İçeriğin ana arama niyeti. Meta keywords olarak yayınlanmaz; editoryal rehberdir.'],
+    'secondary_keywords'=>['label'=>'Yardımcı Anahtar Kelimeler','type'=>'textarea','help'=>'Virgülle ayırın. Yakın anlamlı, alt konu ve yerel sorguları ekleyin.'],
+    'canonical_url'=>['label'=>'Canonical URL','type'=>'text','help'=>'Boş bırakılırsa sistem sayfanın kendi temiz URL’sini kullanır.'],
+    'og_title'=>['label'=>'Open Graph Başlık','type'=>'text','help'=>'Sosyal paylaşım ve bazı önizleme yüzeyleri için.'],
+    'og_description'=>['label'=>'Open Graph Açıklama','type'=>'textarea'],
+    'og_image'=>['label'=>'Open Graph / Preferred Image','type'=>'image','help'=>'Google görsel önizlemeleri için de güçlü bir tercih sinyalidir.'],
+    'image_alt'=>['label'=>'Ana Görsel Alt Metni','type'=>'text','help'=>'Görselin içeriğini doğal ve erişilebilir biçimde açıklayın. Anahtar kelime doldurmayın.'],
+    'image_title'=>['label'=>'Ana Görsel Başlığı','type'=>'text','help'=>'İsteğe bağlı görsel title bilgisi.'],
+    'robots'=>['label'=>'Robots Direktifi','type'=>'select','options'=>[
+        'index,follow,max-image-preview:large'=>'Index + Follow + Büyük Görsel Önizleme',
+        'index,follow'=>'Index + Follow',
+        'noindex,follow'=>'Noindex + Follow',
+        'noindex,nofollow'=>'Noindex + Nofollow',
+    ]],
+    'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Örn: Service, BlogPosting, AboutPage, ContactPage, CreativeWork.'],
+    'geo_target'=>['label'=>'GEO / Hedef Konum','type'=>'text','help'=>'Örn: Alanya, Antalya veya hizmet verilen semt/bölge.'],
+    'aio_summary'=>['label'=>'AIO / AI Kısa Özeti','type'=>'textarea','help'=>'İçeriğin doğrulanabilir, kısa ve net uzmanlık özeti. Schema description/abstract içinde kullanılır.'],
+];
+
 $modules = [
     'home_sections'=>['label'=>'Ana Sayfa Bölümleri','table'=>'home_sections','title'=>'title','fields'=>[
         'section_key'=>['label'=>'Bölüm Anahtarı','type'=>'text'],
@@ -16,6 +38,8 @@ $modules = [
         'title'=>['label'=>'Başlık','type'=>'text'],
         'body'=>['label'=>'Açıklama','type'=>'textarea'],
         'image'=>['label'=>'Görsel','type'=>'image'],
+        'image_alt'=>['label'=>'Görsel Alt Metni','type'=>'text','help'=>'Görseli doğal biçimde tarif edin.'],
+        'image_title'=>['label'=>'Görsel Başlığı','type'=>'text'],
         'primary_label'=>['label'=>'1. Buton Yazısı','type'=>'text'],
         'primary_url'=>['label'=>'1. Buton Linki','type'=>'text'],
         'secondary_label'=>['label'=>'2. Buton Yazısı','type'=>'text'],
@@ -28,18 +52,20 @@ $modules = [
         'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'services'=>['label'=>'Hizmetler','table'=>'services','title'=>'title','fields'=>[
-        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'Slug','type'=>'text'],
+        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'SEO Slug','type'=>'text','help'=>'Kısa, okunabilir, tireli URL yolu.'],
         'summary'=>['label'=>'Kısa Açıklama','type'=>'textarea'],'body'=>['label'=>'Detay İçerik','type'=>'textarea'],
         'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],
-        'meta_title'=>['label'=>'SEO Başlık','type'=>'text'],'meta_description'=>['label'=>'Meta Açıklama','type'=>'textarea'],
+        ...$seoFields,
+        'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Hizmet sayfalarında önerilen temel tür: Service'],
         'is_featured'=>['label'=>'Ana Sayfada Göster','type'=>'checkbox'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'projects'=>['label'=>'Projeler','table'=>'projects','title'=>'title','fields'=>[
-        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'Slug','type'=>'text'],'category'=>['label'=>'Kategori','type'=>'text'],
+        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'SEO Slug','type'=>'text'],'category'=>['label'=>'Kategori','type'=>'text'],
         'location'=>['label'=>'Konum','type'=>'text'],'status'=>['label'=>'Durum','type'=>'text'],'area'=>['label'=>'Alan','type'=>'text'],'project_year'=>['label'=>'Yıl','type'=>'text'],
         'summary'=>['label'=>'Kısa Açıklama','type'=>'textarea'],'body'=>['label'=>'Detay İçerik','type'=>'textarea'],
         'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],'gallery_json'=>['label'=>'Galeri JSON (URL listesi)','type'=>'textarea'],
-        'meta_title'=>['label'=>'SEO Başlık','type'=>'text'],'meta_description'=>['label'=>'Meta Açıklama','type'=>'textarea'],
+        ...$seoFields,
+        'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Proje sayfalarında CreativeWork kullanılabilir.'],
         'is_featured'=>['label'=>'Ana Sayfada Göster','type'=>'checkbox'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'home_features'=>['label'=>'Ana Sayfa Özellikleri','table'=>'home_features','title'=>'title','fields'=>[
@@ -52,7 +78,16 @@ $modules = [
         'rating'=>['label'=>'Puan','type'=>'number'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'service_areas'=>['label'=>'Hizmet Bölgeleri','table'=>'service_areas','title'=>'title','fields'=>[
-        'title'=>['label'=>'Bölge','type'=>'text'],'services_text'=>['label'=>'Hizmetler','type'=>'text'],
+        'title'=>['label'=>'Bölge / Semt','type'=>'text'],
+        'slug'=>['label'=>'SEO Slug','type'=>'text','help'=>'Örn: oba, mahmutlar, alanya-merkez'],
+        'services_text'=>['label'=>'Öne Çıkan Hizmetler','type'=>'text'],
+        'summary'=>['label'=>'Bölge Kısa Açıklaması','type'=>'textarea'],
+        'body'=>['label'=>'Bölge Detay İçeriği','type'=>'textarea','help'=>'Kopya şehir sayfası değil; bölgeye özel gerçek saha, yapı tipi ve hizmet bilgisini yazın.'],
+        'cover_image'=>['label'=>'Bölge Görseli','type'=>'image'],
+        ...$seoFields,
+        'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Yerel landing sayfası için WebPage veya Place kullanılabilir.'],
+        'latitude'=>['label'=>'Enlem','type'=>'text','help'=>'Opsiyonel. Örn: 36.54375'],
+        'longitude'=>['label'=>'Boylam','type'=>'text','help'=>'Opsiyonel. Örn: 31.99982'],
         'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'faqs'=>['label'=>'SSS','table'=>'faqs','title'=>'question','fields'=>[
@@ -60,29 +95,76 @@ $modules = [
         'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'posts'=>['label'=>'Blog','table'=>'posts','title'=>'title','fields'=>[
-        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'Slug','type'=>'text'],'excerpt'=>['label'=>'Özet','type'=>'textarea'],'body'=>['label'=>'İçerik','type'=>'textarea'],
-        'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],'meta_title'=>['label'=>'SEO Başlık','type'=>'text'],'meta_description'=>['label'=>'Meta Açıklama','type'=>'textarea'],
+        'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'SEO Slug','type'=>'text'],'excerpt'=>['label'=>'Özet','type'=>'textarea'],'body'=>['label'=>'İçerik','type'=>'textarea'],
+        'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],
+        'author_name'=>['label'=>'Yazar / Uzman','type'=>'text','help'=>'E-E-A-T ve makale kimliği için gerçek yazar/uzman adı.'],
+        ...$seoFields,
+        'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Blog içerikleri için BlogPosting veya Article.'],
         'published_at'=>['label'=>'Yayın Tarihi','type'=>'datetime-local'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'pages'=>['label'=>'Kurumsal Sayfalar','table'=>'pages','title'=>'title','fields'=>[
-        'slug'=>['label'=>'Slug','type'=>'text'],'eyebrow'=>['label'=>'Üst Başlık','type'=>'text'],'title'=>['label'=>'Başlık','type'=>'text'],'intro'=>['label'=>'Giriş','type'=>'textarea'],
-        'body'=>['label'=>'İçerik','type'=>'textarea'],'hero_image'=>['label'=>'Hero Görseli','type'=>'image'],'meta_title'=>['label'=>'SEO Başlık','type'=>'text'],
-        'meta_description'=>['label'=>'Meta Açıklama','type'=>'textarea'],'is_active'=>['label'=>'Aktif','type'=>'checkbox']
+        'slug'=>['label'=>'SEO Slug','type'=>'text'],'eyebrow'=>['label'=>'Üst Başlık','type'=>'text'],'title'=>['label'=>'Başlık','type'=>'text'],'intro'=>['label'=>'Giriş','type'=>'textarea'],
+        'body'=>['label'=>'İçerik','type'=>'textarea'],'hero_image'=>['label'=>'Hero Görseli','type'=>'image'],
+        ...$seoFields,
+        'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Örn: AboutPage, ContactPage, WebPage.'],
+        'is_active'=>['label'=>'Aktif','type'=>'checkbox']
     ]],
 ];
 
-$settingsFields = [
-    'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','tagline'=>'Alt Slogan',
-    'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
-    'working_hours'=>'Çalışma Saatleri','meta_description'=>'Genel Meta Açıklama','footer_text'=>'Footer Açıklaması',
-    'about_image'=>'Hakkımızda Görsel URL','why_image'=>'Neden Biz Görsel URL',
-    'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması',
-    'quick_cta_1_title'=>'Hızlı CTA 1 Başlık','quick_cta_1_body'=>'Hızlı CTA 1 Açıklama',
-    'quick_cta_1_primary_label'=>'Hızlı CTA 1 Ana Buton','quick_cta_1_primary_url'=>'Hızlı CTA 1 Ana Link',
-    'quick_cta_1_secondary_label'=>'Hızlı CTA 1 İkinci Buton','quick_cta_1_whatsapp_text'=>'Hızlı CTA 1 WhatsApp Mesajı',
-    'quick_cta_2_title'=>'Hızlı CTA 2 Başlık','quick_cta_2_body'=>'Hızlı CTA 2 Açıklama',
-    'quick_cta_2_primary_label'=>'Hızlı CTA 2 Ana Buton','quick_cta_2_secondary_label'=>'Hızlı CTA 2 İkinci Buton'
+$settingsGroups = [
+    'Marka & İletişim'=>[
+        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','tagline'=>'Alt Slogan',
+        'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
+        'working_hours'=>'Çalışma Saatleri','footer_text'=>'Footer Açıklaması',
+        'about_image'=>'Hakkımızda Görsel URL','why_image'=>'Neden Biz Görsel URL',
+    ],
+    'Ana Sayfa SEO'=>[
+        'seo_home_title'=>'Ana Sayfa SEO Başlığı',
+        'meta_description'=>'Ana Sayfa Meta Açıklaması',
+        'seo_focus_keyword'=>'Ana Sayfa Odak Anahtar Kelime',
+        'seo_secondary_keywords'=>'Ana Sayfa Yardımcı Anahtar Kelimeler',
+        'seo_home_canonical'=>'Ana Sayfa Canonical URL',
+        'seo_robots'=>'Ana Sayfa Robots Direktifi',
+        'seo_default_og_image'=>'Varsayılan OG / Preferred Image',
+        'seo_default_image_alt'=>'Varsayılan Görsel Alt Metni',
+    ],
+    'Local SEO / GEO'=>[
+        'business_legal_name'=>'Resmî İşletme Adı',
+        'business_type'=>'Schema İşletme Türü',
+        'business_description'=>'İşletme Açıklaması',
+        'business_logo'=>'Logo URL',
+        'street_address'=>'Açık Adres',
+        'address_locality'=>'İlçe / Şehir',
+        'address_region'=>'İl / Bölge',
+        'postal_code'=>'Posta Kodu',
+        'address_country'=>'Ülke Kodu',
+        'latitude'=>'Enlem',
+        'longitude'=>'Boylam',
+        'service_area'=>'Hizmet Verilen Bölgeler',
+        'price_range'=>'Fiyat Aralığı',
+        'same_as'=>'Sosyal / Kurumsal Profil URL’leri',
+        'founding_date'=>'Kuruluş Tarihi',
+    ],
+    'AIO / AI Görünürlüğü'=>[
+        'aio_brand_summary'=>'Marka Kısa Özeti',
+        'aio_expertise'=>'Uzmanlık Alanları',
+        'indexnow_key'=>'IndexNow Anahtarı',
+    ],
+    'Doğrulama'=>[
+        'google_site_verification'=>'Google Site Verification',
+        'bing_site_verification'=>'Bing Site Verification',
+    ],
+    'Dönüşüm Alanları'=>[
+        'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması',
+        'quick_cta_1_title'=>'Hızlı CTA 1 Başlık','quick_cta_1_body'=>'Hızlı CTA 1 Açıklama',
+        'quick_cta_1_primary_label'=>'Hızlı CTA 1 Ana Buton','quick_cta_1_primary_url'=>'Hızlı CTA 1 Ana Link',
+        'quick_cta_1_secondary_label'=>'Hızlı CTA 1 İkinci Buton','quick_cta_1_whatsapp_text'=>'Hızlı CTA 1 WhatsApp Mesajı',
+        'quick_cta_2_title'=>'Hızlı CTA 2 Başlık','quick_cta_2_body'=>'Hızlı CTA 2 Açıklama',
+        'quick_cta_2_primary_label'=>'Hızlı CTA 2 Ana Buton','quick_cta_2_secondary_label'=>'Hızlı CTA 2 İkinci Buton',
+    ],
 ];
+$settingsFields=[];
+foreach($settingsGroups as $groupFields) $settingsFields=array_merge($settingsFields,$groupFields);
 
 $module = $_GET['module'] ?? 'dashboard';
 $notice = '';
