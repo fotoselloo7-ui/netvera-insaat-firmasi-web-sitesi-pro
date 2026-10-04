@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0c2232">
 <title>Yönetim Paneli · NetVera</title>
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin.css?v=3">
 </head>
 <body class="admin-login-body">
 <div class="login-shell">
@@ -60,6 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-security"><span class="login-security-dot"></span><span>Güvenli yönetici oturumu</span></div>
   </main>
 </div>
-<script src="admin.js" defer></script>
+<script src="admin.js?v=3" defer></script>
 </body>
 </html>
