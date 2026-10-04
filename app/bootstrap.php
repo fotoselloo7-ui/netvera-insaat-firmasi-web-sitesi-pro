@@ -36,3 +36,4 @@ $GLOBALS['app_config'] = $config;
 
 ensure_seo_schema();
 ensure_testimonial_schema();
+ensure_v17_content_seed();
