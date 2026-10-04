@@ -76,7 +76,7 @@ function rows(string $table, string $where = 'is_active = 1', array $params = []
 }
 
 function one_by_slug(string $table, string $slug): ?array {
-    $allowed = ['services','projects','posts','pages'];
+    $allowed = ['services','projects','posts','pages','service_areas'];
     if (!in_array($table, $allowed, true)) return null;
     $stmt = db()->prepare("SELECT * FROM {$table} WHERE slug = ? AND is_active = 1 LIMIT 1");
     $stmt->execute([$slug]);
