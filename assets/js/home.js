@@ -1,3 +1,17 @@
+/* static-preview brand mark normalization */
+document.querySelectorAll('.home-logo-mark').forEach(mark=>{
+  if(mark.querySelector('img')) return;
+  const img=document.createElement('img');
+  img.src='assets/brand/netvera-mark.svg';
+  img.alt='NetVera';
+  img.width=44;
+  img.height=44;
+  img.style.cssText='width:100%;height:100%;object-fit:contain;display:block';
+  mark.textContent='';
+  mark.appendChild(img);
+  mark.classList.add('has-brand-image');
+});
+
 const menuBtn=document.querySelector('.home-menu-btn');
 const menu=document.querySelector('.home-menu');
 
