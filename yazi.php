@@ -29,11 +29,11 @@ include __DIR__.'/partials/header.php';
 <section class="page-section"><div class="container article-shell">
   <nav class="article-rail" aria-label="Yazı içeriği"><div class="article-rail-title">Bu yazıda</div><?php if($headingMatches && !empty($headingMatches[1])): foreach($headingMatches[1] as $h): ?><span><?= e($h) ?></span><?php endforeach; else: ?><span>Temel değerlendirme</span><span>Kontrol noktaları</span><span>Son karar</span><?php endif; ?></nav>
   <article class="article-body"><p class="article-lead"><?= e($item['aio_summary'] ?: $item['excerpt']) ?></p><div class="article-callout"><strong>Kısa cevap</strong><?= e($item['excerpt']) ?></div><?= render_content_blocks((string)$item['body']) ?>
-    <h2><?= e($secDecision['title']) ?></h2><p><?= e($secDecision['body']) ?></p>
+    <?php if((int)$secDecision['is_active']===1): ?><h2><?= e($secDecision['title']) ?></h2><p><?= e($secDecision['body']) ?></p><?php endif; ?>
   </article>
   <aside class="article-aside"><div class="article-author"><div class="avatar"><?= e(mb_strtoupper(mb_substr($authorName,0,1))) ?></div><strong><?= e($authorName) ?></strong><p>İnşaat, taahhüt ve proje uygulama deneyiminden derlenen pratik rehber.</p></div><a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Projenizi Sorun</a></aside>
 </div></section>
 
-<?php if($related): ?><section class="page-section soft"><div class="container"><div class="page-title-row"><div><div class="home-kicker"><?= e($secRelated['eyebrow']) ?></div><h2><?= e($secRelated['title']) ?></h2></div></div><div class="article-related"><?php foreach($related as $p): ?><a class="list-card" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['excerpt']) ?></p></a><?php endforeach; ?></div></div></section><?php endif; ?>
+<?php if($related && (int)$secRelated['is_active']===1): ?><section class="page-section soft"><div class="container"><div class="page-title-row"><div><div class="home-kicker"><?= e($secRelated['eyebrow']) ?></div><h2><?= e($secRelated['title']) ?></h2></div></div><div class="article-related"><?php foreach($related as $p): ?><a class="list-card" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['excerpt']) ?></p></a><?php endforeach; ?></div></div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
