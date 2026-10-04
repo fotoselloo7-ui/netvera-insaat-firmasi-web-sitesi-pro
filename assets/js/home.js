@@ -73,3 +73,28 @@ if(slider){
   show(0);
   start();
 }
+
+
+/* premium motion */
+const header=document.querySelector('.home-header');
+if(header){
+  const syncHeader=()=>header.classList.toggle('is-scrolled',window.scrollY>18);
+  syncHeader();
+  window.addEventListener('scroll',syncHeader,{passive:true});
+}
+
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
+  const revealTargets=document.querySelectorAll(
+    '.home-section-head,.home-about-photo,.home-about-copy,.service-clean article,.project-clean,.why-clean-photo,.why-clean-copy,.process-step,.testimonial-clean,.trust-strip,.area-clean-copy,.area-list,.insight-featured,.insight-side,.home-faq details,.home-contact-card,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside'
+  );
+  revealTargets.forEach(el=>el.classList.add('reveal-ready'));
+  const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('reveal-in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -35px'});
+  revealTargets.forEach(el=>revealObserver.observe(el));
+}
