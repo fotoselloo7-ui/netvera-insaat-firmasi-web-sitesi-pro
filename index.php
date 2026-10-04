@@ -37,29 +37,195 @@ include __DIR__.'/partials/header.php';
 </div><div class="container home-slider-ui"><div class="home-slider-dots"><?php foreach($sliders as $i=>$s): ?><button class="<?= $i===0?'is-active':'' ?>" type="button" aria-label="<?= $i+1 ?>. slayt" data-slide-to="<?= $i ?>"></button><?php endforeach; ?></div><div class="home-slider-arrows"><button type="button" data-slide-prev aria-label="Önceki">←</button><button type="button" data-slide-next aria-label="Sonraki">→</button></div></div></section>
 <?php endif; ?>
 
-<?php $sec=section('proof'); if($sec['is_active']): ?><section class="home-proof"><div class="container home-proof-grid"><div class="home-proof-item home-proof-intro"><strong><?= e($sec['title']) ?></strong><p><?= e($sec['body']) ?></p></div><?php foreach(array_slice($stats,0,3) as $st): ?><div class="home-proof-item"><strong><?= e($st['stat_value']) ?></strong><span><?= e($st['label']) ?></span></div><?php endforeach; ?></div></section><?php endif; ?>
+<?php $sec=section('proof'); if($sec['is_active']): ?>
+<section class="home-proof-v5">
+  <div class="container proof-v5-grid">
+    <div class="proof-v5-copy"><strong><?= e($sec['title']) ?></strong><p><?= e($sec['body']) ?></p></div>
+    <?php foreach(array_slice($stats,0,3) as $st): ?>
+      <div class="proof-v5-stat"><strong><?= e($st['stat_value']) ?></strong><span><?= e($st['label']) ?></span></div>
+    <?php endforeach; ?>
+  </div>
+</section>
+<?php endif; ?>
 
-<?php $sec=section('about'); if($sec['is_active']): ?><section class="home-section home-about-v4"><div class="container home-about-grid"><div class="home-about-photo"><img src="<?= e(media_url(setting('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'))) ?>" alt="<?= e(setting('about_image_alt',setting('seo_default_image_alt',$sec['title']))) ?>" title="<?= e(setting('about_image_title',$sec['title'])) ?>" loading="lazy"><div class="home-photo-label"><span>Vera Yapı</span><strong>Planlama · Uygulama · Teslim</strong></div></div><div class="home-about-copy"><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2><p><?= e($sec['body']) ?></p><div class="home-feature-grid"><?php foreach(array_slice($why,0,4) as $i=>$f): ?><article class="home-feature-card"><span class="home-feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="<?= $i===0?'M4 12l5 5L20 6':($i===1?'M5 7h14M7 4v6m10-6v6M6 11h12v9H6z':($i===2?'M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z':'M4 6h16v12H4zM8 10h8M8 14h5')) ?>" /></svg></span><div><strong><?= e($f['title']) ?></strong><small><?= e($f['body']) ?></small></div></article><?php endforeach; ?></div><a class="home-btn home-btn-secondary home-btn-arrow" href="<?= e(app_url('hakkimizda')) ?>">Firmamızı Tanıyın <span>↗</span></a></div></div></section><?php endif; ?>
+<?php $sec=section('about'); if($sec['is_active']): ?>
+<section class="home-section about-editorial-v5">
+  <div class="container about-editorial-grid">
+    <figure class="about-editorial-media">
+      <img src="<?= e(media_url(setting('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'))) ?>" alt="<?= e(setting('about_image_alt',setting('seo_default_image_alt',$sec['title']))) ?>" title="<?= e(setting('about_image_title',$sec['title'])) ?>" loading="lazy">
+      <figcaption>Planlama · Uygulama · Teslim</figcaption>
+    </figure>
+    <div class="about-editorial-copy">
+      <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
+      <h2><?= e($sec['title']) ?></h2>
+      <p class="about-lead"><?= e($sec['body']) ?></p>
+      <div class="about-principles">
+        <?php foreach(array_slice($why,0,4) as $i=>$f): ?>
+          <div class="about-principle">
+            <span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
+            <div><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <a class="text-link-v5" href="<?= e(app_url('hakkimizda')) ?>">Firmamızı tanıyın
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
-<?php $sec=section('services'); if($sec['is_active']): ?><section class="home-section home-section-soft services-v4"><div class="container"><div class="home-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><p><?= e($sec['body']) ?></p></div><div class="service-premium-grid"><?php foreach(array_slice($services,0,6) as $i=>$s): ?><article class="service-premium-card"><div class="service-card-head"><span class="service-index"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><a class="service-open" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>" aria-label="<?= e($s['title']) ?> detayları">↗</a></div><h3><a href="<?= e(app_url('hizmet/'.$s['slug'])) ?>"><?= e($s['title']) ?></a></h3><p><?= e($s['summary']) ?></p><div class="service-card-foot"><span>Planlama · Uygulama</span><a href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">Detayları incele <b>→</b></a></div></article><?php endforeach; ?></div></div></section><?php endif; ?>
+<?php $sec=section('services'); if($sec['is_active']): ?>
+<section class="home-section services-editorial-v5">
+  <div class="container services-editorial-grid">
+    <div class="services-intro-v5">
+      <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
+      <h2><?= e($sec['title']) ?></h2>
+      <p><?= e($sec['body']) ?></p>
+      <a class="text-link-v5" href="<?= e(app_url('hizmetler')) ?>">Tüm hizmetleri inceleyin
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+      </a>
+    </div>
+    <div class="services-list-v5">
+      <?php foreach(array_slice($services,0,6) as $i=>$s): ?>
+        <a class="service-row-v5" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
+          <span class="service-row-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
+          <div class="service-row-copy"><h3><?= e($s['title']) ?></h3><p><?= e($s['summary']) ?></p></div>
+          <svg class="service-row-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+        </a>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
-<section class="quick-cta-wrap"><div class="container"><div class="quick-cta"><div class="quick-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a8 8 0 0 0-8 8c0 1.8.6 3.5 1.6 4.9L4 21l5.2-1.5A8 8 0 1 0 12 3Zm-3.4 7.2h6.8v1.6H8.6v-1.6Zm0 3h4.8v1.6H8.6v-1.6Z"/></svg></div><div class="quick-cta-copy"><h3><?= e(setting('quick_cta_1_title','Hangi hizmetin projenize uygun olduğundan emin değil misiniz?')) ?></h3><p><?= e(setting('quick_cta_1_body','Projenizi kısaca anlatın; kapsam, süreç ve doğru hizmet seçeneği hakkında hızlı bilgi verelim.')) ?></p></div><div class="quick-cta-actions"><a class="home-btn home-btn-primary" href="<?= e(app_url(setting('quick_cta_1_primary_url','iletisim'))) ?>"><?= e(setting('quick_cta_1_primary_label','Detaylı Bilgi Al')) ?></a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode(setting('quick_cta_1_whatsapp_text','Merhaba Vera Yapı, projem için hangi hizmetin uygun olduğu hakkında bilgi almak istiyorum.')) ?>" target="_blank" rel="noopener"><?= e(setting('quick_cta_1_secondary_label',"WhatsApp'tan Sor")) ?></a></div></div></div></section>
+<section class="home-cta-line-v5"><div class="container home-cta-line-inner">
+  <div><strong><?= e(setting('quick_cta_1_title','Projeniz için doğru hizmeti birlikte belirleyelim.')) ?></strong><span><?= e(setting('quick_cta_1_body','Kapsamı netleştirelim, sonra teklif konuşalım.')) ?></span></div>
+  <div class="home-cta-line-actions">
+    <a class="home-btn home-btn-primary" href="<?= e(app_url(setting('quick_cta_1_primary_url','iletisim'))) ?>"><?= e(setting('quick_cta_1_primary_label','Detaylı Bilgi Al')) ?></a>
+    <a class="text-link-v5" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode(setting('quick_cta_1_whatsapp_text','Merhaba Vera Yapı, projem hakkında bilgi almak istiyorum.')) ?>" target="_blank" rel="noopener"><?= e(setting('quick_cta_1_secondary_label',"WhatsApp'tan Sor")) ?>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+    </a>
+  </div>
+</div></section>
 
-<?php $sec=section('projects'); if($sec['is_active']): ?><section class="home-section projects-v4"><div class="container"><div class="home-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><p><?= e($sec['body']) ?></p></div><div class="projects-premium-grid"><?php foreach(array_slice($projects,0,3) as $p): ?><article class="project-premium-card"><a class="project-media" href="<?= e(app_url('proje/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>"<?php if(!empty($p['image_title'])): ?> title="<?= e($p['image_title']) ?>"<?php endif; ?> loading="lazy"><span class="project-open">↗</span></a><div class="project-card-body"><div class="project-chip-row"><span class="project-chip is-accent"><?= e($p['status']) ?></span><span class="project-chip"><?= e($p['location']) ?></span></div><h3><a href="<?= e(app_url('proje/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h3><p><?= e($p['summary']) ?></p><div class="project-meta-pills"><span><?= e($p['category']) ?></span><span><?= e($p['area']) ?></span><span><?= e($p['project_year']) ?></span></div></div></article><?php endforeach; ?></div><div class="section-foot-action"><a class="home-btn home-btn-secondary home-btn-arrow" href="<?= e(app_url('projeler')) ?>">Tüm Projeleri İncele <span>↗</span></a></div></div></section><?php endif; ?>
+<?php $sec=section('projects'); if($sec['is_active']): ?>
+<section class="home-section projects-editorial-v5">
+  <div class="container">
+    <div class="home-section-head-v5">
+      <div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div>
+      <p><?= e($sec['body']) ?></p>
+    </div>
+    <?php $homeProjects=array_slice($projects,0,3); $fp=$homeProjects[0]??null; ?>
+    <?php if($fp): ?>
+    <div class="projects-layout-v5">
+      <a class="project-featured-v5" href="<?= e(app_url('proje/'.$fp['slug'])) ?>">
+        <img src="<?= e(media_url($fp['cover_image'])) ?>" alt="<?= e($fp['image_alt'] ?: $fp['title']) ?>" loading="lazy">
+        <div class="project-caption-v5">
+          <div><span><?= e($fp['status']) ?> · <?= e($fp['location']) ?></span><h3><?= e($fp['title']) ?></h3></div>
+          <small><?= e($fp['category']) ?> · <?= e($fp['area']) ?> · <?= e($fp['project_year']) ?></small>
+        </div>
+      </a>
+      <div class="project-side-stack-v5">
+        <?php foreach(array_slice($homeProjects,1,2) as $p): ?>
+          <a class="project-side-v5" href="<?= e(app_url('proje/'.$p['slug'])) ?>">
+            <img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy">
+            <div><span><?= e($p['status']) ?> · <?= e($p['location']) ?></span><h3><?= e($p['title']) ?></h3><small><?= e($p['category']) ?> · <?= e($p['area']) ?></small></div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+    <?php endif; ?>
+    <div class="projects-footer-v5"><a class="text-link-v5" href="<?= e(app_url('projeler')) ?>">Tüm projeleri inceleyin
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+    </a></div>
+  </div>
+</section>
+<?php endif; ?>
 
-<section class="quick-cta-wrap white"><div class="container"><div class="quick-cta quick-cta-dark"><div class="quick-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10a2 2 0 0 1 2 2v14l-7-3-7 3V5a2 2 0 0 1 2-2Zm1.5 4v2H15V7H8.5Zm0 4v2H15v-2H8.5Z"/></svg></div><div class="quick-cta-copy"><h3><?= e(setting('quick_cta_2_title','Arsanız veya hazır bir projeniz mi var?')) ?></h3><p><?= e(setting('quick_cta_2_body','İlk değerlendirmeyi birlikte yapalım; yaklaşık kapsamı, uygulama modelini ve keşif sürecini netleştirelim.')) ?></p></div><div class="quick-cta-actions"><a class="home-btn home-btn-primary" href="#teklif"><?= e(setting('quick_cta_2_primary_label','Ücretsiz Keşif Planla')) ?></a><a class="home-btn home-btn-secondary" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>"><?= e(setting('quick_cta_2_secondary_label','Hemen Ara')) ?></a></div></div></div></section>
+<section class="home-cta-line-v5 is-dark"><div class="container home-cta-line-inner">
+  <div><strong><?= e(setting('quick_cta_2_title','Arsanız veya hazır bir projeniz mi var?')) ?></strong><span><?= e(setting('quick_cta_2_body','İlk değerlendirmeyi birlikte yapalım.')) ?></span></div>
+  <div class="home-cta-line-actions">
+    <a class="home-btn home-btn-primary" href="#teklif"><?= e(setting('quick_cta_2_primary_label','Ücretsiz Keşif Planla')) ?></a>
+    <a class="text-link-v5 is-light" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>"><?= e(setting('quick_cta_2_secondary_label','Hemen Ara')) ?>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+    </a>
+  </div>
+</div></section>
 
-<?php $sec=section('why'); if($sec['is_active']): ?><section class="home-section home-section-dark why-v4"><div class="container why-clean"><div class="why-clean-photo"><img src="<?= e(media_url(setting('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'))) ?>" alt="<?= e(setting('why_image_alt',setting('seo_default_image_alt',$sec['title']))) ?>" title="<?= e(setting('why_image_title',$sec['title'])) ?>" loading="lazy"><div class="why-photo-badge"><span>01</span><strong>Saha disiplini</strong></div></div><div class="why-clean-copy"><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2><p><?= e($sec['body']) ?></p><div class="why-value-grid"><?php foreach($why as $i=>$f): ?><article class="why-value-card"><div class="why-value-top"><b><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></b><span></span></div><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></article><?php endforeach; ?></div></div></div></section><?php endif; ?>
+<?php $sec=section('why'); if($sec['is_active']): ?>
+<section class="home-section home-section-dark why-editorial-v5">
+  <div class="container why-editorial-grid">
+    <figure class="why-editorial-media"><img src="<?= e(media_url(setting('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'))) ?>" alt="<?= e(setting('why_image_alt',setting('seo_default_image_alt',$sec['title']))) ?>" title="<?= e(setting('why_image_title',$sec['title'])) ?>" loading="lazy"></figure>
+    <div class="why-editorial-copy">
+      <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
+      <h2><?= e($sec['title']) ?></h2>
+      <p><?= e($sec['body']) ?></p>
+      <div class="why-list-v5">
+        <?php foreach($why as $i=>$f): ?>
+          <div class="why-row-v5"><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><div><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></div></div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
-<?php $sec=section('process'); if($sec['is_active']): ?><section class="home-section home-section-soft process-v4"><div class="container"><div class="home-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><p><?= e($sec['body']) ?></p></div><div class="process-flow-v4"><?php foreach($process as $i=>$f): ?><article class="process-card-v4"><div class="process-node"><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span></div><div class="process-card-copy"><small>Aşama <?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></small><h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p></div><?php if($i<count($process)-1): ?><div class="process-connector" aria-hidden="true"><i></i><b>›</b></div><?php endif; ?></article><?php endforeach; ?></div></div></section><?php endif; ?>
+<?php $sec=section('process'); if($sec['is_active']): ?>
+<section class="home-section process-editorial-v5">
+  <div class="container">
+    <div class="home-section-head-v5">
+      <div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div>
+      <p><?= e($sec['body']) ?></p>
+    </div>
+    <div class="process-track-v5">
+      <?php foreach($process as $i=>$f): ?>
+        <div class="process-step-v5">
+          <div class="process-step-head"><span><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><?php if($i<count($process)-1): ?><svg viewBox="0 0 48 12" aria-hidden="true"><path d="M1 6h43M39 2l5 4-5 4"/></svg><?php endif; ?></div>
+          <h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
-<?php $testimonialSec=section('testimonials'); $trustSec=section('trust'); $areasSec=section('areas'); if($testimonialSec['is_active'] || ($trustSec['is_active'] && $trust) || $areasSec['is_active']): ?><section class="home-section reputation-v4"><div class="container">
-<?php if($testimonialSec['is_active']): ?><div class="home-section-head reputation-head"><div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div><p><?= e($testimonialSec['body']) ?></p></div><div class="testimonial-premium-grid"><?php foreach(array_slice($testimonials,0,3) as $i=>$t): ?><article class="testimonial-premium-card"><div class="quote-mark">“</div><div class="testimonial-top"><div class="stars"><?= str_repeat('★',(int)$t['rating']) ?></div><span>0<?= $i+1 ?></span></div><blockquote><?= e($t['quote_text']) ?></blockquote><footer><div class="avatar"><?= e(mb_strtoupper(mb_substr($t['name'],0,2))) ?></div><div><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></div></footer></article><?php endforeach; ?></div><?php endif; ?>
-<div class="reputation-support-grid">
-<?php if($trustSec['is_active'] && $trust): ?><div class="trust-panel-v4"><div class="trust-panel-head"><div><div class="home-kicker"><?= e($trustSec['eyebrow']) ?></div><h3><?= e($trustSec['title']) ?></h3><p><?= e($trustSec['body']) ?></p></div><span class="trust-panel-seal">VY</span></div><div class="trust-mini-grid"><?php foreach(array_slice($trust,0,3) as $i=>$f): ?><article class="trust-mini-card"><span class="trust-mini-icon"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><div><strong><?= e($f['title']) ?></strong><small><?= e($f['body']) ?></small></div></article><?php endforeach; ?></div></div><?php endif; ?>
-<?php if($areasSec['is_active']): ?><div class="area-panel-v4"><div class="home-kicker"><?= e($areasSec['eyebrow']) ?></div><h3><?= e($areasSec['title']) ?></h3><p><?= e($areasSec['body']) ?></p><div class="area-chip-grid"><?php foreach($areas as $a): ?><a href="<?= e(app_url('bolge/'.($a['slug'] ?: slugify($a['title'])))) ?>"><span><strong><?= e($a['title']) ?></strong><small><?= e($a['services_text']) ?></small></span><b>↗</b></a><?php endforeach; ?></div></div><?php endif; ?>
-</div>
-</div></section><?php endif; ?>
+<?php $testimonialSec=section('testimonials'); $trustSec=section('trust'); $areasSec=section('areas'); if($testimonialSec['is_active'] || ($trustSec['is_active'] && $trust) || $areasSec['is_active']): ?>
+<section class="home-section reputation-editorial-v5">
+  <div class="container">
+    <?php if($testimonialSec['is_active']): ?>
+      <div class="home-section-head-v5"><div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div><p><?= e($testimonialSec['body']) ?></p></div>
+      <?php $tts=array_slice($testimonials,0,3); $mainT=$tts[0]??null; ?>
+      <?php if($mainT): ?>
+      <div class="testimonial-layout-v5">
+        <blockquote class="testimonial-featured-v5">
+          <span class="quote-symbol-v5">“</span>
+          <p><?= e($mainT['quote_text']) ?></p>
+          <footer><strong><?= e($mainT['name']) ?></strong><span><?= e($mainT['role']) ?></span></footer>
+        </blockquote>
+        <div class="testimonial-side-stack-v5">
+          <?php foreach(array_slice($tts,1,2) as $t): ?>
+            <blockquote class="testimonial-side-v5"><p>“<?= e($t['quote_text']) ?>”</p><footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer></blockquote>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endif; ?>
+    <?php endif; ?>
+    <div class="trust-area-v5">
+      <?php if($trustSec['is_active'] && $trust): ?>
+        <div class="trust-column-v5"><div class="home-kicker"><?= e($trustSec['eyebrow']) ?></div><h3><?= e($trustSec['title']) ?></h3><p><?= e($trustSec['body']) ?></p>
+          <div class="trust-list-v5"><?php foreach(array_slice($trust,0,3) as $f): ?><div><strong><?= e($f['title']) ?></strong><span><?= e($f['body']) ?></span></div><?php endforeach; ?></div>
+        </div>
+      <?php endif; ?>
+      <?php if($areasSec['is_active']): ?>
+        <div class="areas-column-v5"><div class="home-kicker"><?= e($areasSec['eyebrow']) ?></div><h3><?= e($areasSec['title']) ?></h3><p><?= e($areasSec['body']) ?></p>
+          <div class="area-list-v5"><?php foreach($areas as $a): ?><a href="<?= e(app_url('bolge/'.($a['slug'] ?: slugify($a['title'])))) ?>"><strong><?= e($a['title']) ?></strong><span><?= e($a['services_text']) ?></span></a><?php endforeach; ?></div>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php $sec=section('blog'); if($sec['is_active']): ?>
 <?php
@@ -84,6 +250,40 @@ $blogFallbacks=[
 </div></section>
 <?php endif; ?>
 
-<?php $sec=section('faq'); if($sec['is_active']): ?><section class="home-section home-section-soft" id="teklif"><div class="container home-faq-contact"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2 style="color:var(--navy);font-size:34px;line-height:1.2;margin:7px 0 22px"><?= e($sec['title']) ?></h2><div class="home-faq"><?php foreach($faqs as $i=>$f): ?><details<?= $i===0?' open':'' ?>><summary><?= e($f['question']) ?></summary><p><?= e($f['answer']) ?></p></details><?php endforeach; ?></div></div><aside class="home-contact-card"><h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3><p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p><form class="home-form" data-home-form data-whatsapp="<?= e($wa) ?>"><div class="home-field"><label>Ad Soyad<input name="name" required></label></div><div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div><div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div><div class="home-field"><label>Konum<input name="location"></label></div><div class="home-field full"><label>Kısa Proje Bilgisi<textarea name="message"></textarea></label></div><div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div><div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div></form><div class="contact-action-pills"><a class="contact-pill" href="tel:<?= e(preg_replace('/\\D+/','',setting('phone'))) ?>"><span class="contact-pill-icon"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></span><span><small>Telefon</small><strong>Hemen ara</strong></span></a><a class="contact-pill is-wa" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, projem hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener"><span class="contact-pill-icon"><svg viewBox="0 0 32 32"><path d="M16 3A13 13 0 0 0 5 22.9L3.6 29 9.8 27.6A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.7.9.9-3.6-.2-.4A10.6 10.6 0 1 1 16 26.6Z"/></svg></span><span><small>WhatsApp</small><strong>Mesaj gönder</strong></span></a></div></aside></div></section><?php endif; ?>
+<?php $sec=section('faq'); if($sec['is_active']): ?>
+<section class="home-section home-section-soft faq-contact-v5" id="teklif">
+  <div class="container faq-contact-grid-v5">
+    <div class="faq-column-v5">
+      <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
+      <h2><?= e($sec['title']) ?></h2>
+      <div class="home-faq faq-v5"><?php foreach($faqs as $i=>$f): ?><details<?= $i===0?' open':'' ?>><summary><?= e($f['question']) ?></summary><p><?= e($f['answer']) ?></p></details><?php endforeach; ?></div>
+    </div>
+    <aside class="contact-panel-v5">
+      <div class="home-kicker is-light">Proje Görüşmesi</div>
+      <h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3>
+      <p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p>
+      <form class="home-form form-v5" data-home-form data-whatsapp="<?= e($wa) ?>">
+        <div class="home-field"><label>Ad Soyad<input name="name" required></label></div>
+        <div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div>
+        <div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div>
+        <div class="home-field"><label>Konum<input name="location"></label></div>
+        <div class="home-field full"><label>Kısa Proje Bilgisi<textarea name="message"></textarea></label></div>
+        <div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div>
+        <div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div>
+      </form>
+      <div class="contact-links-v5">
+        <a href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg>
+          Hemen ara
+        </a>
+        <a href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, projem hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3A13 13 0 0 0 5 22.9L3.6 29 9.8 27.6A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.7.9.9-3.6-.2-.4A10.6 10.6 0 1 1 16 26.6Z"/></svg>
+          WhatsApp'tan yaz
+        </a>
+      </div>
+    </aside>
+  </div>
+</section>
+<?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
