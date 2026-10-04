@@ -33,7 +33,8 @@ if(form){
       'Konum: '+(location||'-'),
       'Proje Bilgisi: '+(message||'-')
     ];
-    const url='https://wa.me/905000000000?text='+encodeURIComponent(lines.join('\n'));
+    const whatsapp=(form.dataset.whatsapp||'905000000000').replace(/\\D/g,'');
+    const url='https://wa.me/'+whatsapp+'?text='+encodeURIComponent(lines.join('\\n'));
     const note=form.querySelector('[data-form-note]');
     if(note) note.textContent='WhatsApp mesajınız hazırlanıyor...';
     window.open(url,'_blank','noopener');
