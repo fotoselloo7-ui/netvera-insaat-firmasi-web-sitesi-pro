@@ -14,6 +14,11 @@ $socials=[
   ['key'=>'twitter_url','label'=>'X / Twitter','class'=>'twitter'],
   ['key'=>'youtube_url','label'=>'YouTube','class'=>'youtube'],
 ];
+$secPanel=page_section('iletisim','panel');
+$secForm=page_section('iletisim','form');
+$secMap=page_section('iletisim','map');
+$secProcess=page_section('iletisim','process');
+$contactProcess=feature_group('contact_process');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -24,7 +29,7 @@ include __DIR__.'/partials/header.php';
 
 <section class="page-section" id="teklif"><div class="container contact-premium-grid">
   <aside class="contact-panel">
-    <div class="home-kicker">Doğrudan İletişim</div><h2>Doğru bilgiyle başlayalım.</h2><p>İlk görüşme satış konuşması değil; proje kapsamını anlamak için kısa bir ön değerlendirmedir.</p>
+    <div class="home-kicker"><?= e($secPanel['eyebrow']) ?></div><h2><?= e($secPanel['title']) ?></h2><p><?= e($secPanel['body']) ?></p>
     <a class="contact-channel" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>"><i>01</i><span><small>Telefon</small><strong><?= e(setting('phone')) ?></strong></span></a>
     <a class="contact-channel" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener"><i>02</i><span><small>WhatsApp</small><strong>Hızlı proje bilgisi gönderin</strong></span></a>
     <a class="contact-channel" href="mailto:<?= e(setting('email')) ?>"><i>03</i><span><small>E-posta</small><strong><?= e(setting('email')) ?></strong></span></a>
@@ -41,14 +46,14 @@ include __DIR__.'/partials/header.php';
     </div>
   </aside>
   <div class="contact-form-shell">
-    <div class="home-kicker">Proje Formu</div><h2>Bize birkaç net bilgi verin.</h2><p>Form, bilgilerinizi hazır bir WhatsApp mesajına dönüştürür; gereksiz kayıt süreci yok.</p>
+    <div class="home-kicker"><?= e($secForm['eyebrow']) ?></div><h2><?= e($secForm['title']) ?></h2><p><?= e($secForm['body']) ?></p>
     <form class="contact-form-light" data-home-form data-whatsapp="<?= e($wa) ?>">
       <label>Ad Soyad<input name="name" required autocomplete="name"></label>
       <label>Telefon<input name="phone" required autocomplete="tel"></label>
       <label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option><option>Proje Uygulama</option></select></label>
       <label>Konum<input name="location" placeholder="Alanya, Oba, Mahmutlar..."></label>
       <label class="full">Proje Bilgisi<textarea name="message" placeholder="Yaklaşık alan, mevcut proje durumu, hedef tarih veya özellikle konuşmak istediğiniz konu..."></textarea></label>
-      <div class="full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Talep Gönder</button><p class="home-form-note" data-form-note></p></div>
+      <div class="full"><button class="home-btn home-btn-primary" type="submit"><?= e($secForm['button_label'] ?: "WhatsApp'tan Talep Gönder") ?></button><p class="home-form-note" data-form-note></p></div>
     </form>
   </div>
 </div></section>
@@ -57,8 +62,8 @@ include __DIR__.'/partials/header.php';
 <section class="contact-map-section">
   <div class="container">
     <div class="contact-map-head">
-      <div><div class="home-kicker">Konum</div><h2>Bizi haritada görün.</h2></div>
-      <p>Ofis veya proje görüşmesi öncesinde konumumuzu haritadan inceleyebilirsiniz.</p>
+      <div><div class="home-kicker"><?= e($secMap['eyebrow']) ?></div><h2><?= e($secMap['title']) ?></h2></div>
+      <p><?= e($secMap['body']) ?></p>
     </div>
     <div class="contact-map-frame">
       <iframe src="<?= e($mapEmbed) ?>" title="<?= e(setting('site_name','Vera Yapı')) ?> Google Harita konumu" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -68,11 +73,9 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <section class="page-section soft"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Sonraki Adım</div><h2>İlk temastan sonra ne olur?</h2></div><p>Süreci mümkün olduğunca kısa, açık ve karar vermeyi kolaylaştıran bir akışta tutuyoruz.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="contact-expectation">
-    <div><small>01</small><strong>Ön değerlendirme</strong><p>Proje türü, konum ve ihtiyaç çerçevesi netleşir.</p></div>
-    <div><small>02</small><strong>Keşif / teknik görüşme</strong><p>Gerekliyse saha veya proje dokümanı üzerinden detaylandırılır.</p></div>
-    <div><small>03</small><strong>Kapsam & teklif</strong><p>İş kalemleri, yaklaşım ve sonraki adımlar anlaşılır biçimde sunulur.</p></div>
+    <?php foreach($contactProcess as $f): ?><div><small><?= e($f['icon']) ?></small><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></div><?php endforeach; ?>
   </div>
 </div></section>
 </main>
