@@ -51,14 +51,22 @@ jobs:
           sleep 2
       - name: Test dynamic pages
         run: |
-          curl -fsS http://127.0.0.1:8080/ | grep -q "VERA YAPI"
-          curl -fsS http://127.0.0.1:8080/admin/login.php | grep -q "Tekrar hoş geldiniz."
-          curl -fsS "http://127.0.0.1:8080/hizmet/konut-projeleri" | grep -q "Konut Projeleri"
-          curl -fsS "http://127.0.0.1:8080/proje/marina-villa" | grep -q "Marina Villa"
-          curl -fsS http://127.0.0.1:8080/blog | grep -q "Bilgi Merkezi"
-          curl -fsS http://127.0.0.1:8080/bolge/alanya-merkez | grep -q "Alanya Merkez"
-          curl -fsS http://127.0.0.1:8080/sitemap.xml | grep -q "/hizmet/konut-projeleri"
-          curl -fsS http://127.0.0.1:8080/robots.txt | grep -q "Sitemap:"
+          curl -fsS http://127.0.0.1:8080/ -o /tmp/home.html
+          grep -q "VERA YAPI" /tmp/home.html
+          curl -fsS http://127.0.0.1:8080/admin/login.php -o /tmp/admin-login.html
+          grep -q "Tekrar hoş geldiniz." /tmp/admin-login.html
+          curl -fsS "http://127.0.0.1:8080/hizmet/konut-projeleri" -o /tmp/service.html
+          grep -q "Konut Projeleri" /tmp/service.html
+          curl -fsS "http://127.0.0.1:8080/proje/marina-villa" -o /tmp/project.html
+          grep -q "Marina Villa" /tmp/project.html
+          curl -fsS http://127.0.0.1:8080/blog -o /tmp/blog.html
+          grep -q "Bilgi Merkezi" /tmp/blog.html
+          curl -fsS http://127.0.0.1:8080/bolge/alanya-merkez -o /tmp/region.html
+          grep -q "Alanya Merkez" /tmp/region.html
+          curl -fsS http://127.0.0.1:8080/sitemap.xml -o /tmp/sitemap.xml
+          grep -q "/hizmet/konut-projeleri" /tmp/sitemap.xml
+          curl -fsS http://127.0.0.1:8080/robots.txt -o /tmp/robots.txt
+          grep -q "Sitemap:" /tmp/robots.txt
       - name: Show PHP server log on failure
         if: failure()
         run: cat /tmp/netvera-php.log || true
