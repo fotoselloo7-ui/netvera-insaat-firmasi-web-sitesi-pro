@@ -44,6 +44,8 @@ jobs:
         run: mysql -h127.0.0.1 -unetvera -pnetvera netvera_insaat < database.sql
       - name: Database and admin smoke test
         run: php tests/smoke.php
+      - name: Static preview link check
+        run: php tests/static-links.php
       - name: Start PHP server
         run: |
           php -S 127.0.0.1:8080 router.php > /tmp/netvera-php.log 2>&1 &
