@@ -98,8 +98,10 @@ CREATE TABLE IF NOT EXISTS testimonials (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(160) NOT NULL,
   role VARCHAR(190) NULL,
+  profile_image VARCHAR(500) NULL,
   quote_text TEXT NOT NULL,
   rating TINYINT UNSIGNED NOT NULL DEFAULT 5,
+  star_color VARCHAR(16) NOT NULL DEFAULT '#FABB05',
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   sort_order INT NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -218,11 +220,11 @@ INSERT IGNORE INTO home_features (id,group_key,title,body,icon,is_active,sort_or
 (10,'trust','İş Güvenliği','Saha güvenliği ve disiplin','',1,20),
 (11,'trust','Teknik Ekip','Mühendislik ve uygulama koordinasyonu','',1,30);
 
-INSERT IGNORE INTO testimonials (id,name,role,quote_text,rating,is_active,sort_order) VALUES
-(1,'Mehmet K.','Villa Projesi • Alanya','Proje boyunca maliyet ve uygulama konusunda düzenli bilgi aldık. Sürecin ne durumda olduğunu hep biliyorduk.',5,1,10),
-(2,'Selin A.','Renovasyon • Mahmutlar','İlk keşiften teslimata kadar tek ekip ile ilerlemek bizim için büyük kolaylık oldu. Detaylara gerçekten önem verildi.',5,1,20),
-(3,'Ahmet Y.','Ticari Yapı • Antalya','Teklifte konuştuğumuz kapsamla sahadaki uygulamanın uyumlu olması güven verdi. İletişim tarafı da hızlıydı.',5,1,30),
-(4,'Zeynep D.','Konut Projesi • Oba','Planlama baştan netti; saha ilerleyişini düzenli takip ettik ve teslim sürecinde sürpriz yaşamadık.',5,1,40);
+INSERT IGNORE INTO testimonials (id,name,role,profile_image,quote_text,rating,star_color,is_active,sort_order) VALUES
+(1,'Mehmet K.','Villa Projesi • Alanya',NULL,'Proje boyunca maliyet ve uygulama konusunda düzenli bilgi aldık. Sürecin ne durumda olduğunu hep biliyorduk.',5,'#FABB05',1,10),
+(2,'Selin A.','Renovasyon • Mahmutlar',NULL,'İlk keşiften teslimata kadar tek ekip ile ilerlemek bizim için büyük kolaylık oldu. Detaylara gerçekten önem verildi.',5,'#FABB05',1,20),
+(3,'Ahmet Y.','Ticari Yapı • Antalya',NULL,'Teklifte konuştuğumuz kapsamla sahadaki uygulamanın uyumlu olması güven verdi. İletişim tarafı da hızlıydı.',5,'#FABB05',1,30),
+(4,'Zeynep D.','Konut Projesi • Oba',NULL,'Planlama baştan netti; saha ilerleyişini düzenli takip ettik ve teslim sürecinde sürpriz yaşamadık.',5,'#FABB05',1,40);
 
 INSERT IGNORE INTO service_areas (id,title,services_text,is_active,sort_order) VALUES
 (1,'Alanya Merkez','Konut • Ticari • Renovasyon',1,10),(2,'Oba','Konut • Villa',1,20),(3,'Kestel','Villa • Konut',1,30),(4,'Mahmutlar','Konut • Renovasyon',1,40),(5,'Kargıcak','Villa • Özel proje',1,50),(6,'Antalya','Ticari • Taahhüt',1,60);
