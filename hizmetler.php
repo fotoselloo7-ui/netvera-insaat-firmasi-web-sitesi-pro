@@ -24,7 +24,7 @@ include __DIR__.'/partials/header.php';
   <div class="home-kicker"><?= e($page['eyebrow']) ?></div><h1><?= e($page['title']) ?></h1><p><?= e($page['intro']) ?></p>
 </div></section>
 
-<section class="page-section"><div class="container">
+<?php if((int)$secDirectory['is_active']===1): ?><section class="page-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secDirectory['eyebrow']) ?></div><h2><?= e($secDirectory['title']) ?></h2></div><p><?= e($secDirectory['body']) ?></p></div>
   <div class="service-directory">
     <?php foreach($items as $i=>$s): ?><a class="service-directory-row" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
@@ -34,7 +34,7 @@ include __DIR__.'/partials/header.php';
       <span class="service-arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M6 10h8M11 7l3 3-3 3"/></svg></span>
     </a><?php endforeach; ?>
   </div>
-</div></section>
+</div></section><?php endif; ?>
 
 <section class="page-section soft"><div class="container">
   <div class="fact-ribbon">
@@ -42,16 +42,16 @@ include __DIR__.'/partials/header.php';
   </div>
 </div></section>
 
-<section class="page-section service-method-section"><div class="container">
+<?php if((int)$secMethod['is_active']===1): ?><section class="page-section service-method-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secMethod['eyebrow']) ?></div><h2><?= e($secMethod['title']) ?></h2></div><p><?= e($secMethod['body']) ?></p></div>
   <div class="service-method-grid">
     <?php foreach($serviceMethods as $f): ?><article class="service-method-card"><span><?= e($f['icon']) ?></span><div><h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p></div><?php if(!empty($f['link_url'])): ?><a href="<?= e(app_url($f['link_url'])) ?>"><?= e($f['link_label'] ?: 'İncele') ?> <b>›</b></a><?php endif; ?></article><?php endforeach; ?>
   </div>
-</div></section>
+</div></section><?php endif; ?>
 
-<section class="page-section"><div class="container"><div class="inline-editorial-cta">
+<?php if((int)$secCta['is_active']===1): ?><section class="page-section"><div class="container"><div class="inline-editorial-cta">
   <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
   <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Detaylı Bilgi Al') ?></a>
-</div></div></section>
+</div></div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
