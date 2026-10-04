@@ -22,7 +22,8 @@ $sliders=rows('sliders');
 $stats=rows('home_stats');
 $services=rows('services','is_active=1 AND is_featured=1',[],'sort_order ASC,id ASC');
 $projects=rows('projects','is_active=1 AND is_featured=1',[],'sort_order ASC,id ASC');
-$testimonials=rows('testimonials');
+$testimonials=rows('testimonials','is_active=1',[],'sort_order ASC,id ASC');
+$testimonialLimit=max(1,min(100,(int)setting('home_testimonials_limit','8')));
 $areas=rows('service_areas');
 $faqs=rows('faqs');
 $posts=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
@@ -203,21 +204,22 @@ include __DIR__.'/partials/header.php';
         <div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div>
         <p><?= e($testimonialSec['body']) ?></p>
       </div>
-      <?php
-      $tts=array_slice($testimonials,0,4);
-      if(count($tts)<4){
-        $tts[]=['name'=>'Zeynep D.','role'=>'Konut Projesi • Oba','quote_text'=>'Planlama baştan netti; saha ilerleyişini düzenli takip ettik ve teslim sürecinde sürpriz yaşamadık.'];
-      }
-      ?>
+      <?php $tts=array_slice($testimonials,0,$testimonialLimit); ?>
       <?php if($tts): ?>
-      <div class="testimonial-cards-v7" aria-label="Müşteri yorumları">
-        <?php foreach($tts as $t): ?>
-          <blockquote class="testimonial-card-v7">
-            <span class="testimonial-quote-v7" aria-hidden="true">“</span>
-            <p><?= e($t['quote_text']) ?></p>
-            <footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer>
-          </blockquote>
-        <?php endforeach; ?>
+      <div class="testimonial-marquee-v8" aria-label="Müşteri yorumları" style="--testimonial-duration:<?= max(26,count($tts)*7) ?>s">
+        <div class="testimonial-track-v8">
+          <?php for($loop=0;$loop<2;$loop++): ?>
+          <div class="testimonial-group-v8"<?= $loop===1?' aria-hidden="true"':'' ?>>
+            <?php foreach($tts as $t): ?>
+              <blockquote class="testimonial-card-v8">
+                <span class="testimonial-quote-v8" aria-hidden="true">“</span>
+                <p><?= e($t['quote_text']) ?></p>
+                <footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer>
+              </blockquote>
+            <?php endforeach; ?>
+          </div>
+          <?php endfor; ?>
+        </div>
       </div>
       <?php endif; ?>
     <?php endif; ?>
