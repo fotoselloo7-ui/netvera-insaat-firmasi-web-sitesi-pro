@@ -52,7 +52,7 @@ jobs:
       - name: Test dynamic pages
         run: |
           curl -fsS http://127.0.0.1:8080/ | grep -q "VERA YAPI"
-          curl -fsS http://127.0.0.1:8080/admin/login.php | grep -q "NetVera Yönetim Paneli"
+          curl -fsS http://127.0.0.1:8080/admin/login.php | grep -q "Tekrar hoş geldiniz."
           curl -fsS "http://127.0.0.1:8080/hizmet.php?slug=konut-projeleri" | grep -q "Konut Projeleri"
           curl -fsS "http://127.0.0.1:8080/proje.php?slug=marina-villa" | grep -q "Marina Villa"
           curl -fsS http://127.0.0.1:8080/blog.php | grep -q "Bilgi Merkezi"
