@@ -8,6 +8,7 @@ $ogTitle=$page['og_title'] ?: $metaTitle;$ogDescription=$page['og_description'] 
 $breadcrumbs=[['name'=>'Ana Sayfa','url'=>app_url()],['name'=>'Projeler','url'=>$canonical]];
 $pageSchema=['@type'=>seo_clean_schema_type($page['schema_type']??'','CollectionPage'),'@id'=>$canonical.'#webpage','url'=>$canonical,'name'=>$page['title'],'description'=>$page['aio_summary'] ?: $metaDescription,'about'=>['@id'=>rtrim(app_url(),'/').'#business']];
 $items=rows('projects');$featured=$items[0]??null;$rest=array_slice($items,1);
+$secCta=page_section('projeler','cta');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -29,8 +30,8 @@ include __DIR__.'/partials/header.php';
 </div></section>
 
 <section class="page-section soft"><div class="container"><div class="inline-editorial-cta">
-  <div><div class="home-kicker">Yeni Proje</div><h3>Portföyde görmek istediğiniz bir sonraki yapı sizin projeniz olabilir.</h3><p>İlk görüşmede kapsam, konum, hedef takvim ve uygulama modelini birlikte değerlendirelim.</p></div>
-  <a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Projeyi Değerlendir</a>
+  <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
+  <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Projeyi Değerlendir') ?></a>
 </div></div></section>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
