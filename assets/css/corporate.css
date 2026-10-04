@@ -462,3 +462,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .page-cta-actions{display:grid;grid-template-columns:1fr;width:100%}
   .page-cta-actions .home-btn{width:100%}
 }
+
+
+/* Local SEO region links */
+.area-list a{display:block;padding:12px 0;border-bottom:1px solid #cdd7dd;transition:padding .2s ease,background .2s ease}
+.area-list a:nth-child(odd){padding-right:24px}
+.area-list a:nth-child(even){padding-left:24px;border-left:1px solid #cdd7dd}
+.area-list a:hover{padding-top:14px;padding-bottom:10px}
+.area-list a:hover strong{color:var(--copper)}
