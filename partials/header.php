@@ -5,6 +5,14 @@ $phone = setting('phone', '+90 500 000 00 00');
 $email = setting('email', 'info@example.com');
 $address = setting('address', 'Alanya / Antalya');
 $hours = setting('working_hours', 'Pzt–Cmt 08:30–18:30');
+$waMenu = preg_replace('/\D+/', '', setting('whatsapp', $phone));
+$menuSocials = [
+    ['label'=>'Instagram','short'=>'IG','class'=>'instagram','url'=>trim(setting('instagram_url',''))],
+    ['label'=>'Facebook','short'=>'f','class'=>'facebook','url'=>trim(setting('facebook_url',''))],
+    ['label'=>'X / Twitter','short'=>'X','class'=>'twitter','url'=>trim(setting('twitter_url',''))],
+    ['label'=>'YouTube','short'=>'▶','class'=>'youtube','url'=>trim(setting('youtube_url',''))],
+];
+$hasMenuSocials = count(array_filter($menuSocials, fn($s)=>$s['url']!=='')) > 0;
 
 $resolvedTitle = trim((string)($metaTitle ?? setting('seo_home_title',$siteName)));
 $resolvedDescription = trim((string)($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')));
@@ -55,8 +63,8 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <?php if(!empty($articleModified)): ?><meta property="article:modified_time" content="<?= e($articleModified) ?>"><?php endif; ?>
 <meta name="theme-color" content="#102c40">
 <?php if($schemaJson): ?><script type="application/ld+json"><?= $schemaJson ?></script><?php endif; ?>
-<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=18">
-<link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=18">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=19">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=19">
 <?= $extraHead ?? '' ?>
 </head>
 <body>
@@ -72,6 +80,21 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <a href="<?= e(app_url('blog')) ?>"<?= $active==='blog'?' aria-current="page"':'' ?>>Blog</a>
 <a href="<?= e(app_url('iletisim')) ?>"<?= $active==='contact'?' aria-current="page"':'' ?>>İletişim</a>
 <a class="home-nav-cta" href="<?= e(app_url('#teklif')) ?>">Ücretsiz Keşif Talebi</a>
+<div class="home-menu-mobile-extra" aria-label="Mobil hızlı erişim">
+  <div class="home-menu-mobile-label">Hızlı İletişim</div>
+  <div class="home-menu-mobile-contact">
+    <a href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>"><span>☎</span>Ara</a>
+    <a class="is-wa" href="https://wa.me/<?= e($waMenu) ?>" target="_blank" rel="noopener"><span>◉</span>WhatsApp</a>
+  </div>
+  <?php if($hasMenuSocials): ?>
+  <div class="home-menu-mobile-label">Sosyal Medya</div>
+  <div class="home-menu-mobile-socials">
+    <?php foreach($menuSocials as $social): if($social['url']==='') continue; ?>
+      <a class="is-<?= e($social['class']) ?>" href="<?= e($social['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>"><b><?= e($social['short']) ?></b><span><?= e($social['label']) ?></span></a>
+    <?php endforeach; ?>
+  </div>
+  <?php endif; ?>
+</div>
 </nav>
 <button class="home-menu-btn" type="button" aria-label="Menüyü aç" aria-expanded="false">☰</button>
 </div></header>
