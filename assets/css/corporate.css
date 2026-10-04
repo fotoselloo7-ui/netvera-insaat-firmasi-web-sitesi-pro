@@ -3683,3 +3683,98 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   column-gap:0!important;
   padding-left:0!important;
 }
+
+
+/* ==========================================================
+   V17 — premium interaction language
+   ========================================================== */
+.home-btn,
+.home-nav-cta,
+.micro-link-v6,
+.text-link-v5,
+.service-card-arrow-v7,
+.region-links-v6 b{
+  transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease,filter .2s ease!important;
+}
+@media(hover:hover) and (pointer:fine){
+  .home-btn:hover,
+  .home-nav-cta:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(16,44,64,.13);
+  }
+  .home-btn-primary:hover,
+  .home-nav-cta:hover{
+    background:var(--copper-dark)!important;
+    filter:saturate(1.04);
+  }
+  .home-btn-secondary:hover{
+    background:#f9fbfc!important;
+    border-color:#9eafb9!important;
+  }
+  .micro-link-v6:hover,
+  .text-link-v5:hover{
+    transform:translateY(-1px);
+    border-color:rgba(201,121,59,.48)!important;
+    background:#fbf5ef!important;
+    color:var(--copper-dark)!important;
+    box-shadow:0 7px 18px rgba(16,44,64,.06);
+  }
+  .service-card-v7:hover .service-card-arrow-v7{
+    background:var(--copper)!important;
+    color:#fff!important;
+    transform:translateX(2px);
+    box-shadow:0 8px 18px rgba(201,121,59,.18);
+  }
+
+  .proof-v5-stat,
+  .trust-list-v6>div,
+  .region-links-v6 a,
+  .about-principle,
+  .why-row-v5{
+    transition:background .22s ease,transform .22s ease,padding .22s ease,border-color .22s ease,box-shadow .22s ease;
+  }
+  .proof-v5-stat:hover{
+    background:#fffaf5!important;
+    box-shadow:inset 0 -2px 0 var(--copper);
+  }
+  .proof-v5-stat:hover strong{color:var(--copper-dark)!important}
+
+  .trust-list-v6>div:hover{
+    background:#fbf7f2;
+    padding-left:8px;
+    padding-right:8px;
+  }
+  .trust-list-v6>div:hover>span{
+    display:grid;
+    place-items:center;
+    width:26px;
+    height:22px;
+    padding:0;
+    border-radius:5px;
+    background:var(--copper);
+    color:#fff;
+  }
+  .region-links-v6 a:hover{
+    background:#fbf7f2;
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+  .region-links-v6 a:hover b{
+    background:var(--copper);
+    color:#fff;
+    transform:translateX(2px);
+  }
+  .about-principle:hover,
+  .why-row-v5:hover{
+    background:rgba(201,121,59,.055);
+    transform:translateX(3px);
+  }
+}
+@media(hover:none){
+  .home-btn:active,
+  .micro-link-v6:active,
+  .text-link-v5:active,
+  .service-card-arrow-v7:active{
+    transform:scale(.98)!important;
+  }
+}
