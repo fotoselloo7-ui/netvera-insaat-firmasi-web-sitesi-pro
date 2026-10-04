@@ -35,3 +35,4 @@ $GLOBALS['pdo'] = $pdo;
 $GLOBALS['app_config'] = $config;
 
 ensure_seo_schema();
+ensure_testimonial_schema();
