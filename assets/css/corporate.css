@@ -3640,3 +3640,31 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     border-radius:8px!important;
   }
 }
+
+
+/* ==========================================================
+   V15 — remove decorative heading dashes sitewide
+   ========================================================== */
+.home-eyebrow:before,
+.home-eyebrow::before,
+.home-kicker:before,
+.home-kicker::before,
+.detail-eyebrow-line:before,
+.detail-eyebrow-line::before{
+  content:none!important;
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+}
+
+.home-eyebrow,
+.home-kicker,
+.detail-eyebrow-line{
+  gap:0!important;
+  padding-left:0!important;
+}
