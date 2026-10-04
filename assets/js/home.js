@@ -2,14 +2,26 @@ const menuBtn=document.querySelector('.home-menu-btn');
 const menu=document.querySelector('.home-menu');
 
 if(menuBtn&&menu){
-  menuBtn.addEventListener('click',()=>{
+  const closeMenu=()=>{
+    menu.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  };
+  menuBtn.setAttribute('aria-expanded','false');
+  menuBtn.addEventListener('click',e=>{
+    e.stopPropagation();
     const open=menu.classList.toggle('open');
     menuBtn.setAttribute('aria-expanded',String(open));
   });
-  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    menu.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded','false');
-  }));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+  document.addEventListener('click',e=>{
+    if(menu.classList.contains('open')&&!menu.contains(e.target)&&!menuBtn.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') closeMenu();
+  });
+  window.addEventListener('resize',()=>{
+    if(window.innerWidth>980) closeMenu();
+  },{passive:true});
 }
 
 document.querySelectorAll('[data-year]').forEach(e=>e.textContent=new Date().getFullYear());
