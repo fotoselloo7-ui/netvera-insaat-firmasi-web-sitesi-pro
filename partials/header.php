@@ -1,8 +1,8 @@
 <?php
 $active = $active ?? '';
 $siteName = setting('site_name', 'Vera Yapı');
-$logoImage = trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.png';
-$faviconImage = trim(setting('favicon_image','')) ?: 'assets/brand/netvera-mark.png';
+$logoImage = trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.svg';
+$faviconImage = trim(setting('favicon_image','')) ?: 'assets/brand/netvera-mark.svg';
 $phone = setting('phone', '+90 500 000 00 00');
 $email = setting('email', 'info@example.com');
 $address = setting('address', 'Alanya / Antalya');
@@ -68,9 +68,9 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=23">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=20">
 <?php if($faviconImage!==''): ?>
-<link rel="icon" type="image/png" sizes="32x32" href="<?= e(media_url($faviconImage)) ?>">
+<link rel="icon" type="image/svg+xml" href="<?= e(media_url($faviconImage)) ?>">
 <link rel="shortcut icon" href="<?= e(media_url($faviconImage)) ?>">
-<link rel="apple-touch-icon" href="<?= e(media_url(setting('apple_touch_icon','assets/brand/netvera-mark.png'))) ?>">
+<link rel="apple-touch-icon" href="<?= e(media_url(setting('apple_touch_icon','assets/brand/netvera-mark.svg'))) ?>">
 <?php endif; ?>
 <?= $extraHead ?? '' ?>
 </head>
