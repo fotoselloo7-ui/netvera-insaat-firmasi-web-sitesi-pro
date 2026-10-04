@@ -76,7 +76,12 @@ $settingsFields = [
     'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
     'working_hours'=>'Çalışma Saatleri','meta_description'=>'Genel Meta Açıklama','footer_text'=>'Footer Açıklaması',
     'about_image'=>'Hakkımızda Görsel URL','why_image'=>'Neden Biz Görsel URL',
-    'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması'
+    'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması',
+    'quick_cta_1_title'=>'Hızlı CTA 1 Başlık','quick_cta_1_body'=>'Hızlı CTA 1 Açıklama',
+    'quick_cta_1_primary_label'=>'Hızlı CTA 1 Ana Buton','quick_cta_1_primary_url'=>'Hızlı CTA 1 Ana Link',
+    'quick_cta_1_secondary_label'=>'Hızlı CTA 1 İkinci Buton','quick_cta_1_whatsapp_text'=>'Hızlı CTA 1 WhatsApp Mesajı',
+    'quick_cta_2_title'=>'Hızlı CTA 2 Başlık','quick_cta_2_body'=>'Hızlı CTA 2 Açıklama',
+    'quick_cta_2_primary_label'=>'Hızlı CTA 2 Ana Buton','quick_cta_2_secondary_label'=>'Hızlı CTA 2 İkinci Buton'
 ];
 
 $module = $_GET['module'] ?? 'dashboard';
