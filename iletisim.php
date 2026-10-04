@@ -7,6 +7,13 @@ $ogTitle=$page['og_title'] ?: $metaTitle;$ogDescription=$page['og_description'] 
 $breadcrumbs=[['name'=>'Ana Sayfa','url'=>app_url()],['name'=>'İletişim','url'=>$canonical]];
 $pageSchema=['@type'=>seo_clean_schema_type($page['schema_type']??'','ContactPage'),'@id'=>$canonical.'#webpage','url'=>$canonical,'name'=>$page['title'],'description'=>$page['aio_summary'] ?: $metaDescription,'about'=>['@id'=>rtrim(app_url(),'/').'#business'],'inLanguage'=>'tr-TR'];
 $wa=preg_replace('/\D+/','',setting('whatsapp',setting('phone')));
+$mapEmbed=google_maps_embed_url(setting('google_maps_url',''),setting('address','Alanya / Antalya'));
+$socials=[
+  ['key'=>'instagram_url','label'=>'Instagram','class'=>'instagram'],
+  ['key'=>'facebook_url','label'=>'Facebook','class'=>'facebook'],
+  ['key'=>'twitter_url','label'=>'X / Twitter','class'=>'twitter'],
+  ['key'=>'youtube_url','label'=>'YouTube','class'=>'youtube'],
+];
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -22,6 +29,16 @@ include __DIR__.'/partials/header.php';
     <a class="contact-channel" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener"><i>02</i><span><small>WhatsApp</small><strong>Hızlı proje bilgisi gönderin</strong></span></a>
     <a class="contact-channel" href="mailto:<?= e(setting('email')) ?>"><i>03</i><span><small>E-posta</small><strong><?= e(setting('email')) ?></strong></span></a>
     <div class="contact-channel"><i>04</i><span><small>Konum</small><strong><?= e(setting('address')) ?></strong></span></div>
+    <div class="contact-social-block">
+      <span class="contact-social-label">Sosyal Medya</span>
+      <div class="contact-socials">
+        <?php foreach($socials as $social): $url=trim(setting($social['key'],'')); ?>
+          <?php if($url!==''): ?><a class="contact-social-btn is-<?= e($social['class']) ?>" href="<?= e($url) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>">
+            <span><?= e($social['label']) ?></span>
+          </a><?php else: ?><span class="contact-social-btn is-<?= e($social['class']) ?> is-disabled" aria-label="<?= e($social['label']) ?> bağlantısı admin panelden eklenebilir"><span><?= e($social['label']) ?></span></span><?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+    </div>
   </aside>
   <div class="contact-form-shell">
     <div class="home-kicker">Proje Formu</div><h2>Bize birkaç net bilgi verin.</h2><p>Form, bilgilerinizi hazır bir WhatsApp mesajına dönüştürür; gereksiz kayıt süreci yok.</p>
@@ -35,6 +52,20 @@ include __DIR__.'/partials/header.php';
     </form>
   </div>
 </div></section>
+
+<?php if($mapEmbed!==''): ?>
+<section class="contact-map-section">
+  <div class="container">
+    <div class="contact-map-head">
+      <div><div class="home-kicker">Konum</div><h2>Bizi haritada görün.</h2></div>
+      <p>Ofis veya proje görüşmesi öncesinde konumumuzu haritadan inceleyebilirsiniz.</p>
+    </div>
+    <div class="contact-map-frame">
+      <iframe src="<?= e($mapEmbed) ?>" title="<?= e(setting('site_name','Vera Yapı')) ?> Google Harita konumu" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker">Sonraki Adım</div><h2>İlk temastan sonra ne olur?</h2></div><p>Süreci mümkün olduğunca kısa, açık ve karar vermeyi kolaylaştıran bir akışta tutuyoruz.</p></div>
