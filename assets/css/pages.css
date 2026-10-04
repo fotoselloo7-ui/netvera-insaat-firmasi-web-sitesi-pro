@@ -2809,3 +2809,152 @@
   .service-method-card p{font-size:8.5px}
   .contact-map-frame{height:280px}
 }
+
+
+/* ==========================================================
+   V18 — screenshot QA / number badge collision fixes
+   ========================================================== */
+
+/* Four-step ribbon: remove decorative dot that covered 01/02/03/04 */
+.fact-ribbon{
+  overflow:visible!important;
+  gap:12px!important;
+}
+.fact-ribbon>div{
+  min-width:0!important;
+  min-height:108px!important;
+  padding:18px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  border-radius:10px!important;
+  overflow:visible!important;
+}
+.fact-ribbon>div:before,
+.fact-ribbon>div::before{
+  content:none!important;
+  display:none!important;
+}
+.fact-ribbon strong{
+  position:static!important;
+  min-width:42px!important;
+  height:30px!important;
+  padding:0 9px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0 0 10px!important;
+  border:1px solid #ead7c6!important;
+  border-radius:7px!important;
+  background:#f8efe7!important;
+  color:var(--ip-copper-dark)!important;
+  font-size:15px!important;
+  line-height:1!important;
+}
+.fact-ribbon span{
+  display:block!important;
+  color:var(--ip-muted)!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+}
+@media(hover:hover) and (pointer:fine){
+  .fact-ribbon>div:hover{
+    background:#fffaf5!important;
+    border-color:rgba(201,121,59,.34)!important;
+    transform:translateY(-3px)!important;
+  }
+  .fact-ribbon>div:hover strong{
+    background:var(--ip-copper)!important;
+    border-color:var(--ip-copper)!important;
+    color:#fff!important;
+  }
+}
+
+/* Contact expectation: number stays in normal flow, never overlays title */
+.contact-expectation{
+  gap:14px!important;
+}
+.contact-expectation>div{
+  min-width:0!important;
+  min-height:160px!important;
+  padding:20px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  border-radius:10px!important;
+  overflow:visible!important;
+}
+.contact-expectation>div small,
+.contact-expectation small{
+  position:static!important;
+  left:auto!important;
+  top:auto!important;
+  width:auto!important;
+  min-width:34px!important;
+  height:27px!important;
+  padding:0 8px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0 0 13px!important;
+  border:1px solid #ead5c3!important;
+  border-radius:7px!important;
+  background:#f8efe7!important;
+  color:var(--ip-copper-dark)!important;
+  font-size:9px!important;
+  line-height:1!important;
+}
+.contact-expectation strong{
+  display:block!important;
+  margin:0 0 7px!important;
+  color:var(--ip-ink)!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+.contact-expectation p{
+  margin:0!important;
+  color:var(--ip-muted)!important;
+  font-size:10px!important;
+  line-height:1.6!important;
+}
+@media(hover:hover) and (pointer:fine){
+  .contact-expectation>div:hover{
+    background:#fffaf5!important;
+    border-color:rgba(201,121,59,.34)!important;
+  }
+  .contact-expectation>div:hover small{
+    background:var(--ip-copper)!important;
+    border-color:var(--ip-copper)!important;
+    color:#fff!important;
+  }
+}
+
+/* Keep cards away from their own border during hover */
+.project-facts>div,
+.principle-card,
+.scope-card,
+.region-card,
+.service-method-card{
+  overflow:hidden!important;
+}
+
+@media(max-width:620px){
+  .fact-ribbon>div{
+    min-height:94px!important;
+    padding:14px!important;
+  }
+  .fact-ribbon strong{
+    min-width:38px!important;
+    height:27px!important;
+    font-size:13px!important;
+    margin-bottom:8px!important;
+  }
+  .contact-expectation{
+    grid-template-columns:1fr!important;
+  }
+  .contact-expectation>div{
+    min-height:0!important;
+    padding:17px!important;
+  }
+}
