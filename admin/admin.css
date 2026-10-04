@@ -469,3 +469,18 @@ body{font-size:15px}
   color:#16384f;
   font-weight:700;
 }
+
+
+/* testimonial color picker */
+.admin-color-input{
+  width:64px!important;
+  min-width:64px;
+  height:42px!important;
+  padding:4px!important;
+  border-radius:9px!important;
+  cursor:pointer;
+  background:#fff;
+}
+.admin-color-input::-webkit-color-swatch-wrapper{padding:2px}
+.admin-color-input::-webkit-color-swatch{border:0;border-radius:6px}
+.admin-color-input::-moz-color-swatch{border:0;border-radius:6px}
