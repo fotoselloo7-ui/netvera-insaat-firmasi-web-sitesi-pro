@@ -24,6 +24,134 @@ function ensure_testimonial_schema(): void {
 }
 
 
+
+function ensure_content_management_schema(): void {
+    static $done=false;
+    if($done) return;
+    $done=true;
+
+    try {
+        $pdo=db();
+        $pdo->exec("CREATE TABLE IF NOT EXISTS page_sections (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            page_key VARCHAR(80) NOT NULL,
+            section_key VARCHAR(80) NOT NULL,
+            eyebrow VARCHAR(190) NULL,
+            title VARCHAR(255) NULL,
+            body TEXT NULL,
+            secondary_text TEXT NULL,
+            image VARCHAR(500) NULL,
+            button_label VARCHAR(120) NULL,
+            button_url VARCHAR(500) NULL,
+            is_active TINYINT(1) NOT NULL DEFAULT 1,
+            sort_order INT NOT NULL DEFAULT 0,
+            UNIQUE KEY uq_page_section (page_key,section_key)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $featureExists=$pdo->query("SHOW TABLES LIKE 'home_features'")->fetchColumn();
+        if($featureExists){
+            $featureCols=[];
+            foreach($pdo->query("SHOW COLUMNS FROM home_features")->fetchAll() as $col) $featureCols[(string)$col['Field']]=true;
+            if(!isset($featureCols['link_label'])) $pdo->exec("ALTER TABLE home_features ADD COLUMN link_label VARCHAR(120) NULL AFTER icon");
+            if(!isset($featureCols['link_url'])) $pdo->exec("ALTER TABLE home_features ADD COLUMN link_url VARCHAR(500) NULL AFTER link_label");
+        }
+
+        $sections=[
+            ['hakkimizda','editorial','Nasıl Çalışıyoruz?','Gösterişten önce düzen, vaatten önce süreç.','Bizim için premium hizmet; daha fazla söz vermek değil, daha az belirsizlik üretmektir. Bütçe, takvim, malzeme ve uygulama kararlarının izlenebilir olması bu yüzden çalışma modelimizin merkezindedir.','İyi bir yapı yalnızca malzeme ve işçilikten değil; doğru kararların doğru sırayla alınmasından oluşur.','','',10],
+            ['hakkimizda','principles','Çalışma Prensipleri','Projeyi güçlü kılan görünmeyen disiplin.','İnşaat sürecinde güven; yalnızca sonuçtan değil, kararların nasıl alındığından doğar.','','','',20],
+            ['hakkimizda','process','Proje Akışı','İlk görüşmeden teslim anına kadar tek ritim.','Müşteri hangi aşamada olduğumuzu, sıradaki kararın ne olduğunu ve kimden sorumlu olduğunu bilir.','','','',30],
+            ['hakkimizda','cta','İlk Değerlendirme','Projenizi masaya yatırmadan fiyat konuşmayalım.','Konumu, yaklaşık alanı ve hedefinizi paylaşın; önce doğru kapsamı birlikte netleştirelim.','','','Projeyi Konuşalım','iletisim',40],
+
+            ['hizmetler','directory','Kapsamı Netleştirin','Hizmet seçmekten önce ihtiyacı doğru tanımlayın.','Her proje aynı değildir. Yapı tipi, mevcut proje durumu, hedef takvim ve uygulama kapsamına göre doğru çalışma modeli değişir.','','','',10],
+            ['hizmetler','method','Çalışma Modeli','Projenin bulunduğu aşamaya göre doğru yerden başlarız.','Hazır projeniz olabilir, yalnızca arsanız olabilir veya mevcut yapınızı yenilemek isteyebilirsiniz. Süreci ihtiyaçtan başlatırız.','','','',20],
+            ['hizmetler','cta','Kararsız mısınız?','Hangi hizmetin projenize uyduğunu birlikte belirleyelim.','Kısa proje bilgisini gönderin; doğru hizmet modelini ve sonraki adımı netleştirelim.','','','Detaylı Bilgi Al','iletisim',30],
+
+            ['projeler','cta','Yeni Proje','Portföyde görmek istediğiniz bir sonraki yapı sizin projeniz olabilir.','İlk görüşmede kapsam, konum, hedef takvim ve uygulama modelini birlikte değerlendirelim.','','','Projeyi Değerlendir','iletisim',10],
+
+            ['blog','more','Diğer Yazılar','Karar vermeden önce bilmeniz gerekenler.','','','','',10],
+            ['blog','cta','Sorunuz Yazıda Yoksa','Projenize özel soruyu doğrudan sorun.','Genel bilgi yerine kendi proje koşullarınıza göre kısa bir ön değerlendirme alın.','','','Uzmanla Görüşün','iletisim',20],
+
+            ['iletisim','panel','Doğrudan İletişim','Doğru bilgiyle başlayalım.','İlk görüşme satış konuşması değil; proje kapsamını anlamak için kısa bir ön değerlendirmedir.','','','',10],
+            ['iletisim','form','Proje Formu','Bize birkaç net bilgi verin.','Form, bilgilerinizi hazır bir WhatsApp mesajına dönüştürür; gereksiz kayıt süreci yok.','','','WhatsApp’tan Talep Gönder','',20],
+            ['iletisim','map','Konum','Bizi haritada görün.','Ofis veya proje görüşmesi öncesinde konumumuzu haritadan inceleyebilirsiniz.','','','',30],
+            ['iletisim','process','Sonraki Adım','İlk temastan sonra ne olur?','Süreci mümkün olduğunca kısa, açık ve karar vermeyi kolaylaştıran bir akışta tutuyoruz.','','','',40],
+
+            ['bolgeler','local','Yerel Uygulama','Aynı hizmet, her bölgede aynı saha koşulu demek değildir.','Ulaşım, iklim, arsa yapısı ve proje tipi uygulama kararlarını etkiler. Bölge sayfalarında kapsamı yerel bağlamıyla anlatıyoruz.','','','',10],
+            ['bolgeler','cta','Bölgeniz Listede Yoksa','Proje kapsamına göre çevre bölgeleri de değerlendirebiliriz.','Konumu paylaşın; ulaşım, saha şartları ve proje ölçeğine göre birlikte bakalım.','','','Konumu Sorun','iletisim',20],
+
+            ['hizmet-detay','scope','','Bu hizmette neyi birlikte yönetiyoruz?','','','','',10],
+            ['hizmet-detay','proof','Karar Prensibi','Önce kapsam, sonra fiyat.','Sağlıklı teklif; yapı tipi, proje durumu, konum, hedef kalite ve uygulama kapsamı netleştiğinde anlamlı hale gelir.','','','',20],
+            ['hizmet-detay','process','Uygulama Akışı','Sürecin her aşamasında sıradaki adım belli.','Hizmet türü değişse de çalışma disiplinini aynı tutuyoruz.','','','',30],
+            ['hizmet-detay','projects','Proje Kanıtı','Uygulama yaklaşımını projelerde görün.','','','','Tüm Projeler','projeler',40],
+            ['hizmet-detay','aside','','İlk değerlendirme','Konum, yaklaşık alan ve mevcut proje durumunu paylaşın; doğru çalışma modelini birlikte belirleyelim.','','','Detaylı Bilgi Al','iletisim',50],
+
+            ['proje-detay','story','Case Study','Projeyi yalnız göstermiyoruz; nasıl düşündüğümüzü de anlatıyoruz.','','','','',10],
+            ['proje-detay','approach','','Uygulama yaklaşımı','Planlama kararları, malzeme seçimi, saha koordinasyonu ve bitiş detaylarını birbirinden kopuk iş kalemleri olarak değil, aynı sonucun parçaları olarak ele aldık.','','','',20],
+            ['proje-detay','quality','','Kaliteyi nerede koruduk?','Proje boyunca kritik imalat noktalarını, malzeme geçişlerini ve teslim öncesi kontrolleri görünür bir kontrol listesiyle takip etmek; estetik kadar uzun ömürlü kullanım için de belirleyiciydi.','','','',30],
+            ['proje-detay','related','Sonraki Projeler','Farklı ölçeklerde aynı uygulama disiplini.','','','','Tüm Portföy','projeler',40],
+
+            ['yazi-detay','decision','','Karar verirken neyi ölçün?','Tek bir fiyat veya tek bir görsel yerine; kapsamın açıklığına, sorumlulukların netliğine, saha iletişimine ve teslim kriterlerinin baştan konuşulmasına bakın. İyi proje yönetimi belirsizliği azaltır.','','','',10],
+            ['yazi-detay','related','Devamını Okuyun','Bir sonraki karar için ilgili rehberler.','','','','',20],
+
+            ['bolge-detay','approach','','{BOLGE} için yaklaşımımız','Proje türünü ve saha koşullarını birlikte değerlendiriyoruz. Yerel bağlamı SEO metni olsun diye değil; keşif, lojistik, malzeme seçimi ve uygulama takvimi açısından gerçek karar girdisi olarak ele alıyoruz.','','','',10],
+            ['bolge-detay','services','','Bu bölgede hangi hizmetlerle ilerleyebiliriz?','','','','',20],
+            ['bolge-detay','aside','','{BOLGE} için proje mi planlıyorsunuz?','Konum, yaklaşık alan ve proje türünü paylaşın; saha koşullarına göre ilk değerlendirmeyi yapalım.','','','Ücretsiz Ön Değerlendirme','iletisim',30],
+        ];
+        $check=$pdo->prepare("SELECT id FROM page_sections WHERE page_key=? AND section_key=? LIMIT 1");
+        $insert=$pdo->prepare("INSERT INTO page_sections (page_key,section_key,eyebrow,title,body,secondary_text,image,button_label,button_url,is_active,sort_order) VALUES (?,?,?,?,?,?,?,?,?,1,?)");
+        foreach($sections as $s){
+            $check->execute([$s[0],$s[1]]);
+            if(!$check->fetchColumn()) $insert->execute($s);
+        }
+
+        if($featureExists){
+            $featureSeeds=[
+              ['service_flow','İhtiyaç & keşif','İhtiyaç, mevcut durum ve ilk hedefler netleşir.','01','','',10],
+              ['service_flow','Kapsam & bütçe','İş kalemleri ve bütçe çerçevesi görünür hale gelir.','02','','',20],
+              ['service_flow','Uygulama & kontrol','Saha koordinasyonu ve teknik kontrol birlikte yürür.','03','','',30],
+              ['service_flow','Teslim & kapanış','Son kontroller ve teslim kriterleri tamamlanır.','04','','',40],
+              ['service_method','Fikir / Arsa Aşaması','İhtiyaç programı, yapı tipi, yaklaşık kapsam ve ilk teknik kararlar birlikte netleştirilir.','01','Kapsamı incele','hizmet/konut-projeleri',10],
+              ['service_method','Hazır Proje Aşaması','Mimari ve mühendislik projeleri saha uygulanabilirliği, takvim ve koordinasyon açısından değerlendirilir.','02','Uygulamayı incele','hizmet/proje-uygulama',20],
+              ['service_method','Mevcut Yapı Aşaması','Teknik durum, kullanım hedefi ve yenileme kapsamı üzerinden kontrollü renovasyon planı oluşturulur.','03','Renovasyonu incele','hizmet/renovasyon',30],
+              ['contact_process','Ön değerlendirme','Proje türü, konum ve ihtiyaç çerçevesi netleşir.','01','','',10],
+              ['contact_process','Keşif / teknik görüşme','Gerekliyse saha veya proje dokümanı üzerinden detaylandırılır.','02','','',20],
+              ['contact_process','Kapsam & teklif','İş kalemleri, yaklaşım ve sonraki adımlar anlaşılır biçimde sunulur.','03','','',30],
+              ['service_scope','Keşif & ihtiyaç','Mevcut durumu, hedefleri ve karar verilmesi gereken kritik başlıkları netleştiririz.','01','','',10],
+              ['service_scope','Kapsam & bütçe','İş kalemlerini, sorumlulukları ve maliyet çerçevesini mümkün olduğunca görünür hale getiririz.','02','','',20],
+              ['service_scope','Saha & koordinasyon','Uygulama sırasını, ekipleri ve teknik kontrolleri tek koordinasyon altında yürütürüz.','03','','',30],
+              ['service_scope','Kalite & teslim','İmalat kontrolleri, eksiklerin kapanışı ve teslim kriterleri planın parçasıdır.','04','','',40],
+            ];
+            $groupCount=$pdo->prepare("SELECT COUNT(*) FROM home_features WHERE group_key=?");
+            $featureInsert=$pdo->prepare("INSERT INTO home_features (group_key,title,body,icon,link_label,link_url,is_active,sort_order) VALUES (?,?,?,?,?,?,1,?)");
+            $byGroup=[];
+            foreach($featureSeeds as $seed) $byGroup[$seed[0]][]=$seed;
+            foreach($byGroup as $group=>$seeds){
+                $groupCount->execute([$group]);
+                if((int)$groupCount->fetchColumn()===0){
+                    foreach($seeds as $seed) $featureInsert->execute($seed);
+                }
+            }
+        }
+    } catch(Throwable $e) {
+        // CMS schema migration must never block the public site.
+    }
+}
+
+function page_section(string $pageKey, string $sectionKey, array $fallback=[]): array {
+    $defaults=[
+        'page_key'=>$pageKey,'section_key'=>$sectionKey,'eyebrow'=>'','title'=>'','body'=>'',
+        'secondary_text'=>'','image'=>'','button_label'=>'','button_url'=>'','is_active'=>1,'sort_order'=>0
+    ];
+    try {
+        $stmt=db()->prepare("SELECT * FROM page_sections WHERE page_key=? AND section_key=? LIMIT 1");
+        $stmt->execute([$pageKey,$sectionKey]);
+        $row=$stmt->fetch();
+        return array_merge($defaults,$fallback,$row ?: []);
+    } catch(Throwable $e) {
+        return array_merge($defaults,$fallback);
+    }
+}
+
 function e(?string $value): string {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
@@ -161,7 +289,7 @@ function section(string $key): array {
 }
 
 function rows(string $table, string $where = 'is_active = 1', array $params = [], string $order = 'sort_order ASC, id ASC'): array {
-    $allowed = ['sliders','home_stats','services','projects','home_features','testimonials','service_areas','faqs','posts','pages'];
+    $allowed = ['sliders','home_stats','services','projects','home_features','testimonials','service_areas','faqs','posts','pages','page_sections'];
     if (!in_array($table, $allowed, true)) return [];
     $sql = "SELECT * FROM {$table}" . ($where ? " WHERE {$where}" : '') . ($order ? " ORDER BY {$order}" : '');
     $stmt = db()->prepare($sql);
