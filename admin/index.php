@@ -156,6 +156,9 @@ $settingsGroups = [
         'google_site_verification'=>'Google Site Verification',
         'bing_site_verification'=>'Bing Site Verification',
     ],
+    'Ana Sayfa Görünümü'=>[
+        'home_testimonials_limit'=>'Ana Sayfada Gösterilecek Yorum Sayısı',
+    ],
     'Dönüşüm Alanları'=>[
         'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması',
         'quick_cta_1_title'=>'Hızlı CTA 1 Başlık','quick_cta_1_body'=>'Hızlı CTA 1 Açıklama',
@@ -178,6 +181,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'save_settings') {
         foreach ($settingsFields as $key => $label) {
             $value = trim((string)($_POST[$key] ?? ''));
+            if ($key === 'home_testimonials_limit') {
+                $value = (string)max(1, min(100, (int)$value));
+            }
             $stmt = db()->prepare('INSERT INTO settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)');
             $stmt->execute([$key,$value]);
         }
@@ -558,6 +564,7 @@ $navGroups = [
             'Local SEO / GEO'=>'Organization / LocalBusiness yapılandırılmış verileri ve coğrafi hedefleme.',
             'AIO / AI Görünürlüğü'=>'AI cevaplarında kullanılabilecek net marka/uzmanlık bağlamı ve IndexNow entegrasyonu.',
             'Doğrulama'=>'Search Console ve Bing Webmaster Tools doğrulama kodları.',
+            'Ana Sayfa Görünümü'=>'Ana sayfada dinamik olarak gösterilecek içerik miktarlarını yönetin.',
             'Dönüşüm Alanları'=>'Ana sayfadaki teklif ve hızlı iletişim CTA içerikleri.',
           ];
         ?>
@@ -568,7 +575,10 @@ $navGroups = [
               <?php foreach($fields as $key=>$label): ?>
                 <label class="admin-field <?= in_array($key,$longSettings,true)?'full':'' ?>">
                   <span><?= e($label) ?></span>
-                  <?php if(in_array($key,$longSettings,true)): ?>
+                  <?php if($key==='home_testimonials_limit'): ?>
+                    <input type="number" name="<?= e($key) ?>" min="1" max="100" step="1" value="<?= e(setting($key,'8')) ?>">
+                    <small>Toplam yorum kaydı sınırsızdır. Buradaki sayı yalnızca ana sayfada kayan şeritte kaç aktif yorum kullanılacağını belirler.</small>
+                  <?php elseif(in_array($key,$longSettings,true)): ?>
                     <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
                   <?php else: ?>
                     <input name="<?= e($key) ?>" value="<?= e(setting($key)) ?>">
@@ -599,7 +609,9 @@ $navGroups = [
     <?php elseif(isset($modules[$module])):
       $cfg=$modules[$module]; $editId=(int)($_GET['edit'] ?? 0); $edit=null;
       if($editId){$st=db()->prepare("SELECT * FROM {$cfg['table']} WHERE id=?");$st->execute([$editId]);$edit=$st->fetch() ?: null;}
-      $list=db()->query("SELECT * FROM {$cfg['table']} ORDER BY ".(array_key_exists('sort_order',$cfg['fields'])?'sort_order ASC, ':'')."id DESC LIMIT 200")->fetchAll();
+      $listSql="SELECT * FROM {$cfg['table']} ORDER BY ".(array_key_exists('sort_order',$cfg['fields'])?'sort_order ASC, ':'')."id DESC";
+      if($module!=='testimonials') $listSql.=" LIMIT 200";
+      $list=db()->query($listSql)->fetchAll();
     ?>
       <section class="admin-card">
         <div class="admin-card-head">
