@@ -581,7 +581,24 @@ $navGroups = [
           <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
           <input type="hidden" name="action" value="save_item">
           <input type="hidden" name="id" value="<?= (int)($edit['id']??0) ?>">
-          <?php foreach($cfg['fields'] as $name=>$meta) echo admin_field($meta,$name,$edit[$name]??''); ?>
+          <?php
+            $seoFieldNames=['meta_title','meta_description','focus_keyword','secondary_keywords','canonical_url','og_title','og_description','og_image','image_alt','image_title','robots','schema_type','geo_target','aio_summary','author_name','latitude','longitude'];
+            $hasSeoFields=count(array_intersect(array_keys($cfg['fields']),$seoFieldNames))>0;
+            foreach($cfg['fields'] as $name=>$meta){
+              if(!in_array($name,$seoFieldNames,true)) echo admin_field($meta,$name,$edit[$name]??'');
+            }
+          ?>
+          <?php if($hasSeoFields): ?>
+            <div class="seo-fieldset full">
+              <div class="seo-fieldset-head">
+                <div><span class="admin-card-kicker">SEO · GEO · AIO</span><h4>Arama görünürlüğü ayarları</h4><p>Canonical, görsel metadata, yapılandırılmış veri ve AI bağlamını burada yönetin.</p></div>
+                <?php if($edit): $readiness=seo_readiness($edit); ?><div class="seo-edit-score"><strong><?= $readiness['score'] ?>%</strong><span>hazırlık</span></div><?php endif; ?>
+              </div>
+              <div class="admin-form seo-inner-form">
+                <?php foreach($cfg['fields'] as $name=>$meta){ if(in_array($name,$seoFieldNames,true)) echo admin_field($meta,$name,$edit[$name]??''); } ?>
+              </div>
+            </div>
+          <?php endif; ?>
           <div class="admin-form-actions full">
             <button class="admin-btn" type="submit"><?= admin_icon('check') ?> <?= $edit?'Değişiklikleri Kaydet':'Kaydı Ekle' ?></button>
             <?php if($edit): ?><a class="admin-btn admin-btn-light" href="?module=<?= e($module) ?>">İptal</a><?php endif; ?>
@@ -596,12 +613,13 @@ $navGroups = [
         </div>
         <div class="admin-table-wrap">
           <table class="admin-table">
-            <thead><tr><th>#</th><th>Başlık</th><th>Durum</th><th class="admin-table-actions-head">İşlem</th></tr></thead>
+            <thead><tr><th>#</th><th>Başlık</th><?php if(array_key_exists('focus_keyword',$cfg['fields'])): ?><th>SEO Hazırlık</th><?php endif; ?><th>Durum</th><th class="admin-table-actions-head">İşlem</th></tr></thead>
             <tbody>
             <?php foreach($list as $row): ?>
               <tr>
                 <td class="admin-id-cell"><?= (int)$row['id'] ?></td>
-                <td><strong class="admin-row-title"><?= e((string)($row[$cfg['title']]??'')) ?></strong></td>
+                <td><strong class="admin-row-title"><?= e((string)($row[$cfg['title']]??'')) ?></strong><?php if(!empty($row['focus_keyword'])): ?><small class="admin-row-keyword"><?= e((string)$row['focus_keyword']) ?></small><?php endif; ?></td>
+                <?php if(array_key_exists('focus_keyword',$cfg['fields'])): $rowSeo=seo_readiness($row); ?><td><div class="seo-table-score"><div><i style="width:<?= $rowSeo['score'] ?>%"></i></div><b><?= $rowSeo['score'] ?>%</b></div></td><?php endif; ?>
                 <td><?php if(array_key_exists('is_active',$row)): ?><span class="admin-status <?= $row['is_active']?'is-active':'is-passive' ?>"><?= $row['is_active']?'Aktif':'Pasif' ?></span><?php else: ?><span class="admin-status">—</span><?php endif; ?></td>
                 <td><div class="admin-actions"><a class="admin-link" href="?module=<?= e($module) ?>&edit=<?= (int)$row['id'] ?>">Düzenle</a><form method="post" onsubmit="return confirm('Bu kayıt silinsin mi?')"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="delete_item"><input type="hidden" name="id" value="<?= (int)$row['id'] ?>"><button class="admin-link danger" type="submit">Sil</button></form></div></td>
               </tr>
