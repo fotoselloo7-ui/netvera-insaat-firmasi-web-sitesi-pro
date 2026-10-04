@@ -211,10 +211,33 @@ include __DIR__.'/partials/header.php';
           <?php for($loop=0;$loop<2;$loop++): ?>
           <div class="testimonial-group-v8"<?= $loop===1?' aria-hidden="true"':'' ?>>
             <?php foreach($tts as $t): ?>
-              <blockquote class="testimonial-card-v8">
-                <span class="testimonial-quote-v8" aria-hidden="true">“</span>
+              <?php
+                $rating=max(1,min(5,(int)($t['rating']??5)));
+                $starColor=(string)($t['star_color']??'#FABB05');
+                if(!preg_match('/^#[0-9A-Fa-f]{6}$/',$starColor)) $starColor='#FABB05';
+                $initial=mb_strtoupper(mb_substr(trim((string)$t['name']),0,1));
+              ?>
+              <blockquote class="testimonial-card-v8" style="--review-star:<?= e($starColor) ?>">
+                <div class="testimonial-profile-v9">
+                  <div class="testimonial-avatar-v9">
+                    <?php if(!empty($t['profile_image'])): ?>
+                      <img src="<?= e(media_url($t['profile_image'])) ?>" alt="<?= e($t['name']) ?> profil fotoğrafı" loading="lazy">
+                    <?php else: ?>
+                      <span><?= e($initial ?: 'M') ?></span>
+                    <?php endif; ?>
+                  </div>
+                  <div class="testimonial-person-v9">
+                    <strong><?= e($t['name']) ?></strong>
+                    <span><?= e($t['role']) ?></span>
+                  </div>
+                  <span class="testimonial-check-v9" aria-label="Müşteri yorumu">✓</span>
+                </div>
+                <div class="testimonial-stars-v9" aria-label="<?= $rating ?> üzerinden 5 yıldız">
+                  <?php for($star=1;$star<=5;$star++): ?><span class="<?= $star<=$rating?'is-on':'is-off' ?>" aria-hidden="true">★</span><?php endfor; ?>
+                  <small><?= $rating ?>.0</small>
+                </div>
                 <p><?= e($t['quote_text']) ?></p>
-                <footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer>
+                <span class="testimonial-quote-v8" aria-hidden="true">“</span>
               </blockquote>
             <?php endforeach; ?>
           </div>
