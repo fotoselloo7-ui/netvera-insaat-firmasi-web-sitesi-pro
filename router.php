@@ -5,6 +5,20 @@ $path=(string)(parse_url($_SERVER['REQUEST_URI']??'/',PHP_URL_PATH)??'/');
 $path='/'.ltrim($path,'/');
 $full=__DIR__.$path;
 
+if($path==='/sitemap.xml'){
+    require __DIR__.'/sitemap.php';
+    return true;
+}
+if($path==='/robots.txt'){
+    require __DIR__.'/robots.php';
+    return true;
+}
+if(preg_match('#^/([A-Fa-f0-9-]{8,128})\.txt$#',$path,$keyMatch)){
+    $_GET['key']=$keyMatch[1];
+    require __DIR__.'/indexnow-key.php';
+    return true;
+}
+
 if($path!=='/' && is_file($full)) return false;
 
 if($path==='/' || $path==='/index.php'){
