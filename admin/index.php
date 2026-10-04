@@ -470,7 +470,7 @@ $navGroups = [
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0c2232">
 <title><?= e($pageTitle) ?> · NetVera Admin</title>
-<link rel="stylesheet" href="admin.css?v=3">
+<link rel="stylesheet" href="admin.css?v=4">
 </head>
 <body>
 <div class="admin-shell">
