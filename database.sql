@@ -159,6 +159,14 @@ INSERT IGNORE INTO settings (setting_key,setting_value) VALUES
 ('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'),
 ('contact_title','Projenizi bize anlatın.'),
 ('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.'),
+('quick_cta_1_title','Hangi hizmetin projenize uygun olduğundan emin değil misiniz?'),
+('quick_cta_1_body','Projenizi kısaca anlatın; kapsam, süreç ve doğru hizmet seçeneği hakkında hızlı bilgi verelim.'),
+('quick_cta_1_primary_label','Detaylı Bilgi Al'),('quick_cta_1_primary_url','iletisim'),
+('quick_cta_1_secondary_label','WhatsApp\'tan Sor'),
+('quick_cta_1_whatsapp_text','Merhaba Vera Yapı, projem için hangi hizmetin uygun olduğu hakkında bilgi almak istiyorum.'),
+('quick_cta_2_title','Arsanız veya hazır bir projeniz mi var?'),
+('quick_cta_2_body','İlk değerlendirmeyi birlikte yapalım; yaklaşık kapsamı, uygulama modelini ve keşif sürecini netleştirelim.'),
+('quick_cta_2_primary_label','Ücretsiz Keşif Planla'),('quick_cta_2_secondary_label','Hemen Ara'),
 ('meta_description','Alanya ve Antalya’da konut, villa, ticari yapı, renovasyon ve anahtar teslim taahhüt hizmetleri.'),
 ('footer_text','Konut, villa, ticari yapı, renovasyon ve anahtar teslim taahhüt projelerinde planlı ve güvenilir uygulama.');
 
