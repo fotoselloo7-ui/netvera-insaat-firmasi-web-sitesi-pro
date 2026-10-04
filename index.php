@@ -76,27 +76,27 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <?php $sec=section('services'); if($sec['is_active']): ?>
-<section class="home-section services-editorial-v6">
+<section class="home-section services-cards-v7">
   <div class="container">
-    <div class="services-head-v6">
-      <div>
-        <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
-        <h2><?= e($sec['title']) ?></h2>
-      </div>
+    <div class="services-head-v7">
+      <div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div>
       <p><?= e($sec['body']) ?></p>
     </div>
-    <div class="services-list-v6">
+    <div class="services-grid-v7">
       <?php foreach(array_slice($services,0,6) as $i=>$s): ?>
-        <a class="service-row-v6" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
-          <span class="service-row-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
-          <div class="service-row-copy"><h3><?= e($s['title']) ?></h3><p><?= e($s['summary']) ?></p></div>
-          <span class="service-row-action" aria-hidden="true">
-            <svg viewBox="0 0 20 20"><path d="M6 10h7M10.5 7.5 13 10l-2.5 2.5"/></svg>
-          </span>
+        <a class="service-card-v7" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
+          <figure>
+            <img src="<?= e(media_url($s['cover_image'])) ?>" alt="<?= e(($s['image_alt'] ?? '') ?: $s['title']) ?>" loading="lazy">
+            <span class="service-card-no-v7"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
+          </figure>
+          <div class="service-card-body-v7">
+            <div><h3><?= e($s['title']) ?></h3><p><?= e($s['summary']) ?></p></div>
+            <span class="service-card-arrow-v7" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M6 10h7M10.5 7.5 13 10l-2.5 2.5"/></svg></span>
+          </div>
         </a>
       <?php endforeach; ?>
     </div>
-    <div class="services-foot-v6"><a class="micro-link-v6" href="<?= e(app_url('hizmetler')) ?>">Tüm hizmetler <span aria-hidden="true">›</span></a></div>
+    <div class="services-foot-v7"><a class="micro-link-v6" href="<?= e(app_url('hizmetler')) ?>">Tüm hizmetler <span aria-hidden="true">›</span></a></div>
   </div>
 </section>
 <?php endif; ?>
@@ -194,26 +194,23 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <?php $testimonialSec=section('testimonials'); $trustSec=section('trust'); $areasSec=section('areas'); if($testimonialSec['is_active'] || ($trustSec['is_active'] && $trust) || $areasSec['is_active']): ?>
-<section class="home-section reputation-v6">
+<section class="home-section reputation-v7">
   <div class="container">
     <?php if($testimonialSec['is_active']): ?>
-      <div class="home-section-head-v6">
+      <div class="home-section-head-v7">
         <div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div>
         <p><?= e($testimonialSec['body']) ?></p>
       </div>
-      <?php $tts=array_slice($testimonials,0,3); $mainT=$tts[0]??null; ?>
-      <?php if($mainT): ?>
-      <div class="testimonials-grid-v6">
-        <blockquote class="testimonial-main-v6">
-          <span class="quote-v6">“</span>
-          <p><?= e($mainT['quote_text']) ?></p>
-          <footer><strong><?= e($mainT['name']) ?></strong><span><?= e($mainT['role']) ?></span></footer>
-        </blockquote>
-        <div class="testimonial-side-v6">
-          <?php foreach(array_slice($tts,1,2) as $t): ?>
-            <blockquote><p>“<?= e($t['quote_text']) ?>”</p><footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer></blockquote>
-          <?php endforeach; ?>
-        </div>
+      <?php $tts=array_slice($testimonials,0,4); ?>
+      <?php if($tts): ?>
+      <div class="testimonial-cards-v7" aria-label="Müşteri yorumları">
+        <?php foreach($tts as $t): ?>
+          <blockquote class="testimonial-card-v7">
+            <span class="testimonial-quote-v7" aria-hidden="true">“</span>
+            <p><?= e($t['quote_text']) ?></p>
+            <footer><strong><?= e($t['name']) ?></strong><span><?= e($t['role']) ?></span></footer>
+          </blockquote>
+        <?php endforeach; ?>
       </div>
       <?php endif; ?>
     <?php endif; ?>
@@ -279,21 +276,9 @@ $blogFallbacks=[
       <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
       <h2><?= e($sec['title']) ?></h2>
       <div class="home-faq faq-v5"><?php foreach($faqs as $i=>$f): ?><details<?= $i===0?' open':'' ?>><summary><?= e($f['question']) ?></summary><p><?= e($f['answer']) ?></p></details><?php endforeach; ?></div>
-    </div>
-    <aside class="contact-panel-v5">
-      <div class="home-kicker is-light">Proje Görüşmesi</div>
-      <h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3>
-      <p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p>
-      <form class="home-form form-v5" data-home-form data-whatsapp="<?= e($wa) ?>">
-        <div class="home-field"><label>Ad Soyad<input name="name" required></label></div>
-        <div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div>
-        <div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div>
-        <div class="home-field"><label>Konum<input name="location"></label></div>
-        <div class="home-field full"><label>Kısa Proje Bilgisi<textarea name="message"></textarea></label></div>
-        <div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div>
-        <div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div>
-      </form>
-      <div class="social-contact-v6">
+      <div class="faq-social-v7">
+        <span>Hızlı iletişim</span>
+        <div class="social-contact-v6">
         <a class="social-btn-v6 is-call" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg>
           Hemen ara
@@ -311,6 +296,22 @@ $blogFallbacks=[
           Facebook
         </a><?php endif; ?>
       </div>
+      </div>
+    </div>
+    <aside class="contact-panel-v5">
+      <div class="home-kicker is-light">Proje Görüşmesi</div>
+      <h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3>
+      <p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p>
+      <form class="home-form form-v5" data-home-form data-whatsapp="<?= e($wa) ?>">
+        <div class="home-field"><label>Ad Soyad<input name="name" required></label></div>
+        <div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div>
+        <div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div>
+        <div class="home-field"><label>Konum<input name="location"></label></div>
+        <div class="home-field full"><label>Kısa Proje Bilgisi<textarea name="message"></textarea></label></div>
+        <div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div>
+        <div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div>
+      </form>
+      
     </aside>
   </div>
 </section>
