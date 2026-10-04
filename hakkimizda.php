@@ -37,7 +37,7 @@ include __DIR__.'/partials/header.php';
   <p><?= e($page['intro']) ?></p>
 </div></section>
 
-<section class="page-section"><div class="container editorial-intro">
+<?php if((int)$secEditorial['is_active']===1): ?><section class="page-section"><div class="container editorial-intro">
   <div class="editorial-visual">
     <img src="<?= e(media_url($aboutImage)) ?>" alt="<?= e($page['image_alt'] ?: setting('about_image_alt','Vera Yapı inşaat projeleri')) ?>"<?php if(setting('about_image_title','')!==''): ?> title="<?= e(setting('about_image_title')) ?>"<?php endif; ?>>
     <div class="editorial-visual-caption"><span>Alanya / Antalya</span><span>Planlama · Uygulama · Teslim</span></div>
@@ -53,27 +53,27 @@ include __DIR__.'/partials/header.php';
     <h2><?= e($secEditorial['title']) ?></h2>
     <p><?= e($secEditorial['body']) ?></p>
   </article>
-</div></section>
+</div></section><?php endif; ?>
 
 <?php if($stats): ?><section class="page-section soft"><div class="container"><div class="fact-ribbon">
   <?php foreach(array_slice($stats,0,4) as $s): ?><div><strong><?= e($s['stat_value']) ?></strong><span><?= e($s['label']) ?></span></div><?php endforeach; ?>
 </div></div></section><?php endif; ?>
 
-<section class="page-section"><div class="container">
+<?php if((int)$secPrinciples['is_active']===1): ?><section class="page-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secPrinciples['eyebrow']) ?></div><h2><?= e($secPrinciples['title']) ?></h2></div><p><?= e($secPrinciples['body']) ?></p></div>
   <div class="principle-grid">
     <?php foreach($principles as $p): ?><article class="principle-card"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></article><?php endforeach; ?>
   </div>
-</div></section>
+</div></section><?php endif; ?>
 
-<section class="page-section navy"><div class="container">
+<?php if((int)$secProcess['is_active']===1): ?><section class="page-section navy"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2 style="color:#fff"><?= e($secProcess['title']) ?></h2></div><p style="color:#afbdc6"><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
-</div></section>
+</div></section><?php endif; ?>
 
-<section class="page-section"><div class="container"><div class="inline-editorial-cta">
+<?php if((int)$secCta['is_active']===1): ?><section class="page-section"><div class="container"><div class="inline-editorial-cta">
   <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
   <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Projeyi Konuşalım') ?></a>
-</div></div></section>
+</div></div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
