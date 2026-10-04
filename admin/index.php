@@ -429,6 +429,10 @@ function admin_field(array $meta, string $name, $value): string {
         return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/...">'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>';
     }
 
+    if ($type === 'gallery') {
+        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><textarea name="'.e($name).'" rows="4" placeholder=\'["uploads/proje-1.jpg","uploads/proje-2.jpg"]\'>'.$v.'</textarea>'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload[]" accept="image/jpeg,image/png,image/webp,image/avif" multiple><small>En fazla 16 yeni görsel tek seferde seçilebilir. Mevcut JSON listesinden istemediğiniz yolu silerek galeriden kaldırabilirsiniz.</small></label>';
+    }
+
     $htmlType = in_array($type,['datetime-local','number','url','email','color'],true) ? $type : 'text';
     if ($type === 'datetime-local' && $value) {
         $v = e(str_replace(' ', 'T', substr((string)$value, 0, 16)));
