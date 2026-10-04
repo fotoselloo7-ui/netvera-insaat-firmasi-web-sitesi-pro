@@ -20,6 +20,11 @@ function ensure_seo_schema(): void {
     if($done) return;
     $done=true;
 
+    $targetVersion='2026.10-seo-aio-1';
+    $versionStmt=db()->prepare("SELECT setting_value FROM settings WHERE setting_key='schema_version' LIMIT 1");
+    $versionStmt->execute();
+    if((string)$versionStmt->fetchColumn()===$targetVersion) return;
+
     $common=[
         'focus_keyword'=>"VARCHAR(190) NULL",
         'secondary_keywords'=>"TEXT NULL",
@@ -108,6 +113,7 @@ function ensure_seo_schema(): void {
     ];
     $stmt=db()->prepare("INSERT IGNORE INTO settings (setting_key,setting_value) VALUES (?,?)");
     foreach($defaults as $key=>$value) $stmt->execute([$key,$value]);
+    db()->prepare("INSERT INTO settings (setting_key,setting_value) VALUES ('schema_version',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)")->execute([$targetVersion]);
 }
 
 function seo_clean_schema_type(?string $type, string $fallback='WebPage'): string {
