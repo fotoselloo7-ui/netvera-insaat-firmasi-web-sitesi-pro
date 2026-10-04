@@ -33,8 +33,8 @@ if(form){
       'Konum: '+(location||'-'),
       'Proje Bilgisi: '+(message||'-')
     ];
-    const whatsapp=(form.dataset.whatsapp||'905000000000').replace(/\\D/g,'');
-    const url='https://wa.me/'+whatsapp+'?text='+encodeURIComponent(lines.join('\\n'));
+    const whatsapp=(form.dataset.whatsapp||'905000000000').replace(/\D/g,'');
+    const url='https://wa.me/'+whatsapp+'?text='+encodeURIComponent(lines.join('\n'));
     const note=form.querySelector('[data-form-note]');
     if(note) note.textContent='WhatsApp mesajınız hazırlanıyor...';
     window.open(url,'_blank','noopener');
@@ -85,7 +85,7 @@ if(header){
 
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
   const revealTargets=document.querySelectorAll(
-    '.home-section-head,.home-about-photo,.home-about-copy,.service-clean article,.project-clean,.why-clean-photo,.why-clean-copy,.process-step,.testimonial-clean,.trust-strip,.area-clean-copy,.area-list,.insight-featured,.insight-side,.home-faq details,.home-contact-card,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
+    '.home-section-head,.home-about-photo,.home-about-copy,.home-feature-card,.service-premium-card,.project-premium-card,.why-clean-photo,.why-clean-copy,.why-value-card,.process-card-v4,.testimonial-premium-card,.trust-panel-v4,.area-panel-v4,.insight-featured,.insight-side,.home-faq details,.home-contact-card,.contact-pill,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
   );
   revealTargets.forEach(el=>el.classList.add('reveal-ready'));
   const revealObserver=new IntersectionObserver(entries=>{
