@@ -49,6 +49,33 @@ function ensure_content_management_schema(): void {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
         $featureExists=$pdo->query("SHOW TABLES LIKE 'home_features'")->fetchColumn();
+        $legalPages=[
+            [
+                'kvkk-aydinlatma-metni','Yasal Bilgilendirme','KVKK Aydınlatma Metni',
+                'Kişisel verilerin hangi amaçlarla işlendiğini, saklandığını ve ilgili kişi haklarını açıklayan bilgilendirme metni.',
+                "## Veri Sorumlusu ve Kapsam\nBu metin, Vera Yapı ile iletişime geçen ziyaretçi ve müşterilerin kişisel verilerinin 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında işlenmesine ilişkin genel bilgilendirmedir. Canlı kullanımdan önce şirket unvanı, MERSİS/vergi bilgileri ve resmi iletişim bilgileri yönetim panelinden güncellenmelidir.\n\n## İşlenebilecek Veriler\n- Ad soyad ve iletişim bilgileri\n- Proje türü, konum ve talep bilgileri\n- Teklif, keşif ve müşteri iletişimi kapsamında paylaşılan bilgiler\n- Site güvenliği ve teknik kayıtlar kapsamında sınırlı trafik verileri\n\n## İşleme Amaçları\nKişisel veriler; iletişim taleplerini yanıtlamak, keşif ve teklif süreçlerini yürütmek, sözleşme öncesi ve sonrası hizmetleri sağlamak, hukuki yükümlülükleri yerine getirmek ve bilgi güvenliğini korumak amacıyla işlenebilir.\n\n## Aktarım ve Saklama\nVeriler yalnızca hizmetin yürütülmesi ve hukuki yükümlülüklerin yerine getirilmesi için gerekli olması halinde yetkili hizmet sağlayıcılar ve kamu kurumlarıyla paylaşılabilir. Veriler, ilgili mevzuatta öngörülen veya işleme amacı için gerekli süre boyunca saklanır.\n\n## İlgili Kişi Hakları\nKVKK'nın 11. maddesi kapsamındaki haklarınıza ilişkin taleplerinizi sitede belirtilen iletişim kanalları üzerinden iletebilirsiniz.\n\n## Güncelleme\nBu metin, iş süreçleri ve mevzuat değişiklikleri doğrultusunda güncellenebilir.",
+                'KVKK Aydınlatma Metni | Vera Yapı','Vera Yapı kişisel verilerin korunması ve KVKK aydınlatma metni.'
+            ],
+            [
+                'gizlilik-politikasi','Yasal Bilgilendirme','Gizlilik Politikası',
+                'Web sitesi kullanımı sırasında toplanabilecek bilgilerin nasıl korunduğunu ve kullanıldığını açıklayan gizlilik politikası.',
+                "## Gizlilik Yaklaşımımız\nVera Yapı, web sitesi üzerinden paylaşılan bilgilerin gizliliğini korumayı ve yalnızca açık, meşru amaçlarla kullanmayı hedefler.\n\n## Toplanan Bilgiler\n- İletişim ve teklif formlarında kullanıcı tarafından verilen bilgiler\n- WhatsApp veya telefon üzerinden gönüllü olarak paylaşılan proje bilgileri\n- Site güvenliği ve performansı için gerekli sınırlı teknik kayıtlar\n\n## Bilgilerin Kullanımı\nToplanan bilgiler taleplerin yanıtlanması, hizmet kapsamının değerlendirilmesi, teklif ve keşif süreçlerinin yönetilmesi, site güvenliği ve yasal yükümlülüklerin yerine getirilmesi amacıyla kullanılabilir.\n\n## Üçüncü Taraflar\nGoogle Haritalar, sosyal medya bağlantıları veya benzeri üçüncü taraf hizmetlere yönlendiren bağlantılar kendi gizlilik politikalarına tabidir. Vera Yapı bu platformların bağımsız veri işleme uygulamalarından sorumlu değildir.\n\n## Güvenlik\nYetkisiz erişimi, kaybı veya kötüye kullanımı azaltmak için makul teknik ve idari önlemler uygulanır.\n\n## İletişim\nGizlilik uygulamalarına ilişkin sorularınızı sitede yer alan e-posta veya diğer iletişim kanallarından iletebilirsiniz.",
+                'Gizlilik Politikası | Vera Yapı','Vera Yapı web sitesi gizlilik politikası ve kişisel bilgi güvenliği açıklamaları.'
+            ],
+            [
+                'cerez-politikasi','Yasal Bilgilendirme','Çerez Politikası',
+                'Sitenin kullandığı zorunlu ve isteğe bağlı çerezler ile benzer teknolojilere ilişkin bilgilendirme.',
+                "## Çerez Nedir?\nÇerezler, ziyaret edilen web siteleri tarafından tarayıcınıza kaydedilebilen küçük veri dosyalarıdır.\n\n## Kullanılabilecek Çerez Türleri\n- Zorunlu çerezler: Sitenin temel işlevleri ve güvenliği için gerekli olabilir.\n- Tercih çerezleri: Kullanıcı tercihlerini hatırlamak için kullanılabilir.\n- Analitik çerezler: Ziyaret ve performans verilerini ölçmek amacıyla, yalnızca ilgili araçlar etkinleştirildiğinde kullanılabilir.\n\n## Üçüncü Taraf İçerikler\nGoogle Haritalar veya dış platformlara ait gömülü içerikler kendi çerez ve veri işleme mekanizmalarını kullanabilir. Bu içerikler ilgili üçüncü tarafın koşullarına tabidir.\n\n## Çerezleri Yönetme\nTarayıcı ayarlarınızdan çerezleri silebilir, engelleyebilir veya belirli site izinlerini değiştirebilirsiniz. Zorunlu çerezlerin engellenmesi bazı site özelliklerinin çalışmasını etkileyebilir.\n\n## Güncellemeler\nBu politika kullanılan teknolojiler değiştikçe güncellenebilir.",
+                'Çerez Politikası | Vera Yapı','Vera Yapı web sitesi çerez kullanımı ve çerez tercihleri hakkında bilgilendirme.'
+            ],
+        ];
+        $pageCheck=$pdo->prepare("SELECT id FROM pages WHERE slug=? LIMIT 1");
+        $pageInsert=$pdo->prepare("INSERT INTO pages (slug,eyebrow,title,intro,body,meta_title,meta_description,is_active) VALUES (?,?,?,?,?,?,?,1)");
+        foreach($legalPages as $legal){
+            $pageCheck->execute([$legal[0]]);
+            if(!$pageCheck->fetchColumn()) $pageInsert->execute($legal);
+        }
+
         if($featureExists){
             $featureCols=[];
             foreach($pdo->query("SHOW COLUMNS FROM home_features")->fetchAll() as $col) $featureCols[(string)$col['Field']]=true;
