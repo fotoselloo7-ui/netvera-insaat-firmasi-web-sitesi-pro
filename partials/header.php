@@ -5,23 +5,56 @@ $phone = setting('phone', '+90 500 000 00 00');
 $email = setting('email', 'info@example.com');
 $address = setting('address', 'Alanya / Antalya');
 $hours = setting('working_hours', 'Pzt–Cmt 08:30–18:30');
+
+$resolvedTitle = trim((string)($metaTitle ?? setting('seo_home_title',$siteName)));
+$resolvedDescription = trim((string)($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')));
+$resolvedRobots = trim((string)($robots ?? setting('seo_robots','index,follow,max-image-preview:large')));
+$currentPath = ltrim((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? ''), '/');
+$resolvedCanonical = seo_absolute_url($canonical ?? '', app_url($currentPath));
+$resolvedOgTitle = trim((string)($ogTitle ?? $resolvedTitle));
+$resolvedOgDescription = trim((string)($ogDescription ?? $resolvedDescription));
+$resolvedOgImage = trim((string)($ogImage ?? setting('seo_default_og_image','')));
+$resolvedOgImageUrl = $resolvedOgImage !== '' ? media_url($resolvedOgImage) : '';
+$resolvedOgImageAlt = trim((string)($ogImageAlt ?? setting('seo_default_image_alt',$resolvedTitle)));
+$resolvedOgType = trim((string)($ogType ?? 'website'));
+
+$graph = seo_global_graph();
+if(!empty($pageSchema) && is_array($pageSchema)) $graph[]=$pageSchema;
+if(!empty($breadcrumbs) && is_array($breadcrumbs)) $graph[]=seo_breadcrumb_schema($breadcrumbs);
+$schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT);
 ?>
 <!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title><?= e($metaTitle ?? $siteName) ?></title>
-<meta name="description" content="<?= e($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')) ?>">
-<meta name="robots" content="<?= e($robots ?? 'index,follow,max-image-preview:large') ?>">
-<link rel="canonical" href="<?= e($canonical ?? app_url(ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))) ?>">
-<meta property="og:type" content="website">
+<title><?= e($resolvedTitle) ?></title>
+<meta name="description" content="<?= e($resolvedDescription) ?>">
+<meta name="robots" content="<?= e($resolvedRobots) ?>">
+<link rel="canonical" href="<?= e($resolvedCanonical) ?>">
+<meta property="og:type" content="<?= e($resolvedOgType) ?>">
 <meta property="og:locale" content="tr_TR">
-<meta property="og:title" content="<?= e($metaTitle ?? $siteName) ?>">
-<meta property="og:description" content="<?= e($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')) ?>">
-<meta property="og:url" content="<?= e($canonical ?? app_url(ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))) ?>">
-<?php if(!empty($ogImage)): ?><meta property="og:image" content="<?= e(media_url($ogImage)) ?>"><?php endif; ?>
+<meta property="og:site_name" content="<?= e($siteName) ?>">
+<meta property="og:title" content="<?= e($resolvedOgTitle) ?>">
+<meta property="og:description" content="<?= e($resolvedOgDescription) ?>">
+<meta property="og:url" content="<?= e($resolvedCanonical) ?>">
+<?php if($resolvedOgImageUrl!==''): ?>
+<meta property="og:image" content="<?= e($resolvedOgImageUrl) ?>">
+<meta property="og:image:alt" content="<?= e($resolvedOgImageAlt) ?>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="<?= e($resolvedOgImageUrl) ?>">
+<?php else: ?>
+<meta name="twitter:card" content="summary">
+<?php endif; ?>
+<meta name="twitter:title" content="<?= e($resolvedOgTitle) ?>">
+<meta name="twitter:description" content="<?= e($resolvedOgDescription) ?>">
+<?php if(!empty($authorName)): ?><meta name="author" content="<?= e($authorName) ?>"><?php endif; ?>
+<?php if(setting('google_site_verification','')!==''): ?><meta name="google-site-verification" content="<?= e(setting('google_site_verification')) ?>"><?php endif; ?>
+<?php if(setting('bing_site_verification','')!==''): ?><meta name="msvalidate.01" content="<?= e(setting('bing_site_verification')) ?>"><?php endif; ?>
+<?php if(!empty($articlePublished)): ?><meta property="article:published_time" content="<?= e($articlePublished) ?>"><?php endif; ?>
+<?php if(!empty($articleModified)): ?><meta property="article:modified_time" content="<?= e($articleModified) ?>"><?php endif; ?>
 <meta name="theme-color" content="#102c40">
+<?php if($schemaJson): ?><script type="application/ld+json"><?= $schemaJson ?></script><?php endif; ?>
 <link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>">
 <?= $extraHead ?? '' ?>
