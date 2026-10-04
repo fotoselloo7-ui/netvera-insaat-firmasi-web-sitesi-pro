@@ -264,4 +264,70 @@ INSERT IGNORE INTO pages (id,slug,eyebrow,title,intro,body,meta_title,meta_descr
 (1,'hakkimizda','Kurumsal','Güvenilir yapılar, şeffaf süreçler.','Vera Yapı; planlama, teknik uygulama ve teslim süreçlerini tek sorumluluk altında yürüten bir inşaat markasıdır.','Her projede uygulanabilir bütçe, doğru teknik çözüm, düzenli saha takibi ve açık iletişim yaklaşımını benimsiyoruz.','Hakkımızda | Vera Yapı','Vera Yapı kurumsal yaklaşımı, çalışma prensipleri ve inşaat deneyimi.',1),
 (2,'iletisim','İletişim','Projenizi birlikte değerlendirelim.','Konut, villa, ticari yapı, taahhüt veya renovasyon ihtiyacınız için bize ulaşın.','İlk görüşmede proje türü, konum, yaklaşık alan ve hedef takvimi birlikte değerlendiririz.','İletişim | Vera Yapı','Vera Yapı iletişim, teklif ve keşif talebi.',1);
 
+
+INSERT IGNORE INTO pages (slug,eyebrow,title,intro,body,meta_title,meta_description,is_active) VALUES
+('kvkk-aydinlatma-metni','Yasal Bilgilendirme','KVKK Aydınlatma Metni','Kişisel verilerin hangi amaçlarla işlendiğini, saklandığını ve ilgili kişi haklarını açıklayan bilgilendirme metni.',
+'## Veri Sorumlusu ve Kapsam
+Bu metin, Vera Yapı ile iletişime geçen ziyaretçi ve müşterilerin kişisel verilerinin 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında işlenmesine ilişkin genel bilgilendirmedir. Canlı kullanımdan önce şirket unvanı, MERSİS/vergi bilgileri ve resmi iletişim bilgileri yönetim panelinden güncellenmelidir.
+
+## İşlenebilecek Veriler
+- Ad soyad ve iletişim bilgileri
+- Proje türü, konum ve talep bilgileri
+- Teklif, keşif ve müşteri iletişimi kapsamında paylaşılan bilgiler
+- Site güvenliği ve teknik kayıtlar kapsamında sınırlı trafik verileri
+
+## İşleme Amaçları
+Kişisel veriler; iletişim taleplerini yanıtlamak, keşif ve teklif süreçlerini yürütmek, sözleşme öncesi ve sonrası hizmetleri sağlamak, hukuki yükümlülükleri yerine getirmek ve bilgi güvenliğini korumak amacıyla işlenebilir.
+
+## Aktarım ve Saklama
+Veriler yalnızca hizmetin yürütülmesi ve hukuki yükümlülüklerin yerine getirilmesi için gerekli olması halinde yetkili hizmet sağlayıcılar ve kamu kurumlarıyla paylaşılabilir. Veriler, ilgili mevzuatta öngörülen veya işleme amacı için gerekli süre boyunca saklanır.
+
+## İlgili Kişi Hakları
+KVKK''nın 11. maddesi kapsamındaki haklarınıza ilişkin taleplerinizi sitede belirtilen iletişim kanalları üzerinden iletebilirsiniz.
+
+## Güncelleme
+Bu metin, iş süreçleri ve mevzuat değişiklikleri doğrultusunda güncellenebilir.',
+'KVKK Aydınlatma Metni | Vera Yapı','Vera Yapı kişisel verilerin korunması ve KVKK aydınlatma metni.',1),
+
+('gizlilik-politikasi','Yasal Bilgilendirme','Gizlilik Politikası','Web sitesi kullanımı sırasında toplanabilecek bilgilerin nasıl korunduğunu ve kullanıldığını açıklayan gizlilik politikası.',
+'## Gizlilik Yaklaşımımız
+Vera Yapı, web sitesi üzerinden paylaşılan bilgilerin gizliliğini korumayı ve yalnızca açık, meşru amaçlarla kullanmayı hedefler.
+
+## Toplanan Bilgiler
+- İletişim ve teklif formlarında kullanıcı tarafından verilen bilgiler
+- WhatsApp veya telefon üzerinden gönüllü olarak paylaşılan proje bilgileri
+- Site güvenliği ve performansı için gerekli sınırlı teknik kayıtlar
+
+## Bilgilerin Kullanımı
+Toplanan bilgiler taleplerin yanıtlanması, hizmet kapsamının değerlendirilmesi, teklif ve keşif süreçlerinin yönetilmesi, site güvenliği ve yasal yükümlülüklerin yerine getirilmesi amacıyla kullanılabilir.
+
+## Üçüncü Taraflar
+Google Haritalar, sosyal medya bağlantıları veya benzeri üçüncü taraf hizmetlere yönlendiren bağlantılar kendi gizlilik politikalarına tabidir. Vera Yapı bu platformların bağımsız veri işleme uygulamalarından sorumlu değildir.
+
+## Güvenlik
+Yetkisiz erişimi, kaybı veya kötüye kullanımı azaltmak için makul teknik ve idari önlemler uygulanır.
+
+## İletişim
+Gizlilik uygulamalarına ilişkin sorularınızı sitede yer alan e-posta veya diğer iletişim kanallarından iletebilirsiniz.',
+'Gizlilik Politikası | Vera Yapı','Vera Yapı web sitesi gizlilik politikası ve kişisel bilgi güvenliği açıklamaları.',1),
+
+('cerez-politikasi','Yasal Bilgilendirme','Çerez Politikası','Sitenin kullandığı zorunlu ve isteğe bağlı çerezler ile benzer teknolojilere ilişkin bilgilendirme.',
+'## Çerez Nedir?
+Çerezler, ziyaret edilen web siteleri tarafından tarayıcınıza kaydedilebilen küçük veri dosyalarıdır.
+
+## Kullanılabilecek Çerez Türleri
+- Zorunlu çerezler: Sitenin temel işlevleri ve güvenliği için gerekli olabilir.
+- Tercih çerezleri: Kullanıcı tercihlerini hatırlamak için kullanılabilir.
+- Analitik çerezler: Ziyaret ve performans verilerini ölçmek amacıyla, yalnızca ilgili araçlar etkinleştirildiğinde kullanılabilir.
+
+## Üçüncü Taraf İçerikler
+Google Haritalar veya dış platformlara ait gömülü içerikler kendi çerez ve veri işleme mekanizmalarını kullanabilir. Bu içerikler ilgili üçüncü tarafın koşullarına tabidir.
+
+## Çerezleri Yönetme
+Tarayıcı ayarlarınızdan çerezleri silebilir, engelleyebilir veya belirli site izinlerini değiştirebilirsiniz. Zorunlu çerezlerin engellenmesi bazı site özelliklerinin çalışmasını etkileyebilir.
+
+## Güncellemeler
+Bu politika kullanılan teknolojiler değiştikçe güncellenebilir.',
+'Çerez Politikası | Vera Yapı','Vera Yapı web sitesi çerez kullanımı ve çerez tercihleri hakkında bilgilendirme.',1);
+
 SET FOREIGN_KEY_CHECKS=1;
