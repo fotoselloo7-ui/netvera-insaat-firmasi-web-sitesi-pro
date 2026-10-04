@@ -8,6 +8,10 @@ $checks['services'] = (int)db()->query("SELECT COUNT(*) FROM services WHERE is_a
 $checks['projects'] = (int)db()->query("SELECT COUNT(*) FROM projects WHERE is_active=1")->fetchColumn() >= 3;
 $checks['sliders'] = (int)db()->query("SELECT COUNT(*) FROM sliders WHERE is_active=1")->fetchColumn() >= 3;
 $checks['admin'] = (int)db()->query("SELECT COUNT(*) FROM admins")->fetchColumn() >= 1;
+$checks['seo_services_column'] = seo_column_exists('services','focus_keyword');
+$checks['seo_region_slug'] = seo_column_exists('service_areas','slug');
+$checks['seo_home_setting'] = setting('seo_home_title','') !== '';
+$checks['seo_listing_pages'] = (int)db()->query("SELECT COUNT(*) FROM pages WHERE slug IN ('hizmetler','projeler','blog','bolgeler')")->fetchColumn() >= 4;
 
 $admin = db()->query("SELECT * FROM admins ORDER BY id ASC LIMIT 1")->fetch();
 $checks['seed_password'] = $admin && password_verify('ChangeMe123!', $admin['password_hash']);
