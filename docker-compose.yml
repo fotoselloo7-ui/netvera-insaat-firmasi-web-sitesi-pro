@@ -1,0 +1,38 @@
+services:
+  app:
+    image: php:8.3-cli
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: sh -c "docker-php-ext-install pdo_mysql >/dev/null 2>&1 || true; php -S 0.0.0.0:8080"
+    environment:
+      APP_URL: http://localhost:8080
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: netvera_insaat
+      DB_USERNAME: netvera
+      DB_PASSWORD: netvera
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: netvera_insaat
+      MYSQL_USER: netvera
+      MYSQL_PASSWORD: netvera
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/001-database.sql:ro
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","-h","localhost","-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  mysql_data:
