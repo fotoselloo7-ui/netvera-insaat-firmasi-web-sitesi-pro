@@ -6,7 +6,7 @@ services:
     working_dir: /workspace
     volumes:
       - .:/workspace
-    command: php -S 0.0.0.0:8080
+    command: php -S 0.0.0.0:8080 router.php
     environment:
       DB_HOST: db
       DB_PORT: 3306
