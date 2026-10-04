@@ -76,25 +76,27 @@ include __DIR__.'/partials/header.php';
 <?php endif; ?>
 
 <?php $sec=section('services'); if($sec['is_active']): ?>
-<section class="home-section services-editorial-v5">
-  <div class="container services-editorial-grid">
-    <div class="services-intro-v5">
-      <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
-      <h2><?= e($sec['title']) ?></h2>
+<section class="home-section services-editorial-v6">
+  <div class="container">
+    <div class="services-head-v6">
+      <div>
+        <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
+        <h2 data-human-heading><?= e($sec['title']) ?></h2>
+      </div>
       <p><?= e($sec['body']) ?></p>
-      <a class="text-link-v5" href="<?= e(app_url('hizmetler')) ?>">Tüm hizmetleri inceleyin
-        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
-      </a>
     </div>
-    <div class="services-list-v5">
+    <div class="services-list-v6">
       <?php foreach(array_slice($services,0,6) as $i=>$s): ?>
-        <a class="service-row-v5" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
+        <a class="service-row-v6" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
           <span class="service-row-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
           <div class="service-row-copy"><h3><?= e($s['title']) ?></h3><p><?= e($s['summary']) ?></p></div>
-          <svg class="service-row-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h9M10.5 6.5 14 10l-3.5 3.5"/></svg>
+          <span class="service-row-action" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><path d="M6 10h7M10.5 7.5 13 10l-2.5 2.5"/></svg>
+          </span>
         </a>
       <?php endforeach; ?>
     </div>
+    <div class="services-foot-v6"><a class="micro-link-v6" href="<?= e(app_url('hizmetler')) ?>">Tüm hizmetler <span aria-hidden="true">›</span></a></div>
   </div>
 </section>
 <?php endif; ?>
