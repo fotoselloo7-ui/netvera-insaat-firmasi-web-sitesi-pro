@@ -4237,3 +4237,183 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .home-menu{left:16px!important;right:16px!important}
   .home-menu-mobile-extra{padding:10px}
 }
+
+
+/* ==========================================================
+   V20 — FAQ spacing + dark form color collision fix
+   ========================================================== */
+
+/* FAQ rows: real inner breathing room, no text sitting on separators */
+.faq-v5{
+  border-top:1px solid #cfd8dd!important;
+}
+.faq-v5 details{
+  box-sizing:border-box!important;
+  padding:0 16px!important;
+  border:0!important;
+  border-bottom:1px solid #cfd8dd!important;
+  background:transparent!important;
+}
+.faq-v5 summary{
+  min-height:62px!important;
+  display:flex!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+  padding:19px 44px 19px 0!important;
+  margin:0!important;
+  line-height:1.45!important;
+}
+.faq-v5 details p{
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:0 0 22px!important;
+  line-height:1.75!important;
+}
+.faq-v5 summary:after{
+  right:0!important;
+}
+@media(hover:hover) and (pointer:fine){
+  .faq-v5 details:hover{
+    background:rgba(255,255,255,.58)!important;
+  }
+}
+
+/* Dark project form: normalize every browser state */
+.contact-panel-v5 .form-v5 .home-field label{
+  display:grid!important;
+  gap:7px!important;
+  color:#f4f7f9!important;
+}
+.contact-panel-v5 .form-v5 .home-field input,
+.contact-panel-v5 .form-v5 .home-field select,
+.contact-panel-v5 .form-v5 .home-field textarea{
+  width:100%!important;
+  box-sizing:border-box!important;
+  min-height:50px!important;
+  padding:12px 14px!important;
+  border:1px solid #456276!important;
+  border-radius:7px!important;
+  outline:0!important;
+  background:#17394f!important;
+  color:#fff!important;
+  caret-color:#fff!important;
+  box-shadow:none!important;
+  transition:
+    border-color .18s ease,
+    background-color .18s ease,
+    box-shadow .18s ease!important;
+}
+.contact-panel-v5 .form-v5 .home-field textarea{
+  min-height:118px!important;
+  resize:vertical!important;
+}
+.contact-panel-v5 .form-v5 .home-field input::placeholder,
+.contact-panel-v5 .form-v5 .home-field textarea::placeholder{
+  color:#93aabd!important;
+  opacity:1!important;
+}
+.contact-panel-v5 .form-v5 .home-field input:hover,
+.contact-panel-v5 .form-v5 .home-field select:hover,
+.contact-panel-v5 .form-v5 .home-field textarea:hover{
+  border-color:#688297!important;
+  background:#1a3f56!important;
+}
+.contact-panel-v5 .form-v5 .home-field input:focus,
+.contact-panel-v5 .form-v5 .home-field select:focus,
+.contact-panel-v5 .form-v5 .home-field textarea:focus{
+  border-color:#d48749!important;
+  background:#1a4058!important;
+  box-shadow:0 0 0 3px rgba(201,121,59,.16)!important;
+}
+
+/* Remove native select chrome that was mixing OS colors with the site */
+.contact-panel-v5 .form-v5 .home-field select{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  color-scheme:dark!important;
+  cursor:pointer!important;
+  padding-right:42px!important;
+  background-color:#17394f!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23dbe7ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:right 14px center!important;
+  background-size:14px 14px!important;
+}
+.contact-panel-v5 .form-v5 .home-field select option{
+  background:#17394f!important;
+  color:#fff!important;
+}
+.contact-panel-v5 .form-v5 .home-field select option:checked{
+  background:#c9793b!important;
+  color:#fff!important;
+}
+
+/* Keep Chrome autofill from painting light/yellow fields inside the dark panel */
+.contact-panel-v5 .form-v5 .home-field input:-webkit-autofill,
+.contact-panel-v5 .form-v5 .home-field input:-webkit-autofill:hover,
+.contact-panel-v5 .form-v5 .home-field input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#fff!important;
+  -webkit-box-shadow:0 0 0 1000px #17394f inset!important;
+  box-shadow:0 0 0 1000px #17394f inset!important;
+  caret-color:#fff!important;
+  transition:background-color 9999s ease-out 0s!important;
+}
+
+/* Mobile/tablet: preserve breathing room without wasting screen width */
+@media(max-width:768px){
+  .faq-v5 details{
+    padding:0 14px!important;
+  }
+  .faq-v5 summary{
+    min-height:58px!important;
+    padding:16px 40px 16px 0!important;
+    font-size:12px!important;
+    line-height:1.48!important;
+  }
+  .faq-v5 details p{
+    padding:0 0 18px!important;
+    font-size:11.5px!important;
+    line-height:1.7!important;
+  }
+
+  .contact-panel-v5{
+    padding:24px 20px!important;
+  }
+  .contact-panel-v5 .form-v5{
+    gap:14px!important;
+  }
+  .contact-panel-v5 .form-v5 .home-field label{
+    gap:7px!important;
+  }
+  .contact-panel-v5 .form-v5 .home-field input,
+  .contact-panel-v5 .form-v5 .home-field select,
+  .contact-panel-v5 .form-v5 .home-field textarea{
+    min-height:50px!important;
+    padding:12px 13px!important;
+    font-size:16px!important;
+    border-radius:7px!important;
+  }
+  .contact-panel-v5 .form-v5 .home-field select{
+    padding-right:40px!important;
+    background-position:right 13px center!important;
+  }
+  .contact-panel-v5 .form-v5 .home-field textarea{
+    min-height:112px!important;
+  }
+}
+
+@media(max-width:420px){
+  .faq-v5 details{
+    padding:0 12px!important;
+  }
+  .faq-v5 summary{
+    min-height:56px!important;
+    padding:15px 38px 15px 0!important;
+  }
+  .faq-v5 details p{
+    padding-bottom:17px!important;
+  }
+  .contact-panel-v5{
+    padding:21px 16px!important;
+  }
+}
