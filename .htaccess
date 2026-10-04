@@ -1,5 +1,13 @@
-DirectoryIndex index.php index.html
+# NetVera production hardening
+Options -Indexes
+<FilesMatch "^(\.env\.php|database\.sql|docker-compose\.yml|README(?:\.md|\.txt)?)$">
+  Require all denied
+</FilesMatch>
+
 RewriteEngine On
+RewriteRule ^(?:app|config|partials|tests|\.github|\.devcontainer)(?:/|$) - [F,L]
+
+DirectoryIndex index.php index.html
 
 # Dynamic SEO endpoints must win before physical demo files.
 RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
