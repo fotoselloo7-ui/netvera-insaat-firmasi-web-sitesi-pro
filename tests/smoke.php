@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+require dirname(__DIR__) . '/app/bootstrap.php';
+
+$checks = [];
+$checks['settings'] = (int)db()->query("SELECT COUNT(*) FROM settings")->fetchColumn() >= 10;
+$checks['services'] = (int)db()->query("SELECT COUNT(*) FROM services WHERE is_active=1")->fetchColumn() >= 6;
+$checks['projects'] = (int)db()->query("SELECT COUNT(*) FROM projects WHERE is_active=1")->fetchColumn() >= 3;
+$checks['sliders'] = (int)db()->query("SELECT COUNT(*) FROM sliders WHERE is_active=1")->fetchColumn() >= 3;
+$checks['admin'] = (int)db()->query("SELECT COUNT(*) FROM admins")->fetchColumn() >= 1;
+
+$admin = db()->query("SELECT * FROM admins ORDER BY id ASC LIMIT 1")->fetch();
+$checks['seed_password'] = $admin && password_verify('ChangeMe123!', $admin['password_hash']);
+
+foreach ($checks as $name => $ok) {
+    echo ($ok ? '[OK] ' : '[FAIL] ') . $name . PHP_EOL;
+}
+if (in_array(false, $checks, true)) exit(1);
+echo "Database smoke test passed." . PHP_EOL;
