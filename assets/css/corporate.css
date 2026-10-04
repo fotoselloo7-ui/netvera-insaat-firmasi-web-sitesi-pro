@@ -4561,3 +4561,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   }
   .home-footer-brand-line>strong{font-size:14px}
 }
+
+
+/* Static preview brand asset compatibility */
+.home-logo-mark.has-brand-image{
+  padding:4px!important;
+  background:#fff!important;
+  border:1px solid rgba(16,44,64,.10)!important;
+  overflow:hidden!important;
+}
+.home-logo-mark.has-brand-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
