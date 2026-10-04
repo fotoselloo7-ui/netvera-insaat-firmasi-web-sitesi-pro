@@ -453,3 +453,19 @@ body{font-size:15px}
 .seo-preview-title{margin-top:4px;color:#1a0dab;font-size:18px;line-height:1.3;font-weight:500}
 .seo-serp-preview p{margin:5px 0 0;max-width:760px;color:#4d5156;font-size:12px;line-height:1.55}
 .seo-char-count{display:block;margin-top:3px;color:#9aa4ab;font-size:9px;text-align:right}
+
+
+/* Service summary character limit */
+.admin-char-counter{
+  display:flex;
+  justify-content:flex-end;
+  gap:4px;
+  margin-top:6px;
+  color:#7b8992;
+  font-size:11px;
+  line-height:1.2;
+}
+.admin-char-counter b{
+  color:#16384f;
+  font-weight:700;
+}
