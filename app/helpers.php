@@ -68,6 +68,49 @@ function media_url(?string $value): string {
     return app_url($value);
 }
 
+function google_maps_embed_url(?string $value, string $fallbackAddress = ''): string {
+    $value = trim((string)$value);
+    $fallbackAddress = trim($fallbackAddress);
+
+    if ($value === '') {
+        return $fallbackAddress !== ''
+            ? 'https://www.google.com/maps?q='.rawurlencode($fallbackAddress).'&output=embed'
+            : '';
+    }
+
+    if (!preg_match('#^https?://#i', $value)) {
+        return 'https://www.google.com/maps?q='.rawurlencode($value).'&output=embed';
+    }
+
+    $parts = parse_url($value);
+    $host = strtolower((string)($parts['host'] ?? ''));
+    if (!preg_match('/(^|\.)google\.[a-z.]+$|(^|\.)googleusercontent\.com$|(^|\.)maps\.google\.[a-z.]+$/i', $host)) {
+        return $fallbackAddress !== ''
+            ? 'https://www.google.com/maps?q='.rawurlencode($fallbackAddress).'&output=embed'
+            : '';
+    }
+
+    $path = (string)($parts['path'] ?? '');
+    if (str_contains($path, '/maps/embed')) return $value;
+
+    parse_str((string)($parts['query'] ?? ''), $query);
+    $q = trim((string)($query['q'] ?? $query['query'] ?? ''));
+    if ($q !== '') return 'https://www.google.com/maps?q='.rawurlencode($q).'&output=embed';
+
+    if (preg_match('#/maps/place/([^/]+)#i', $path, $m)) {
+        $place = trim(rawurldecode(str_replace('+', ' ', $m[1])));
+        if ($place !== '') return 'https://www.google.com/maps?q='.rawurlencode($place).'&output=embed';
+    }
+
+    if (preg_match('/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/', $value, $m)) {
+        return 'https://www.google.com/maps?q='.rawurlencode($m[1].','.$m[2]).'&output=embed';
+    }
+
+    return $fallbackAddress !== ''
+        ? 'https://www.google.com/maps?q='.rawurlencode($fallbackAddress).'&output=embed'
+        : '';
+}
+
 function setting(string $key, string $default = ''): string {
     if (!array_key_exists('settings_cache', $GLOBALS) || $GLOBALS['settings_cache'] === null) {
         $GLOBALS['settings_cache'] = [];
