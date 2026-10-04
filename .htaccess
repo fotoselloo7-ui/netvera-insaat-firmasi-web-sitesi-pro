@@ -1,0 +1,15 @@
+DirectoryIndex index.php index.html
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^hakkimizda/?$ hakkimizda.php [L,QSA]
+RewriteRule ^hizmetler/?$ hizmetler.php [L,QSA]
+RewriteRule ^hizmet/([a-z0-9-]+)/?$ hizmet.php?slug=$1 [L,QSA]
+RewriteRule ^projeler/?$ projeler.php [L,QSA]
+RewriteRule ^proje/([a-z0-9-]+)/?$ proje.php?slug=$1 [L,QSA]
+RewriteRule ^blog/?$ blog.php [L,QSA]
+RewriteRule ^blog/([a-z0-9-]+)/?$ yazi.php?slug=$1 [L,QSA]
+RewriteRule ^iletisim/?$ iletisim.php [L,QSA]
