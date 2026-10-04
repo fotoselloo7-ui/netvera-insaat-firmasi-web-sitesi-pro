@@ -23,6 +23,10 @@ $stats=rows('home_stats');
 $principles=feature_group('why');
 $process=feature_group('process');
 $aboutImage=$page['hero_image'] ?: setting('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400');
+$secEditorial=page_section('hakkimizda','editorial');
+$secPrinciples=page_section('hakkimizda','principles');
+$secProcess=page_section('hakkimizda','process');
+$secCta=page_section('hakkimizda','cta');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -39,15 +43,15 @@ include __DIR__.'/partials/header.php';
     <div class="editorial-visual-caption"><span>Alanya / Antalya</span><span>Planlama · Uygulama · Teslim</span></div>
   </div>
   <article class="editorial-copy">
-    <div class="home-kicker">Nasıl Çalışıyoruz?</div>
-    <p class="lead">İyi bir yapı yalnızca malzeme ve işçilikten değil; doğru kararların doğru sırayla alınmasından oluşur.</p>
+    <div class="home-kicker"><?= e($secEditorial['eyebrow']) ?></div>
+    <p class="lead"><?= e($secEditorial['secondary_text']) ?></p>
     <?php $paragraphs=array_values(array_filter(array_map('trim',preg_split('/\R{2,}/',(string)$page['body'])))); ?>
     <?php if($paragraphs): foreach($paragraphs as $p): ?><p><?= nl2br(e($p)) ?></p><?php endforeach; else: ?>
       <p>Vera Yapı olarak keşif, bütçe, teknik çözüm, tedarik, saha uygulaması ve teslim süreçlerini tek koordinasyon yapısında ele alıyoruz. Böylece müşterinin yalnızca bitmiş yapıya değil, projenin nasıl ilerlediğine de güvenebilmesini hedefliyoruz.</p>
       <p>Her projede kapsamı mümkün olduğunca erken netleştiriyor, kritik kararları sahaya taşımadan önce çözüyor ve uygulama boyunca düzenli bilgi akışını koruyoruz.</p>
     <?php endif; ?>
-    <h2>Gösterişten önce düzen, vaatten önce süreç.</h2>
-    <p>Bizim için premium hizmet; daha fazla söz vermek değil, daha az belirsizlik üretmektir. Bütçe, takvim, malzeme ve uygulama kararlarının izlenebilir olması bu yüzden çalışma modelimizin merkezindedir.</p>
+    <h2><?= e($secEditorial['title']) ?></h2>
+    <p><?= e($secEditorial['body']) ?></p>
   </article>
 </div></section>
 
@@ -56,20 +60,20 @@ include __DIR__.'/partials/header.php';
 </div></div></section><?php endif; ?>
 
 <section class="page-section"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Çalışma Prensipleri</div><h2>Projeyi güçlü kılan görünmeyen disiplin.</h2></div><p>İnşaat sürecinde güven; yalnızca sonuçtan değil, kararların nasıl alındığından doğar.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secPrinciples['eyebrow']) ?></div><h2><?= e($secPrinciples['title']) ?></h2></div><p><?= e($secPrinciples['body']) ?></p></div>
   <div class="principle-grid">
     <?php foreach($principles as $p): ?><article class="principle-card"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></article><?php endforeach; ?>
   </div>
 </div></section>
 
 <section class="page-section navy"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Proje Akışı</div><h2 style="color:#fff">İlk görüşmeden teslim anına kadar tek ritim.</h2></div><p style="color:#afbdc6">Müşteri hangi aşamada olduğumuzu, sıradaki kararın ne olduğunu ve kimden sorumlu olduğunu bilir.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2 style="color:#fff"><?= e($secProcess['title']) ?></h2></div><p style="color:#afbdc6"><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
 </div></section>
 
 <section class="page-section"><div class="container"><div class="inline-editorial-cta">
-  <div><div class="home-kicker">İlk Değerlendirme</div><h3>Projenizi masaya yatırmadan fiyat konuşmayalım.</h3><p>Konumu, yaklaşık alanı ve hedefinizi paylaşın; önce doğru kapsamı birlikte netleştirelim.</p></div>
-  <a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Projeyi Konuşalım</a>
+  <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
+  <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Projeyi Konuşalım') ?></a>
 </div></div></section>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
