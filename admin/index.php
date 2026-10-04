@@ -102,7 +102,7 @@ $modules = [
         'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Blog içerikleri için BlogPosting veya Article.'],
         'published_at'=>['label'=>'Yayın Tarihi','type'=>'datetime-local'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
-    'pages'=>['label'=>'Kurumsal Sayfalar','table'=>'pages','title'=>'title','fields'=>[
+    'pages'=>['label'=>'Sayfalar / Landing','table'=>'pages','title'=>'title','fields'=>[
         'slug'=>['label'=>'SEO Slug','type'=>'text'],'eyebrow'=>['label'=>'Üst Başlık','type'=>'text'],'title'=>['label'=>'Başlık','type'=>'text'],'intro'=>['label'=>'Giriş','type'=>'textarea'],
         'body'=>['label'=>'İçerik','type'=>'textarea'],'hero_image'=>['label'=>'Hero Görseli','type'=>'image'],
         ...$seoFields,
