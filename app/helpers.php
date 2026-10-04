@@ -50,14 +50,18 @@ function media_url(?string $value): string {
 }
 
 function setting(string $key, string $default = ''): string {
-    static $cache = null;
-    if ($cache === null) {
-        $cache = [];
+    if (!array_key_exists('settings_cache', $GLOBALS) || $GLOBALS['settings_cache'] === null) {
+        $GLOBALS['settings_cache'] = [];
         foreach (db()->query('SELECT setting_key, setting_value FROM settings')->fetchAll() as $row) {
-            $cache[$row['setting_key']] = $row['setting_value'];
+            $GLOBALS['settings_cache'][$row['setting_key']] = $row['setting_value'];
         }
     }
+    $cache = $GLOBALS['settings_cache'];
     return array_key_exists($key, $cache) ? (string)$cache[$key] : $default;
+}
+
+function clear_settings_cache(): void {
+    $GLOBALS['settings_cache'] = null;
 }
 
 function section(string $key): array {
