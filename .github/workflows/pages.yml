@@ -1,9 +1,13 @@
 name: Deploy static site to GitHub Pages
 
-# Preview deployment is intentionally manual.
-# During active development many small commits are pushed in quick succession;
-# auto-deploying every commit creates a queue of cancelled/stopping Pages runs.
+# Auto-deploy only after the latest PHP/MySQL smoke test completes successfully.
+# Rapid commits cancel superseded smoke tests, so Pages does not churn on every push.
 on:
+  workflow_run:
+    workflows:
+      - PHP App Smoke Test
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -17,15 +21,16 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest main
+      - name: Checkout tested revision
         uses: actions/checkout@v6
         with:
-          ref: main
+          ref: ${{ github.event.workflow_run.head_sha || 'main' }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
