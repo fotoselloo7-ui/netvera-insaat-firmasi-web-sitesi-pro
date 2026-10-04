@@ -2,17 +2,27 @@ const menuBtn=document.querySelector('.home-menu-btn');
 const menu=document.querySelector('.home-menu');
 
 if(menuBtn&&menu){
-  const closeMenu=()=>{
-    menu.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded','false');
+  const backdrop=document.createElement('button');
+  backdrop.type='button';
+  backdrop.className='home-menu-backdrop';
+  backdrop.setAttribute('aria-label','Menüyü kapat');
+  document.body.appendChild(backdrop);
+
+  const syncMenuState=open=>{
+    menu.classList.toggle('open',open);
+    document.body.classList.toggle('menu-open',open);
+    menuBtn.setAttribute('aria-expanded',String(open));
+    menuBtn.setAttribute('aria-label',open?'Menüyü kapat':'Menüyü aç');
+    menuBtn.classList.toggle('is-open',open);
   };
+  const closeMenu=()=>syncMenuState(false);
   menuBtn.setAttribute('aria-expanded','false');
   menuBtn.addEventListener('click',e=>{
     e.stopPropagation();
-    const open=menu.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded',String(open));
+    syncMenuState(!menu.classList.contains('open'));
   });
   menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+  backdrop.addEventListener('click',closeMenu);
   document.addEventListener('click',e=>{
     if(menu.classList.contains('open')&&!menu.contains(e.target)&&!menuBtn.contains(e.target)) closeMenu();
   });
@@ -117,4 +127,26 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersecti
     });
   },{threshold:.12,rootMargin:'0px 0px -35px'});
   revealTargets.forEach(el=>revealObserver.observe(el));
+}
+
+
+/* touch interaction parity: mirrors desktop hover language without sticky :hover */
+if(window.matchMedia('(hover: none), (pointer: coarse)').matches){
+  const touchTargets=document.querySelectorAll(
+    '.home-btn,.home-nav-cta,.micro-link-v6,.text-link-v5,.service-card-v7,.project-featured-v5,.project-side-v5,.process-card-v6,.testimonial-card-v8,.trust-list-v6>div,.region-links-v6 a,.about-principle,.why-row-v5,.insight-side,.quick-cta,.contact-panel-v5,.principle-card,.process-step,.scope-card,.project-case-card,.related-project-card,.blog-side-card,.list-card,.region-card,.contact-expectation>div,.service-method-card,.service-directory-row,.project-facts>div,.fact-ribbon>div,.contact-channel'
+  );
+  const clear=el=>{
+    el.classList.remove('is-touch-active');
+    if(el._touchTimer){clearTimeout(el._touchTimer);el._touchTimer=null}
+  };
+  touchTargets.forEach(el=>{
+    el.addEventListener('pointerdown',()=>{
+      clear(el);
+      el.classList.add('is-touch-active');
+    },{passive:true});
+    ['pointerup','pointercancel','pointerleave'].forEach(evt=>el.addEventListener(evt,()=>{
+      el._touchTimer=setTimeout(()=>clear(el),120);
+    },{passive:true}));
+  });
+  window.addEventListener('scroll',()=>touchTargets.forEach(clear),{passive:true});
 }
