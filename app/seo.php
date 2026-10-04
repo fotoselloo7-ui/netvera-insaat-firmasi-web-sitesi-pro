@@ -20,7 +20,7 @@ function ensure_seo_schema(): void {
     if($done) return;
     $done=true;
 
-    $targetVersion='2026.10-seo-aio-1';
+    $targetVersion='2026.10-seo-aio-2';
     $versionStmt=db()->prepare("SELECT setting_value FROM settings WHERE setting_key='schema_version' LIMIT 1");
     $versionStmt->execute();
     if((string)$versionStmt->fetchColumn()===$targetVersion) return;
@@ -90,6 +90,10 @@ function ensure_seo_schema(): void {
         'seo_robots'=>'index,follow,max-image-preview:large',
         'seo_default_og_image'=>setting('about_image',''),
         'seo_default_image_alt'=>'Alanya inşaat ve taahhüt firması',
+        'about_image_alt'=>'Vera Yapı inşaat projeleri',
+        'about_image_title'=>'Vera Yapı hakkında',
+        'why_image_alt'=>'İnşaat sahası ve yapı uygulaması',
+        'why_image_title'=>'Vera Yapı saha uygulaması',
         'business_legal_name'=>setting('site_name','Vera Yapı'),
         'business_type'=>'GeneralContractor',
         'business_description'=>setting('meta_description',''),
@@ -113,6 +117,16 @@ function ensure_seo_schema(): void {
     ];
     $stmt=db()->prepare("INSERT IGNORE INTO settings (setting_key,setting_value) VALUES (?,?)");
     foreach($defaults as $key=>$value) $stmt->execute([$key,$value]);
+
+    $pageStmt=db()->prepare("INSERT IGNORE INTO pages (slug,eyebrow,title,intro,body,meta_title,meta_description,is_active) VALUES (?,?,?,?,?,?,?,1)");
+    $defaultPages=[
+        ['hizmetler','Uzmanlık Alanlarımız','İnşaat hizmetlerimiz','Konut, villa, ticari yapı, anahtar teslim, renovasyon ve proje uygulama hizmetlerimizi inceleyin.','','Hizmetler | '.setting('site_name','Vera Yapı'),'Alanya ve Antalya’da konut, villa, ticari yapı, anahtar teslim ve renovasyon hizmetleri.'],
+        ['projeler','Proje Portföyü','Tamamlanan ve devam eden projelerimiz','Konut, villa ve ticari yapılardan seçili uygulamalarımızı inceleyin.','','Projeler | '.setting('site_name','Vera Yapı'),'Tamamlanan ve devam eden konut, villa ve ticari yapı projeleri.'],
+        ['blog','Bilgi Merkezi','İnşaat ve yatırım rehberleri','Proje planlama, taahhüt, villa yapımı ve yapı yatırımları hakkında uzman içerikler.','','Blog | '.setting('site_name','Vera Yapı'),'İnşaat, konut yatırımı, anahtar teslim ve proje yönetimi hakkında rehber içerikler.'],
+        ['bolgeler','Yerel Saha Deneyimi','Hizmet verdiğimiz bölgeler','Alanya ve Antalya çevresinde hizmet verdiğimiz bölgeleri inceleyin.','','Hizmet Bölgeleri | '.setting('site_name','Vera Yapı'),'Alanya ve Antalya çevresinde hizmet verilen bölgeler ve yerel inşaat hizmetleri.'],
+    ];
+    foreach($defaultPages as $page) $pageStmt->execute($page);
+
     db()->prepare("INSERT INTO settings (setting_key,setting_value) VALUES ('schema_version',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)")->execute([$targetVersion]);
 }
 
@@ -197,7 +211,7 @@ function seo_readiness(array $row): array {
         'Odak anahtar kelime'=>trim((string)($row['focus_keyword']??''))!=='',
         'Yardımcı kelimeler'=>trim((string)($row['secondary_keywords']??''))!=='',
         'Slug'=>trim((string)($row['slug']??''))!=='',
-        'Canonical'=>trim((string)($row['canonical_url']??''))!=='',
+        'Canonical'=>trim((string)($row['canonical_url']??''))!=='' || trim((string)($row['slug']??''))!=='',
         'Görsel alt metni'=>trim((string)($row['image_alt']??''))!=='',
         'Open Graph görseli'=>trim((string)($row['og_image']??$row['cover_image']??''))!=='',
         'AIO özeti'=>trim((string)($row['aio_summary']??''))!=='',
