@@ -437,26 +437,124 @@ $navGroups = [
         </div>
       </section>
 
-    <?php elseif($module==='settings'): ?>
-      <section class="admin-card">
-        <div class="admin-card-head"><div><span class="admin-card-kicker">GENEL AYARLAR</span><h3>Marka, iletişim ve dönüşüm alanları</h3><p>Bu alanlar sitenin genelinde ve ana sayfadaki CTA'larda kullanılır.</p></div></div>
-        <form class="admin-form" method="post">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="action" value="save_settings">
-          <?php $longSettings=['meta_description','footer_text','contact_body','quick_cta_1_body','quick_cta_1_whatsapp_text','quick_cta_2_body']; ?>
-          <?php foreach($settingsFields as $key=>$label): ?>
-            <label class="admin-field <?= in_array($key,$longSettings,true)?'full':'' ?>">
-              <span><?= e($label) ?></span>
-              <?php if(in_array($key,$longSettings,true)): ?>
-                <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
-              <?php else: ?>
-                <input name="<?= e($key) ?>" value="<?= e(setting($key)) ?>">
-              <?php endif; ?>
-            </label>
-          <?php endforeach; ?>
-          <div class="admin-form-actions full"><button class="admin-btn" type="submit"><?= admin_icon('check') ?> Ayarları Kaydet</button></div>
-        </form>
+    <?php elseif($module==='seo_center'):
+      $seoTables=[
+        'services'=>['label'=>'Hizmetler','module'=>'services'],
+        'projects'=>['label'=>'Projeler','module'=>'projects'],
+        'posts'=>['label'=>'Blog','module'=>'posts'],
+        'pages'=>['label'=>'Kurumsal Sayfalar','module'=>'pages'],
+        'service_areas'=>['label'=>'Hizmet Bölgeleri','module'=>'service_areas'],
+      ];
+      $seoOverview=[];$scoreSum=0;$scoreCount=0;
+      foreach($seoTables as $table=>$meta){
+        $records=db()->query("SELECT * FROM {$table} ORDER BY id DESC")->fetchAll();
+        $sum=0;
+        foreach($records as $record){$r=seo_readiness($record);$sum+=$r['score'];$scoreSum+=$r['score'];$scoreCount++;}
+        $seoOverview[$table]=['count'=>count($records),'avg'=>count($records)?(int)round($sum/count($records)):0]+$meta;
+      }
+      $globalSeo=(int)round((
+        (setting('seo_home_title')!==''?1:0)+
+        (setting('meta_description')!==''?1:0)+
+        (setting('seo_focus_keyword')!==''?1:0)+
+        (setting('seo_home_canonical')!==''?1:0)+
+        (setting('seo_default_og_image')!==''?1:0)+
+        (setting('business_legal_name')!==''?1:0)+
+        (setting('service_area')!==''?1:0)+
+        (setting('aio_brand_summary')!==''?1:0)
+      )/8*100);
+      $contentAvg=$scoreCount?(int)round($scoreSum/$scoreCount):0;
+    ?>
+      <section class="admin-seo-hero">
+        <div>
+          <span class="admin-eyebrow">SEO · LOCAL SEO · GEO · AIO</span>
+          <h2>Arama ve AI görünürlüğünü tek merkezden yönetin.</h2>
+          <p>Bu puan bir Google sıralama garantisi değildir; teknik ve editoryal SEO alanlarının ne kadar eksiksiz doldurulduğunu gösterir.</p>
+        </div>
+        <a class="admin-btn" href="?module=settings">Site SEO Ayarları</a>
       </section>
+
+      <section class="admin-seo-kpis">
+        <div class="admin-seo-score"><span>Site Geneli</span><strong><?= $globalSeo ?>%</strong><div class="seo-progress"><i style="width:<?= $globalSeo ?>%"></i></div><small>Ana sayfa + işletme verileri</small></div>
+        <div class="admin-seo-score"><span>İçerik Ortalaması</span><strong><?= $contentAvg ?>%</strong><div class="seo-progress"><i style="width:<?= $contentAvg ?>%"></i></div><small>Hizmet, proje, blog, sayfa, bölge</small></div>
+        <div class="admin-seo-score"><span>Local SEO</span><strong><?= setting('latitude')!=='' && setting('longitude')!=='' ? 'Hazır' : 'Eksik' ?></strong><small>Adres + koordinat + hizmet bölgesi</small></div>
+        <div class="admin-seo-score"><span>AI / AIO</span><strong><?= setting('aio_brand_summary')!=='' ? 'Aktif' : 'Eksik' ?></strong><small>Net marka ve uzmanlık özeti</small></div>
+      </section>
+
+      <section class="admin-dashboard-grid seo-dashboard-grid">
+        <div class="admin-card admin-card-large">
+          <div class="admin-card-head"><div><span class="admin-card-kicker">İÇERİK HAZIRLIĞI</span><h3>Modül bazlı SEO durumu</h3><p>Eksik alanı olan içeriklere doğrudan geçebilirsiniz.</p></div></div>
+          <div class="seo-module-list">
+          <?php foreach($seoOverview as $row): ?>
+            <a href="?module=<?= e($row['module']) ?>" class="seo-module-row">
+              <div><strong><?= e($row['label']) ?></strong><span><?= (int)$row['count'] ?> kayıt</span></div>
+              <div class="seo-row-progress"><i style="width:<?= (int)$row['avg'] ?>%"></i></div>
+              <b><?= (int)$row['avg'] ?>%</b>
+            </a>
+          <?php endforeach; ?>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-head"><div><span class="admin-card-kicker">KRİTİK KONTROLLER</span><h3>Site seviyesi</h3></div></div>
+          <div class="admin-status-list seo-check-list">
+            <div><span>Ana SEO başlığı</span><b class="<?= setting('seo_home_title')!==''?'ok':'missing' ?>"><?= setting('seo_home_title')!==''?'Hazır':'Eksik' ?></b></div>
+            <div><span>Canonical</span><b class="<?= setting('seo_home_canonical')!==''?'ok':'missing' ?>"><?= setting('seo_home_canonical')!==''?'Hazır':'Otomatik' ?></b></div>
+            <div><span>Preferred image</span><b class="<?= setting('seo_default_og_image')!==''?'ok':'missing' ?>"><?= setting('seo_default_og_image')!==''?'Hazır':'Eksik' ?></b></div>
+            <div><span>LocalBusiness verisi</span><b class="<?= setting('business_legal_name')!==''?'ok':'missing' ?>"><?= setting('business_legal_name')!==''?'Hazır':'Eksik' ?></b></div>
+            <div><span>Google doğrulama</span><b class="<?= setting('google_site_verification')!==''?'ok':'missing' ?>"><?= setting('google_site_verification')!==''?'Ekli':'Opsiyonel' ?></b></div>
+            <div><span>Bing doğrulama</span><b class="<?= setting('bing_site_verification')!==''?'ok':'missing' ?>"><?= setting('bing_site_verification')!==''?'Ekli':'Opsiyonel' ?></b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-card seo-guidance">
+        <div class="admin-card-head"><div><span class="admin-card-kicker">UYGULAMA PRENSİBİ</span><h3>SEO alanlarını nasıl kullanacağız?</h3></div></div>
+        <div class="seo-guidance-grid">
+          <div><b>01</b><strong>Odak kelime</strong><p>İçeriğin ana arama niyetini belirler; meta keywords etiketi olarak yayınlanmaz.</p></div>
+          <div><b>02</b><strong>Canonical</strong><p>Aynı içeriğin tercih edilen temiz URL’sini arama motorlarına bildirir.</p></div>
+          <div><b>03</b><strong>Görsel SEO</strong><p>Alt metin, OG görseli ve schema image alanları görsel keşfedilebilirliğini güçlendirir.</p></div>
+          <div><b>04</b><strong>AIO özeti</strong><p>Kısa, net ve doğrulanabilir uzmanlık özeti AI sistemlerinin içeriği anlamasını kolaylaştırır.</p></div>
+        </div>
+      </section>
+
+    <?php elseif($module==='settings'): ?>
+      <form method="post">
+        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="action" value="save_settings">
+        <?php
+          $longSettings=['meta_description','footer_text','business_description','same_as','aio_brand_summary','aio_expertise','contact_body','quick_cta_1_body','quick_cta_1_whatsapp_text','quick_cta_2_body','seo_secondary_keywords'];
+          $groupHelp=[
+            'Marka & İletişim'=>'Firma kimliği ve sitede gösterilen temel iletişim bilgileri.',
+            'Ana Sayfa SEO'=>'Ana sayfanın title, description, canonical, robots ve preferred image sinyalleri.',
+            'Local SEO / GEO'=>'Organization / LocalBusiness yapılandırılmış verileri ve coğrafi hedefleme.',
+            'AIO / AI Görünürlüğü'=>'AI cevaplarında kullanılabilecek net marka/uzmanlık bağlamı ve IndexNow entegrasyonu.',
+            'Doğrulama'=>'Search Console ve Bing Webmaster Tools doğrulama kodları.',
+            'Dönüşüm Alanları'=>'Ana sayfadaki teklif ve hızlı iletişim CTA içerikleri.',
+          ];
+        ?>
+        <?php foreach($settingsGroups as $groupName=>$fields): ?>
+          <section class="admin-card settings-group-card">
+            <div class="admin-card-head"><div><span class="admin-card-kicker"><?= e(mb_strtoupper($groupName)) ?></span><h3><?= e($groupName) ?></h3><p><?= e($groupHelp[$groupName]??'') ?></p></div></div>
+            <div class="admin-form">
+              <?php foreach($fields as $key=>$label): ?>
+                <label class="admin-field <?= in_array($key,$longSettings,true)?'full':'' ?>">
+                  <span><?= e($label) ?></span>
+                  <?php if(in_array($key,$longSettings,true)): ?>
+                    <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
+                  <?php else: ?>
+                    <input name="<?= e($key) ?>" value="<?= e(setting($key)) ?>">
+                  <?php endif; ?>
+                  <?php if($key==='seo_focus_keyword'): ?><small>Yalnız içerik planlama için; Google meta keywords kullanmaz.</small><?php endif; ?>
+                  <?php if($key==='seo_home_canonical'): ?><small>Boşsa sistem temiz ana sayfa URL’sini otomatik kullanır.</small><?php endif; ?>
+                  <?php if($key==='same_as'): ?><small>Her satıra bir sosyal/kurumsal profil URL’si yazabilirsiniz.</small><?php endif; ?>
+                  <?php if($key==='latitude'||$key==='longitude'): ?><small>LocalBusiness schema için mümkünse kesin işletme koordinatı.</small><?php endif; ?>
+                </label>
+              <?php endforeach; ?>
+            </div>
+          </section>
+        <?php endforeach; ?>
+        <div class="admin-sticky-save"><button class="admin-btn" type="submit"><?= admin_icon('check') ?> Tüm Ayarları Kaydet</button></div>
+      </form>
 
     <?php elseif($module==='account'): ?>
       <section class="admin-card admin-card-narrow">
