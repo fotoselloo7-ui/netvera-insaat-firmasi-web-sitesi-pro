@@ -1,6 +1,8 @@
 <?php
 $active = $active ?? '';
 $siteName = setting('site_name', 'Vera Yapı');
+$logoImage = trim(setting('logo_image',''));
+$faviconImage = trim(setting('favicon_image',''));
 $phone = setting('phone', '+90 500 000 00 00');
 $email = setting('email', 'info@example.com');
 $address = setting('address', 'Alanya / Antalya');
