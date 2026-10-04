@@ -981,3 +981,59 @@
   line-height:1.12!important;
   text-wrap:pretty!important;
 }
+
+
+/* ==========================================================
+   V12 — inner-page mobile gutter + number interaction
+   ========================================================== */
+.service-directory-row .service-no{
+  transition:
+    background .22s ease,
+    color .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease!important;
+}
+.service-directory-row:hover .service-no,
+.service-directory-row:focus-visible .service-no{
+  background:var(--ip-copper)!important;
+  color:#fff!important;
+  border-color:var(--ip-copper)!important;
+  box-shadow:0 6px 14px rgba(201,121,59,.18);
+  transform:translateY(-1px);
+}
+@media (hover:none){
+  .service-directory-row:active .service-no{
+    background:var(--ip-copper)!important;
+    color:#fff!important;
+    border-color:var(--ip-copper)!important;
+    transform:scale(.96);
+  }
+}
+
+@media(max-width:768px){
+  .page-hero-modern > .container,
+  .page-section > .container,
+  .detail-hero > .container,
+  .article-hero > .container,
+  .project-detail-hero > .container,
+  .page-cta > .container{
+    width:100%!important;
+    max-width:100%!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+    margin-inline:auto!important;
+    box-sizing:border-box!important;
+  }
+}
+@media(max-width:420px){
+  .page-hero-modern > .container,
+  .page-section > .container,
+  .detail-hero > .container,
+  .article-hero > .container,
+  .project-detail-hero > .container,
+  .page-cta > .container{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+}
