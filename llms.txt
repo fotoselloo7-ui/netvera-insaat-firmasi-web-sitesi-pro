@@ -1,0 +1,14 @@
+# Vera Yapı
+
+> NetVera İnşaat Firması Web Sitesi Pro için örnek kurumsal inşaat sitesi demosu.
+
+## Ana içerikler
+- Ana Sayfa: şirket özeti, hizmetler, projeler ve iletişim çağrıları.
+- Hakkımızda: yaklaşım ve kurumsal değerler.
+- Hizmetler: konut, ticari yapı, anahtar teslim taahhüt ve renovasyon.
+- Projeler: tamamlanan ve devam eden örnek projeler.
+- Blog: inşaat ve yatırım rehber içerikleri.
+- İletişim: teklif ve proje iletişim formu.
+
+## Bölgesel bağlam
+Demo Alanya / Antalya bağlamındadır. Canlı kurulumda tüm NAP ve hizmet alanları gerçek firma verileriyle değiştirilmelidir.
