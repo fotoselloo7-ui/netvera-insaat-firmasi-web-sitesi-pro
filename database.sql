@@ -220,7 +220,8 @@ INSERT IGNORE INTO home_features (id,group_key,title,body,icon,is_active,sort_or
 INSERT IGNORE INTO testimonials (id,name,role,quote_text,rating,is_active,sort_order) VALUES
 (1,'Mehmet K.','Villa Projesi • Alanya','Proje boyunca maliyet ve uygulama konusunda düzenli bilgi aldık. Sürecin ne durumda olduğunu hep biliyorduk.',5,1,10),
 (2,'Selin A.','Renovasyon • Mahmutlar','İlk keşiften teslimata kadar tek ekip ile ilerlemek bizim için büyük kolaylık oldu. Detaylara gerçekten önem verildi.',5,1,20),
-(3,'Ahmet Y.','Ticari Yapı • Antalya','Teklifte konuştuğumuz kapsamla sahadaki uygulamanın uyumlu olması güven verdi. İletişim tarafı da hızlıydı.',5,1,30);
+(3,'Ahmet Y.','Ticari Yapı • Antalya','Teklifte konuştuğumuz kapsamla sahadaki uygulamanın uyumlu olması güven verdi. İletişim tarafı da hızlıydı.',5,1,30),
+(4,'Zeynep D.','Konut Projesi • Oba','Planlama baştan netti; saha ilerleyişini düzenli takip ettik ve teslim sürecinde sürpriz yaşamadık.',5,1,40);
 
 INSERT IGNORE INTO service_areas (id,title,services_text,is_active,sort_order) VALUES
 (1,'Alanya Merkez','Konut • Ticari • Renovasyon',1,10),(2,'Oba','Konut • Villa',1,20),(3,'Kestel','Villa • Konut',1,30),(4,'Mahmutlar','Konut • Renovasyon',1,40),(5,'Kargıcak','Villa • Özel proje',1,50),(6,'Antalya','Ticari • Taahhüt',1,60);
