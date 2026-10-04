@@ -75,7 +75,8 @@ $settingsFields = [
     'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','tagline'=>'Alt Slogan',
     'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
     'working_hours'=>'Çalışma Saatleri','meta_description'=>'Genel Meta Açıklama','footer_text'=>'Footer Açıklaması',
-    'about_image'=>'Hakkımızda Görsel URL'
+    'about_image'=>'Hakkımızda Görsel URL','why_image'=>'Neden Biz Görsel URL',
+    'contact_title'=>'Ana Sayfa Teklif Kutusu Başlığı','contact_body'=>'Ana Sayfa Teklif Kutusu Açıklaması'
 ];
 
 $module = $_GET['module'] ?? 'dashboard';
