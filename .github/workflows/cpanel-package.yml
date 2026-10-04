@@ -1,0 +1,51 @@
+name: Build cPanel Live Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'deploy/cpanel-live/**'
+      - '.github/workflows/cpanel-package.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cpanel-live-package
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Verify package structure
+        run: |
+          test -f deploy/cpanel-live/index.php
+          test -f deploy/cpanel-live/install.php
+          test -f deploy/cpanel-live/database.sql
+          test -f deploy/cpanel-live/.htaccess
+          test -f deploy/cpanel-live/admin/index.php
+          test -f deploy/cpanel-live/assets/brand/netvera-mark.svg
+          test -f deploy/cpanel-live/partials/header.php
+          test -f deploy/cpanel-live/partials/footer.php
+          grep -q "kvkk-aydinlatma-metni" deploy/cpanel-live/database.sql
+          grep -q "gizlilik-politikasi" deploy/cpanel-live/database.sql
+          grep -q "cerez-politikasi" deploy/cpanel-live/database.sql
+
+      - name: PHP lint
+        run: |
+          find deploy/cpanel-live -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Upload cPanel live ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: netvera-insaat-cpanel-live
+          path: deploy/cpanel-live/
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: error
