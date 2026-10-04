@@ -27,8 +27,9 @@ include __DIR__.'/partials/header.php';
   <div class="home-kicker"><?= e($page['eyebrow']) ?></div><h1><?= e($page['title']) ?></h1><p><?= e($page['intro']) ?></p>
 </div></section>
 
-<section class="page-section" id="teklif"><div class="container contact-premium-grid">
-  <aside class="contact-panel">
+<?php if((int)$secPanel['is_active']===1 || (int)$secForm['is_active']===1): ?>
+<section class="page-section" id="teklif"><div class="container contact-premium-grid<?= ((int)$secPanel['is_active']===0 || (int)$secForm['is_active']===0) ? ' is-single' : '' ?>">
+  <?php if((int)$secPanel['is_active']===1): ?><aside class="contact-panel">
     <div class="home-kicker"><?= e($secPanel['eyebrow']) ?></div><h2><?= e($secPanel['title']) ?></h2><p><?= e($secPanel['body']) ?></p>
     <a class="contact-channel" href="tel:<?= e(preg_replace('/\D+/','',setting('phone'))) ?>"><i>01</i><span><small>Telefon</small><strong><?= e(setting('phone')) ?></strong></span></a>
     <a class="contact-channel" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener"><i>02</i><span><small>WhatsApp</small><strong>Hızlı proje bilgisi gönderin</strong></span></a>
@@ -44,8 +45,8 @@ include __DIR__.'/partials/header.php';
         <?php endforeach; ?>
       </div>
     </div>
-  </aside>
-  <div class="contact-form-shell">
+  </aside><?php endif; ?>
+  <?php if((int)$secForm['is_active']===1): ?><div class="contact-form-shell">
     <div class="home-kicker"><?= e($secForm['eyebrow']) ?></div><h2><?= e($secForm['title']) ?></h2><p><?= e($secForm['body']) ?></p>
     <form class="contact-form-light" data-home-form data-whatsapp="<?= e($wa) ?>">
       <label>Ad Soyad<input name="name" required autocomplete="name"></label>
@@ -55,10 +56,11 @@ include __DIR__.'/partials/header.php';
       <label class="full">Proje Bilgisi<textarea name="message" placeholder="Yaklaşık alan, mevcut proje durumu, hedef tarih veya özellikle konuşmak istediğiniz konu..."></textarea></label>
       <div class="full"><button class="home-btn home-btn-primary" type="submit"><?= e($secForm['button_label'] ?: "WhatsApp'tan Talep Gönder") ?></button><p class="home-form-note" data-form-note></p></div>
     </form>
-  </div>
+  </div><?php endif; ?>
 </div></section>
+<?php endif; ?>
 
-<?php if($mapEmbed!==''): ?>
+<?php if($mapEmbed!=='' && (int)$secMap['is_active']===1): ?>
 <section class="contact-map-section">
   <div class="container">
     <div class="contact-map-head">
@@ -72,11 +74,11 @@ include __DIR__.'/partials/header.php';
 </section>
 <?php endif; ?>
 
-<section class="page-section soft"><div class="container">
+<?php if((int)$secProcess['is_active']===1): ?><section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="contact-expectation">
     <?php foreach($contactProcess as $f): ?><div><small><?= e($f['icon']) ?></small><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></div><?php endforeach; ?>
   </div>
-</div></section>
+</div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
