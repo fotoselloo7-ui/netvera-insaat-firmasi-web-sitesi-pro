@@ -98,3 +98,48 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersecti
   },{threshold:.12,rootMargin:'0px 0px -35px'});
   revealTargets.forEach(el=>revealObserver.observe(el));
 }
+
+
+/* Human heading composition:
+   first line intentionally shorter, second line longer.
+   Works with dynamic admin content and static preview alike. */
+const humanHeadingSelector=[
+  '[data-human-heading]',
+  '.page-hero-modern h1',
+  '.detail-hero h1',
+  '.project-detail-head h1',
+  '.article-hero h1',
+  '.home-section-head-v5 h2',
+  '.home-section-head h2',
+  '.about-editorial-copy h2',
+  '.why-editorial-copy h2',
+  '.faq-column-v5 h2',
+  '.page-title-row h2'
+].join(',');
+
+function composeHumanHeading(el){
+  if(!el || el.dataset.humanComposed==='1') return;
+  const text=(el.textContent||'').replace(/\s+/g,' ').trim();
+  const words=text.split(' ').filter(Boolean);
+  if(words.length<5) return;
+
+  let firstCount=Math.max(2,Math.floor(words.length*.40));
+  if(words.length-firstCount<=firstCount) firstCount=Math.max(1,firstCount-1);
+
+  const first=words.slice(0,firstCount).join(' ');
+  const second=words.slice(firstCount).join(' ');
+  if(!first || !second) return;
+
+  el.textContent='';
+  const line1=document.createElement('span');
+  const line2=document.createElement('span');
+  line1.className='heading-line heading-line-first';
+  line2.className='heading-line heading-line-second';
+  line1.textContent=first;
+  line2.textContent=second;
+  el.append(line1,line2);
+  el.classList.add('human-heading');
+  el.dataset.humanComposed='1';
+}
+
+document.querySelectorAll(humanHeadingSelector).forEach(composeHumanHeading);
