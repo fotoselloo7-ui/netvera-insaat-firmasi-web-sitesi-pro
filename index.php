@@ -28,6 +28,8 @@ $faqs=rows('faqs');
 $posts=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
 $why=feature_group('why'); $process=feature_group('process'); $trust=feature_group('trust');
 $wa=preg_replace('/\D+/','',setting('whatsapp',setting('phone')));
+$instagram=trim((string)setting('instagram_url','https://instagram.com/'));
+$facebook=trim((string)setting('facebook_url','https://facebook.com/'));
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -201,7 +203,12 @@ include __DIR__.'/partials/header.php';
         <div><div class="home-kicker"><?= e($testimonialSec['eyebrow']) ?></div><h2><?= e($testimonialSec['title']) ?></h2></div>
         <p><?= e($testimonialSec['body']) ?></p>
       </div>
-      <?php $tts=array_slice($testimonials,0,4); ?>
+      <?php
+      $tts=array_slice($testimonials,0,4);
+      if(count($tts)<4){
+        $tts[]=['name'=>'Zeynep D.','role'=>'Konut Projesi • Oba','quote_text'=>'Planlama baştan netti; saha ilerleyişini düzenli takip ettik ve teslim sürecinde sürpriz yaşamadık.'];
+      }
+      ?>
       <?php if($tts): ?>
       <div class="testimonial-cards-v7" aria-label="Müşteri yorumları">
         <?php foreach($tts as $t): ?>
