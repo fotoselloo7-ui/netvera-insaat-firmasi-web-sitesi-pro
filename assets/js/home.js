@@ -4,18 +4,25 @@ const menu=document.querySelector('.home-menu');
 
 /* static-preview mobile menu fallback: PHP header already renders this on production */
 if(menu && !menu.querySelector('.home-menu-mobile-extra')){
-  const phoneHref=document.querySelector('.home-mobile-phone')?.getAttribute('href')||'';
-  const waHref=document.querySelector('.home-mobile-wa')?.getAttribute('href')||'';
+  const phoneHref=document.querySelector('.home-mobile-phone')?.getAttribute('href')||'tel:+905000000000';
+  const waHref=document.querySelector('.home-mobile-wa')?.getAttribute('href')||'https://wa.me/905000000000';
+  if(!menu.querySelector('.home-nav-cta')){
+    const cta=document.createElement('a');
+    cta.className='home-nav-cta';
+    cta.href='iletisim.html';
+    cta.textContent='Ücretsiz Keşif Talebi';
+    menu.appendChild(cta);
+  }
   const socialDefs=[
-    ['Instagram','IG','instagram','a[href*="instagram.com"]'],
-    ['Facebook','f','facebook','a[href*="facebook.com"]'],
-    ['X / Twitter','X','twitter','a[href*="twitter.com"],a[href*="x.com"]'],
-    ['YouTube','▶','youtube','a[href*="youtube.com"],a[href*="youtu.be"]']
+    ['Instagram','IG','instagram','a[href*="instagram.com"]','https://www.instagram.com/'],
+    ['Facebook','f','facebook','a[href*="facebook.com"]','https://www.facebook.com/'],
+    ['X / Twitter','X','twitter','a[href*="twitter.com"],a[href*="x.com"]','https://x.com/'],
+    ['YouTube','▶','youtube','a[href*="youtube.com"],a[href*="youtu.be"]','https://www.youtube.com/']
   ];
-  const found=socialDefs.map(([label,short,cls,selector])=>{
+  const found=socialDefs.map(([label,short,cls,selector,fallback])=>{
     const el=document.querySelector(selector);
-    return el?.href ? {label,short,cls,url:el.href} : null;
-  }).filter(Boolean);
+    return {label,short,cls,url:el?.href||fallback};
+  });
   const extra=document.createElement('div');
   extra.className='home-menu-mobile-extra';
   extra.innerHTML=
@@ -76,7 +83,7 @@ if(form){
     const location=(data.get('location')||'').toString().trim();
     const message=(data.get('message')||'').toString().trim();
     const lines=[
-      'Merhaba Vera Yapı, web sitenizden teklif talebi oluşturuyorum.',
+      'Merhaba '+((form.dataset.siteName||document.querySelector('.home-logo>span:last-child')?.firstChild?.textContent||'').trim()||'Vera Yapı')+', web sitenizden teklif talebi oluşturuyorum.',
       '',
       'Ad Soyad: '+name,
       'Telefon: '+phone,
