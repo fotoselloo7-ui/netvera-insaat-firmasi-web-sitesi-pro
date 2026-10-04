@@ -23,7 +23,7 @@ $stats=rows('home_stats');
 $services=rows('services','is_active=1 AND is_featured=1',[],'sort_order ASC,id ASC');
 $projects=rows('projects','is_active=1 AND is_featured=1',[],'sort_order ASC,id ASC');
 $testimonials=rows('testimonials','is_active=1',[],'sort_order ASC,id ASC');
-$testimonialLimit=max(1,min(100,(int)setting('home_testimonials_limit','8')));
+$testimonialLimit=max(1,(int)setting('home_testimonials_limit','8'));
 $areas=rows('service_areas');
 $faqs=rows('faqs');
 $posts=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
