@@ -1,0 +1,9 @@
+<?php
+require_once __DIR__.'/app/bootstrap.php';
+$slug=trim((string)($_GET['slug']??''));$item=one_by_slug('posts',$slug);
+if(!$item){http_response_code(404);$robots='noindex';$metaTitle='Yazı Bulunamadı';include __DIR__.'/partials/header.php';echo '<main id="icerik"><section class="page-hero-modern"><div class="container"><h1>Yazı bulunamadı.</h1></div></section></main>';include __DIR__.'/partials/footer.php';exit;}
+$active='blog';$metaTitle=$item['meta_title'] ?: $item['title'];$metaDescription=$item['meta_description'] ?: $item['excerpt'];$ogImage=$item['cover_image'];
+include __DIR__.'/partials/header.php';
+?>
+<main id="icerik"><section class="page-hero-modern"><div class="container"><div class="page-breadcrumb"><a href="<?= e(app_url()) ?>">Ana Sayfa</a><span>/</span><a href="<?= e(app_url('blog')) ?>">Blog</a><span>/</span><span><?= e($item['title']) ?></span></div><div class="home-kicker"><?= e($item['published_at']?date('d.m.Y',strtotime($item['published_at'])):'Rehber') ?></div><h1><?= e($item['title']) ?></h1><p><?= e($item['excerpt']) ?></p></div></section><section class="page-section"><div class="container content-layout"><article class="content-prose"><?php if($item['cover_image']): ?><img src="<?= e(media_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" style="width:100%;aspect-ratio:16/8;object-fit:cover;border-radius:9px;margin-bottom:28px"><?php endif; ?><?php foreach(preg_split('/\R{2,}/',(string)$item['body']) as $p): ?><p><?= nl2br(e($p)) ?></p><?php endforeach; ?></article><aside class="detail-aside"><h3>Bir proje mi planlıyorsunuz?</h3><p>İhtiyacınızı paylaşın, ücretsiz ilk değerlendirme yapalım.</p><a class="home-btn home-btn-primary" href="<?= e(app_url('#teklif')) ?>">Teklif Alın</a></aside></div></section></main>
+<?php include __DIR__.'/partials/footer.php'; ?>

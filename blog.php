@@ -1,0 +1,7 @@
+<?php
+require_once __DIR__.'/app/bootstrap.php';
+$active='blog';$metaTitle='Blog | '.setting('site_name','Vera Yapı');$metaDescription='İnşaat, konut yatırımı, anahtar teslim ve proje yönetimi hakkında rehber içerikler.';$items=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
+include __DIR__.'/partials/header.php';
+?>
+<main id="icerik"><section class="page-hero-modern"><div class="container"><div class="page-breadcrumb"><a href="<?= e(app_url()) ?>">Ana Sayfa</a><span>/</span><span>Blog</span></div><div class="home-kicker">Bilgi Merkezi</div><h1>İnşaat ve yatırım kararları için anlaşılır rehberler.</h1><p>Projenizi planlarken teknik ve ticari açıdan doğru soruları sormanıza yardımcı olacak içerikler.</p></div></section><section class="page-section"><div class="container"><div class="page-grid-3"><?php foreach($items as $p): ?><article class="list-card"><?php if($p['cover_image']): ?><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['title']) ?>" loading="lazy"></a><?php endif; ?><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h2><a class="title-link" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h2><p><?= e($p['excerpt']) ?></p></article><?php endforeach; ?></div></div></section></main>
+<?php include __DIR__.'/partials/footer.php'; ?>

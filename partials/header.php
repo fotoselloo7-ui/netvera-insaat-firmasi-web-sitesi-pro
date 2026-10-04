@@ -14,14 +14,17 @@ $hours = setting('working_hours', 'Pzt–Cmt 08:30–18:30');
 <title><?= e($metaTitle ?? $siteName) ?></title>
 <meta name="description" content="<?= e($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')) ?>">
 <meta name="robots" content="<?= e($robots ?? 'index,follow,max-image-preview:large') ?>">
-<link rel="canonical" href="<?= e($canonical ?? app_url(ltrim($_SERVER['REQUEST_URI'] ?? '/', '/'))) ?>">
+<link rel="canonical" href="<?= e($canonical ?? app_url(ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))) ?>">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="tr_TR">
 <meta property="og:title" content="<?= e($metaTitle ?? $siteName) ?>">
 <meta property="og:description" content="<?= e($metaDescription ?? setting('meta_description','Alanya ve Antalya’da inşaat ve taahhüt hizmetleri.')) ?>">
-<meta property="og:url" content="<?= e($canonical ?? app_url(ltrim($_SERVER['REQUEST_URI'] ?? '/', '/'))) ?>">
+<meta property="og:url" content="<?= e($canonical ?? app_url(ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))) ?>">
+<?php if(!empty($ogImage)): ?><meta property="og:image" content="<?= e(media_url($ogImage)) ?>"><?php endif; ?>
 <meta name="theme-color" content="#102c40">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>">
+<?= $extraHead ?? '' ?>
 </head>
 <body>
 <a class="skip-link" href="#icerik">İçeriğe geç</a>
