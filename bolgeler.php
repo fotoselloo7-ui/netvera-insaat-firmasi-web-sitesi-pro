@@ -14,10 +14,10 @@ include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
 <section class="page-hero-modern"><div class="container"><div class="page-breadcrumb"><a href="<?= e(app_url()) ?>">Ana Sayfa</a><span>/</span><span>Hizmet Bölgeleri</span></div><div class="home-kicker"><?= e($page['eyebrow']) ?></div><h1><?= e($page['title']) ?></h1><p><?= e($page['intro']) ?></p></div></section>
-<section class="page-section"><div class="container">
+<?php if((int)$secLocal['is_active']===1): ?><section class="page-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secLocal['eyebrow']) ?></div><h2><?= e($secLocal['title']) ?></h2></div><p><?= e($secLocal['body']) ?></p></div>
   <div class="region-list"><?php foreach($items as $a): ?><a class="region-card" href="<?= e(app_url('bolge/'.$a['slug'])) ?>"><small>Hizmet Bölgesi</small><h2><?= e($a['title']) ?></h2><p><?= e($a['summary'] ?: ($a['title'].' bölgesinde '.$a['services_text'].' hizmetleri.')) ?></p><div class="list-meta"><span><?= e($a['services_text']) ?></span><span class="micro-action">Detay</span></div></a><?php endforeach; ?></div>
-</div></section>
-<section class="page-section soft"><div class="container"><div class="inline-editorial-cta"><div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div><a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Konumu Sorun') ?></a></div></div></section>
+</div></section><?php endif; ?>
+<?php if((int)$secCta['is_active']===1): ?><section class="page-section soft"><div class="container"><div class="inline-editorial-cta"><div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div><a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Konumu Sorun') ?></a></div></div></section><?php endif; ?>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
