@@ -68,9 +68,9 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=23">
 <link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=20">
 <?php if($faviconImage!==''): ?>
-<link rel="icon" type="image/svg+xml" href="<?= e(media_url($faviconImage)) ?>">
+<link rel="icon" href="<?= e(media_url($faviconImage)) ?>">
 <link rel="shortcut icon" href="<?= e(media_url($faviconImage)) ?>">
-<link rel="apple-touch-icon" href="<?= e(media_url(setting('apple_touch_icon','assets/brand/netvera-mark.svg'))) ?>">
+<link rel="apple-touch-icon" href="<?= e(media_url($faviconImage)) ?>">
 <?php endif; ?>
 <?= $extraHead ?? '' ?>
 </head>
