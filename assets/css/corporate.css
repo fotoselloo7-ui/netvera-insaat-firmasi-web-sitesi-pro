@@ -1859,3 +1859,124 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .testimonial-card-v7:nth-child(n+3){display:none}
   .faq-social-v7 .social-contact-v6{display:grid!important;grid-template-columns:1fr 1fr}
 }
+
+
+/* ==========================================================
+   V7.1 — service-card proportion correction
+   ========================================================== */
+.services-head-v7{
+  grid-template-columns:minmax(0,7fr) minmax(0,5fr)!important;
+  align-items:center!important;
+  gap:40px!important;
+  margin-bottom:26px!important;
+}
+.services-head-v7>div{
+  align-self:center;
+}
+.services-head-v7>p{
+  align-self:center!important;
+  justify-self:end!important;
+  margin:20px 0 0!important;
+  max-width:470px!important;
+}
+
+.services-grid-v7{
+  gap:18px!important;
+  align-items:stretch!important;
+}
+.service-card-v7{
+  display:flex!important;
+  flex-direction:column!important;
+  height:100%!important;
+}
+.service-card-v7 figure{
+  height:188px!important;
+  flex:0 0 188px!important;
+}
+.service-card-body-v7{
+  min-height:142px!important;
+  padding:16px 16px 14px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  gap:14px!important;
+  align-items:center!important;
+}
+.service-card-body-v7>div{
+  min-width:0;
+  align-self:center;
+}
+.service-card-body-v7 h3{
+  margin:0 0 6px!important;
+  font-size:17px!important;
+  line-height:1.2!important;
+}
+.service-card-body-v7 p{
+  min-height:55px!important;
+  margin:0!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:3!important;
+  overflow:hidden!important;
+  color:var(--muted)!important;
+  font-size:11.75px!important;
+  line-height:1.55!important;
+}
+.service-card-arrow-v7{
+  width:44px!important;
+  height:32px!important;
+  align-self:center!important;
+  justify-self:end!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:7px!important;
+}
+.service-card-arrow-v7 svg{
+  width:14px!important;
+  height:14px!important;
+  margin:0!important;
+}
+
+/* Keep section title + explanatory copy on one visual axis sitewide */
+.home-section-head-v5,
+.home-section-head-v6,
+.home-section-head-v7,
+.services-head-v7,
+.blog-section-head{
+  align-items:center!important;
+}
+.home-section-head-v5>p,
+.home-section-head-v6>p,
+.home-section-head-v7>p,
+.blog-section-head>p{
+  align-self:center!important;
+}
+
+@media(max-width:980px){
+  .services-head-v7{
+    grid-template-columns:1fr!important;
+    align-items:start!important;
+    gap:12px!important;
+  }
+  .services-head-v7>p{
+    justify-self:start!important;
+    margin:0!important;
+    max-width:680px!important;
+  }
+}
+@media(max-width:620px){
+  .service-card-v7 figure{
+    height:178px!important;
+    flex-basis:178px!important;
+  }
+  .service-card-body-v7{
+    min-height:132px!important;
+    grid-template-columns:minmax(0,1fr) 40px!important;
+    padding:14px!important;
+    gap:12px!important;
+  }
+  .service-card-arrow-v7{
+    width:40px!important;
+    height:31px!important;
+  }
+}
