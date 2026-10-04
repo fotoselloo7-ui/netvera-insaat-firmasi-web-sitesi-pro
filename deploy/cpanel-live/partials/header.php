@@ -65,8 +65,8 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <?php if(!empty($articleModified)): ?><meta property="article:modified_time" content="<?= e($articleModified) ?>"><?php endif; ?>
 <meta name="theme-color" content="#102c40">
 <?php if($schemaJson): ?><script type="application/ld+json"><?= $schemaJson ?></script><?php endif; ?>
-<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=21">
-<link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=19">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/corporate.css')) ?>?v=22">
+<link rel="stylesheet" href="<?= e(app_url('assets/css/pages.css')) ?>?v=20">
 <?php if($faviconImage!==''): ?><link rel="icon" href="<?= e(media_url($faviconImage)) ?>"><?php endif; ?>
 <?= $extraHead ?? '' ?>
 </head>

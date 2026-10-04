@@ -429,6 +429,10 @@ function admin_field(array $meta, string $name, $value): string {
         return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/...">'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>';
     }
 
+    if ($type === 'gallery') {
+        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><textarea name="'.e($name).'" rows="4" placeholder=\'["uploads/proje-1.jpg","uploads/proje-2.jpg"]\'>'.$v.'</textarea>'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload[]" accept="image/jpeg,image/png,image/webp,image/avif" multiple><small>En fazla 16 yeni görsel tek seferde seçilebilir. Mevcut JSON listesinden istemediğiniz yolu silerek galeriden kaldırabilirsiniz.</small></label>';
+    }
+
     $htmlType = in_array($type,['datetime-local','number','url','email','color'],true) ? $type : 'text';
     if ($type === 'datetime-local' && $value) {
         $v = e(str_replace(' ', 'T', substr((string)$value, 0, 16)));
@@ -466,7 +470,7 @@ $navGroups = [
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0c2232">
 <title><?= e($pageTitle) ?> · NetVera Admin</title>
-<link rel="stylesheet" href="admin.css?v=3">
+<link rel="stylesheet" href="admin.css?v=4">
 </head>
 <body>
 <div class="admin-shell">
