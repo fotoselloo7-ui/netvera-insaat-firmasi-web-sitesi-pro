@@ -10,6 +10,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/seo.php';
 
 try {
     $dsn = sprintf(
@@ -32,3 +33,5 @@ try {
 
 $GLOBALS['pdo'] = $pdo;
 $GLOBALS['app_config'] = $config;
+
+ensure_seo_schema();
