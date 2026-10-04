@@ -177,7 +177,7 @@ INSERT IGNORE INTO settings (setting_key,setting_value) VALUES
 ('phone','+90 500 000 00 00'),('whatsapp','905000000000'),('email','info@example.com'),
 ('address','Alanya / Antalya'),('instagram_url',''),('facebook_url',''),('twitter_url',''),('youtube_url',''),('google_maps_url','Alanya, Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
 ('home_testimonials_limit','8'),
-('logo_image','assets/brand/netvera-mark.png'),('favicon_image','assets/brand/netvera-mark.png'),('business_logo','assets/brand/netvera-mark.png'),
+('logo_image','assets/brand/netvera-mark.svg'),('favicon_image','assets/brand/netvera-mark.svg'),('business_logo','assets/brand/netvera-mark.svg'),
 ('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'),
 ('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'),
 ('contact_title','Projenizi bize anlatın.'),
