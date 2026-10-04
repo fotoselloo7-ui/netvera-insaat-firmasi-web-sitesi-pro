@@ -1,0 +1,36 @@
+NETVERA İNŞAAT FİRMASI WEB SİTESİ PRO — CPANEL CANLI KURULUM
+
+Bu klasörün İÇERİĞİNİ domainin document root klasörüne (genelde public_html) yükleyin.
+deploy/cpanel-live klasörünün kendisini public_html içine atmayın; içindekileri atın.
+
+HIZLI KURULUM
+1. cPanel > MySQL Databases üzerinden boş bir veritabanı ve kullanıcı oluşturun.
+2. Kullanıcıyı veritabanına ALL PRIVILEGES ile bağlayın.
+3. Bu klasörün tüm içeriğini public_html içine yükleyin.
+4. Tarayıcıdan https://alanadiniz.com/install.php adresini açın.
+5. DB Host, DB Port, DB adı, DB kullanıcı, DB şifre, site URL, admin e-posta ve yeni admin şifresini girin.
+6. Kurulum ekranı bu klasördeki TEK database.sql dosyasını otomatik çalıştırır ve .env.php dosyasını oluşturur.
+7. Kurulumdan sonra siteyi ve /admin/ panelini kontrol edin.
+8. Güvenlik için install.php dosyasını silin veya yeniden adlandırın.
+
+ALTERNATİF SQL KURULUMU
+phpMyAdmin kullanmak isterseniz yalnızca database.sql dosyasını bir kez içe aktarın.
+Daha sonra .env.php bağlantı bilgilerini oluşturmak için install.php ekranını kullanmanız önerilir.
+
+DOSYA İZİNLERİ
+- Klasörler: genelde 755
+- Dosyalar: genelde 644
+- uploads/: görsel yükleme çalışmazsa 775 deneyin.
+- .env.php: kurulumdan sonra mümkünse 600/640 kullanın.
+
+YÖNETİM
+/admin/
+Logo, favicon, slider, hizmet, proje, galeri, blog, bölgeler, yorumlar, SSS, sayfa bölümleri,
+yasal sayfalar, SEO/GEO/AIO ve iletişim ayarları admin panelden yönetilir.
+
+YASAL SAYFALAR
+/kvkk-aydinlatma-metni
+/gizlilik-politikasi
+/cerez-politikasi
+İlk metinler başlangıç şablonudur. Şirketin resmi unvan/vergi/MERSİS/veri sorumlusu bilgilerine göre
+canlıya çıkmadan önce Sayfalar / Landing modülünden gözden geçirilmelidir.
