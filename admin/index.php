@@ -68,9 +68,21 @@ $modules = [
         'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Proje sayfalarında CreativeWork kullanılabilir.'],
         'is_featured'=>['label'=>'Ana Sayfada Göster','type'=>'checkbox'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
-    'home_features'=>['label'=>'Ana Sayfa Özellikleri','table'=>'home_features','title'=>'title','fields'=>[
-        'group_key'=>['label'=>'Grup','type'=>'select','options'=>['why'=>'Neden Biz','process'=>'Süreç','trust'=>'Güven']],
-        'title'=>['label'=>'Başlık','type'=>'text'],'body'=>['label'=>'Açıklama','type'=>'textarea'],'icon'=>['label'=>'Numara / İkon','type'=>'text'],
+    'home_features'=>['label'=>'İçerik Maddeleri','table'=>'home_features','title'=>'title','fields'=>[
+        'group_key'=>['label'=>'Grup','type'=>'select','options'=>[
+            'why'=>'Ana Sayfa · Neden Biz',
+            'process'=>'Ana Sayfa · Süreç',
+            'trust'=>'Ana Sayfa · Güven',
+            'service_flow'=>'Hizmetler · 4 Aşama',
+            'service_method'=>'Hizmetler · Çalışma Modeli',
+            'contact_process'=>'İletişim · Sonraki Adım',
+            'service_scope'=>'Hizmet Detay · Kapsam Maddeleri'
+        ]],
+        'title'=>['label'=>'Başlık','type'=>'text'],
+        'body'=>['label'=>'Açıklama','type'=>'textarea'],
+        'icon'=>['label'=>'Numara / İkon','type'=>'text'],
+        'link_label'=>['label'=>'Bağlantı Yazısı','type'=>'text','help'=>'Kart bağlantısı gerekmiyorsa boş bırakın.'],
+        'link_url'=>['label'=>'Bağlantı Adresi','type'=>'text','help'=>'Örn: hizmet/konut-projeleri veya iletisim'],
         'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'testimonials'=>['label'=>'Müşteri Yorumları','table'=>'testimonials','title'=>'name','fields'=>[
@@ -107,6 +119,30 @@ $modules = [
         ...$seoFields,
         'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Blog içerikleri için BlogPosting veya Article.'],
         'published_at'=>['label'=>'Yayın Tarihi','type'=>'datetime-local'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
+    ]],
+    'page_sections'=>['label'=>'Sayfa Bölümleri','table'=>'page_sections','title'=>'title','fields'=>[
+        'page_key'=>['label'=>'Sayfa / Şablon','type'=>'select','options'=>[
+            'hakkimizda'=>'Hakkımızda',
+            'hizmetler'=>'Hizmetler',
+            'projeler'=>'Projeler',
+            'blog'=>'Blog',
+            'iletisim'=>'İletişim',
+            'bolgeler'=>'Hizmet Bölgeleri',
+            'hizmet-detay'=>'Hizmet Detay Şablonu',
+            'proje-detay'=>'Proje Detay Şablonu',
+            'yazi-detay'=>'Blog Detay Şablonu',
+            'bolge-detay'=>'Bölge Detay Şablonu'
+        ]],
+        'section_key'=>['label'=>'Bölüm Anahtarı','type'=>'text','help'=>'Teknik kimliktir; mevcut kayıtlarda değiştirmeyin.'],
+        'eyebrow'=>['label'=>'Üst Başlık','type'=>'text'],
+        'title'=>['label'=>'Bölüm Başlığı','type'=>'text'],
+        'body'=>['label'=>'Açıklama / İçerik','type'=>'textarea'],
+        'secondary_text'=>['label'=>'İkincil Metin / Lead','type'=>'textarea'],
+        'image'=>['label'=>'Bölüm Görseli','type'=>'image'],
+        'button_label'=>['label'=>'Buton Yazısı','type'=>'text'],
+        'button_url'=>['label'=>'Buton Linki','type'=>'text'],
+        'is_active'=>['label'=>'Aktif','type'=>'checkbox'],
+        'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'pages'=>['label'=>'Sayfalar / Landing','table'=>'pages','title'=>'title','fields'=>[
         'slug'=>['label'=>'SEO Slug','type'=>'text'],'eyebrow'=>['label'=>'Üst Başlık','type'=>'text'],'title'=>['label'=>'Başlık','type'=>'text'],'intro'=>['label'=>'Giriş','type'=>'textarea'],
@@ -319,6 +355,7 @@ function module_icon(string $key): string {
         'faqs' => 'help',
         'posts' => 'edit',
         'pages' => 'pages',
+        'page_sections' => 'layout',
         default => 'layout',
     };
 }
@@ -384,7 +421,7 @@ foreach(['services','projects','sliders','posts'] as $t){$activeCounts[$t]=(int)
 
 $pageTitle = $module==='dashboard' ? 'Dashboard' : ($module==='seo_center' ? 'SEO & AIO Merkezi' : ($module==='settings' ? 'Genel Ayarlar' : ($module==='account' ? 'Hesap & Güvenlik' : ($modules[$module]['label'] ?? 'Yönetim'))));
 $navGroups = [
-    'Site Yönetimi' => ['settings','seo_center','home_sections','sliders','home_stats'],
+    'Site Yönetimi' => ['settings','seo_center','home_sections','page_sections','sliders','home_stats'],
     'İçerik' => ['services','projects','posts','pages'],
     'Güven & Dönüşüm' => ['home_features','testimonials','service_areas','faqs'],
 ];
