@@ -10,6 +10,8 @@ $pageSchema=['@type'=>seo_clean_schema_type($page['schema_type']??'','Blog'),'@i
 $items=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
 $fallbacks=['https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=82&w=1200','https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=82&w=900','https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=82&w=900'];
 $lead=$items[0]??null;$side=array_slice($items,1,2);$rest=array_slice($items,3);
+$secMore=page_section('blog','more');
+$secCta=page_section('blog','cta');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -24,9 +26,9 @@ include __DIR__.'/partials/header.php';
   <div class="blog-side-stack"><?php foreach($side as $i=>$p): ?><a class="blog-side-card" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><figure><img src="<?= e(media_url($p['cover_image'] ?: $fallbacks[$i+1])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>"></figure><div class="blog-side-copy"><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h3><?= e($p['title']) ?></h3><span><?= estimated_reading_minutes((string)$p['body']) ?> dk okuma</span></div></a><?php endforeach; ?></div>
 </div><?php endif; ?>
 
-<?php if($rest): ?><div class="page-title-row"><div><div class="home-kicker">Diğer Yazılar</div><h2>Karar vermeden önce bilmeniz gerekenler.</h2></div></div><div class="page-grid-3"><?php foreach($rest as $i=>$p): ?><article class="list-card"><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'] ?: $fallbacks[$i%3])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></a><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h2><a class="title-link" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h2><p><?= e($p['excerpt']) ?></p></article><?php endforeach; ?></div><?php endif; ?>
+<?php if($rest): ?><div class="page-title-row"><div><div class="home-kicker"><?= e($secMore['eyebrow']) ?></div><h2><?= e($secMore['title']) ?></h2></div></div><div class="page-grid-3"><?php foreach($rest as $i=>$p): ?><article class="list-card"><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'] ?: $fallbacks[$i%3])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></a><small><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></small><h2><a class="title-link" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h2><p><?= e($p['excerpt']) ?></p></article><?php endforeach; ?></div><?php endif; ?>
 </div></section>
 
-<section class="page-section soft"><div class="container"><div class="inline-editorial-cta"><div><div class="home-kicker">Sorunuz Yazıda Yoksa</div><h3>Projenize özel soruyu doğrudan sorun.</h3><p>Genel bilgi yerine kendi proje koşullarınıza göre kısa bir ön değerlendirme alın.</p></div><a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Uzmanla Görüşün</a></div></div></section>
+<section class="page-section soft"><div class="container"><div class="inline-editorial-cta"><div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div><a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Uzmanla Görüşün') ?></a></div></div></section>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
