@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($settingsFields as $key => $label) {
             $value = trim((string)($_POST[$key] ?? ''));
             if ($key === 'home_testimonials_limit') {
-                $value = (string)max(1, min(100, (int)$value));
+                $value = (string)max(1, (int)$value);
             }
             $stmt = db()->prepare('INSERT INTO settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)');
             $stmt->execute([$key,$value]);
@@ -576,7 +576,7 @@ $navGroups = [
                 <label class="admin-field <?= in_array($key,$longSettings,true)?'full':'' ?>">
                   <span><?= e($label) ?></span>
                   <?php if($key==='home_testimonials_limit'): ?>
-                    <input type="number" name="<?= e($key) ?>" min="1" max="100" step="1" value="<?= e(setting($key,'8')) ?>">
+                    <input type="number" name="<?= e($key) ?>" min="1" step="1" value="<?= e(setting($key,'8')) ?>">
                     <small>Toplam yorum kaydı sınırsızdır. Buradaki sayı yalnızca ana sayfada kayan şeritte kaç aktif yorum kullanılacağını belirler.</small>
                   <?php elseif(in_array($key,$longSettings,true)): ?>
                     <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
