@@ -1,0 +1,61 @@
+name: PHP App Smoke Test
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: netvera_insaat
+          MYSQL_USER: netvera
+          MYSQL_PASSWORD: netvera
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      APP_URL: http://127.0.0.1:8080
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: netvera_insaat
+      DB_USERNAME: netvera
+      DB_PASSWORD: netvera
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, fileinfo
+          coverage: none
+      - name: Install MySQL client
+        run: sudo apt-get update -qq && sudo apt-get install -y default-mysql-client
+      - name: Import database
+        run: mysql -h127.0.0.1 -unetvera -pnetvera netvera_insaat < database.sql
+      - name: Database and admin smoke test
+        run: php tests/smoke.php
+      - name: Start PHP server
+        run: |
+          php -S 127.0.0.1:8080 > /tmp/netvera-php.log 2>&1 &
+          echo $! > /tmp/netvera-php.pid
+          sleep 2
+      - name: Test dynamic pages
+        run: |
+          curl -fsS http://127.0.0.1:8080/ | grep -q "VERA YAPI"
+          curl -fsS http://127.0.0.1:8080/admin/login.php | grep -q "NetVera Yönetim Paneli"
+          curl -fsS "http://127.0.0.1:8080/hizmet.php?slug=konut-projeleri" | grep -q "Konut Projeleri"
+          curl -fsS "http://127.0.0.1:8080/proje.php?slug=marina-villa" | grep -q "Marina Villa"
+          curl -fsS http://127.0.0.1:8080/blog.php | grep -q "Bilgi Merkezi"
+      - name: Show PHP server log on failure
+        if: failure()
+        run: cat /tmp/netvera-php.log || true
