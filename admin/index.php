@@ -180,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = db()->prepare('INSERT INTO settings (setting_key,setting_value) VALUES (?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)');
             $stmt->execute([$key,$value]);
         }
+        seo_indexnow_submit([app_url()]);
         header('Location: ?module=settings&saved=1'); exit;
     }
 
@@ -225,6 +226,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $marks=array_fill(0,count($cols),'?');
             db()->prepare("INSERT INTO {$cfg['table']} (".implode(',',$cols).") VALUES (".implode(',',$marks).")")->execute(array_values($data));
         }
+
+        if(!empty($data['slug'])){
+            $prefix=match($module){
+                'services'=>'hizmet/',
+                'projects'=>'proje/',
+                'posts'=>'blog/',
+                'service_areas'=>'bolge/',
+                'pages'=>'',
+                default=>'',
+            };
+            if(in_array($module,['services','projects','posts','service_areas','pages'],true)){
+                $changedUrl=seo_absolute_url($data['canonical_url']??'',app_url($prefix.$data['slug']));
+                seo_indexnow_submit([$changedUrl]);
+            }
+        }
+
         header('Location: ?module='.urlencode($module).'&saved=1'); exit;
     }
 
