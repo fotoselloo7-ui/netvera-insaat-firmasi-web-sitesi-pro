@@ -220,3 +220,41 @@ function seo_readiness(array $row): array {
     $passed=count(array_filter($checks));
     return ['score'=>(int)round(($passed/count($checks))*100),'checks'=>$checks];
 }
+
+
+function seo_indexnow_submit(array $urls): void {
+    $key=trim(setting('indexnow_key',''));
+    if($key==='' || !preg_match('/^[A-Fa-f0-9-]{8,128}$/',$key)) return;
+
+    $urls=array_values(array_unique(array_filter($urls,fn($u)=>preg_match('#^https?://#i',(string)$u))));
+    if(!$urls) return;
+
+    $host=(string)(parse_url(app_url(),PHP_URL_HOST)??'');
+    if($host==='') return;
+
+    $payload=json_encode([
+        'host'=>$host,
+        'key'=>$key,
+        'keyLocation'=>app_url($key.'.txt'),
+        'urlList'=>$urls,
+    ],JSON_UNESCAPED_SLASHES);
+    if(!$payload) return;
+
+    try{
+        if(function_exists('curl_init')){
+            $ch=curl_init('https://api.indexnow.org/indexnow');
+            curl_setopt_array($ch,[
+                CURLOPT_POST=>true,
+                CURLOPT_POSTFIELDS=>$payload,
+                CURLOPT_HTTPHEADER=>['Content-Type: application/json; charset=utf-8'],
+                CURLOPT_RETURNTRANSFER=>true,
+                CURLOPT_CONNECTTIMEOUT=>2,
+                CURLOPT_TIMEOUT=>4,
+            ]);
+            curl_exec($ch);
+            curl_close($ch);
+        }
+    }catch(Throwable $e){
+        // Search notification failures must never block CMS saves.
+    }
+}
