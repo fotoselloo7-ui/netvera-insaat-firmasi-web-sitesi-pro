@@ -74,8 +74,14 @@ $modules = [
         'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'testimonials'=>['label'=>'Müşteri Yorumları','table'=>'testimonials','title'=>'name','fields'=>[
-        'name'=>['label'=>'Ad Soyad','type'=>'text'],'role'=>['label'=>'Proje / Konum','type'=>'text'],'quote_text'=>['label'=>'Yorum','type'=>'textarea'],
-        'rating'=>['label'=>'Puan','type'=>'number'],'is_active'=>['label'=>'Aktif','type'=>'checkbox'],'sort_order'=>['label'=>'Sıra','type'=>'number']
+        'name'=>['label'=>'Ad Soyad','type'=>'text'],
+        'role'=>['label'=>'Proje / Konum','type'=>'text'],
+        'profile_image'=>['label'=>'Profil Fotoğrafı','type'=>'image','help'=>'JPG, PNG, WebP veya AVIF yükleyin. Boş bırakırsanız isim baş harfinden premium avatar oluşturulur.'],
+        'quote_text'=>['label'=>'Yorum','type'=>'textarea','maxlength'=>420],
+        'rating'=>['label'=>'Yıldız Sayısı','type'=>'number','min'=>1,'max'=>5,'step'=>1,'help'=>'1 ile 5 arasında yıldız sayısı.'],
+        'star_color'=>['label'=>'Yıldız Rengi','type'=>'color','default'=>'#FABB05','help'=>'Varsayılan Google yorum sarısı: #FABB05'],
+        'is_active'=>['label'=>'Aktif','type'=>'checkbox'],
+        'sort_order'=>['label'=>'Sıra','type'=>'number']
     ]],
     'service_areas'=>['label'=>'Hizmet Bölgeleri','table'=>'service_areas','title'=>'title','fields'=>[
         'title'=>['label'=>'Bölge / Semt','type'=>'text'],
@@ -213,7 +219,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $uploaded = upload_image($field.'_upload');
                 $data[$field] = $uploaded ?: trim((string)($_POST[$field] ?? ''));
             } elseif ($type === 'number') {
-                $data[$field] = (int)($_POST[$field] ?? 0);
+                $number = (int)($_POST[$field] ?? 0);
+                if (isset($meta['min'])) $number = max((int)$meta['min'], $number);
+                if (isset($meta['max'])) $number = min((int)$meta['max'], $number);
+                $data[$field] = $number;
+            } elseif ($type === 'color') {
+                $color = trim((string)($_POST[$field] ?? ($meta['default'] ?? '#FABB05')));
+                $data[$field] = preg_match('/^#[0-9A-Fa-f]{6}$/', $color) ? strtoupper($color) : (string)($meta['default'] ?? '#FABB05');
             } elseif ($type === 'datetime-local') {
                 $v = trim((string)($_POST[$field] ?? ''));
                 $data[$field] = $v === '' ? null : str_replace('T',' ',$v).':00';
@@ -344,12 +356,22 @@ function admin_field(array $meta, string $name, $value): string {
         return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/...">'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>';
     }
 
-    $htmlType = in_array($type,['datetime-local','number','url','email'],true) ? $type : 'text';
+    $htmlType = in_array($type,['datetime-local','number','url','email','color'],true) ? $type : 'text';
     if ($type === 'datetime-local' && $value) {
         $v = e(str_replace(' ', 'T', substr((string)$value, 0, 16)));
     }
+    if ($type === 'color' && trim((string)$value) === '') {
+        $v = e((string)($meta['default'] ?? '#FABB05'));
+    }
+    $extra = '';
+    if ($type === 'number') {
+        if (isset($meta['min'])) $extra .= ' min="'.(int)$meta['min'].'"';
+        if (isset($meta['max'])) $extra .= ' max="'.(int)$meta['max'].'"';
+        if (isset($meta['step'])) $extra .= ' step="'.e((string)$meta['step']).'"';
+    }
+    if ($type === 'color') $extra .= ' class="admin-color-input"';
 
-    return '<label class="admin-field'.$seoClass.'"><span>'.$label.'</span><input type="'.$htmlType.'" name="'.e($name).'" value="'.$v.'">'.$helpHtml.'</label>';
+    return '<label class="admin-field'.$seoClass.'"><span>'.$label.'</span><input type="'.$htmlType.'" name="'.e($name).'" value="'.$v.'"'.$extra.'>'.$helpHtml.'</label>';
 }
 
 $counts=[];
