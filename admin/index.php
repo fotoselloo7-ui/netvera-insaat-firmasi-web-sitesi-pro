@@ -192,7 +192,8 @@ foreach(['services','projects','sliders','posts'] as $t){$counts[$t]=(int)db()->
 
 <?php elseif($module==='settings'): ?>
 <div class="admin-card"><form class="admin-form" method="post"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="save_settings">
-<?php foreach($settingsFields as $key=>$label): ?><label class="<?= in_array($key,['meta_description','footer_text'])?'full':'' ?>"><?= e($label) ?><?php if(in_array($key,['meta_description','footer_text'])): ?><textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea><?php else: ?><input name="<?= e($key) ?>" value="<?= e(setting($key)) ?>"><?php endif; ?></label><?php endforeach; ?>
+<?php $longSettings=['meta_description','footer_text','contact_body','quick_cta_1_body','quick_cta_1_whatsapp_text','quick_cta_2_body']; ?>
+<?php foreach($settingsFields as $key=>$label): ?><label class="<?= in_array($key,$longSettings,true)?'full':'' ?>"><?= e($label) ?><?php if(in_array($key,$longSettings,true)): ?><textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea><?php else: ?><input name="<?= e($key) ?>" value="<?= e(setting($key)) ?>"><?php endif; ?></label><?php endforeach; ?>
 <div class="full"><button class="admin-btn" type="submit">Ayarları Kaydet</button></div></form></div>
 
 <?php elseif($module==='account'): ?>
