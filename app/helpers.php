@@ -5,6 +5,25 @@ function db(): PDO {
     return $GLOBALS['pdo'];
 }
 
+function ensure_testimonial_schema(): void {
+    $pdo = db();
+    $tableExists = $pdo->query("SHOW TABLES LIKE 'testimonials'")->fetchColumn();
+    if (!$tableExists) return;
+
+    $columns = [];
+    foreach ($pdo->query("SHOW COLUMNS FROM testimonials")->fetchAll() as $column) {
+        $columns[(string)$column['Field']] = true;
+    }
+
+    if (!isset($columns['profile_image'])) {
+        $pdo->exec("ALTER TABLE testimonials ADD COLUMN profile_image VARCHAR(500) NULL AFTER role");
+    }
+    if (!isset($columns['star_color'])) {
+        $pdo->exec("ALTER TABLE testimonials ADD COLUMN star_color VARCHAR(16) NOT NULL DEFAULT '#FABB05' AFTER rating");
+    }
+}
+
+
 function e(?string $value): string {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
