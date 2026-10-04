@@ -426,7 +426,7 @@ function admin_field(array $meta, string $name, $value): string {
     }
 
     if ($type === 'image') {
-        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/...">'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif"></label>';
+        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><input type="text" name="'.e($name).'" value="'.$v.'" placeholder="https://... veya uploads/...">'.$helpHtml.'<input class="admin-file" type="file" name="'.e($name).'_upload" accept="image/jpeg,image/png,image/webp,image/avif,image/x-icon,image/vnd.microsoft.icon"></label>';
     }
 
     if ($type === 'gallery') {
