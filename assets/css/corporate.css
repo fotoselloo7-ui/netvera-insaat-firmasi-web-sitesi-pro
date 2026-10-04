@@ -3362,3 +3362,91 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     border-right:0!important;
   }
 }
+
+
+/* ==========================================================
+   V12 — mobile safe gutter + service number interaction
+   ========================================================== */
+
+/* Service number badge follows the same copper interaction language
+   as the small arrow action. Works on desktop hover/focus and touch active. */
+.service-card-no-v7{
+  transition:
+    background .22s ease,
+    color .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease!important;
+}
+.service-card-v7:hover .service-card-no-v7,
+.service-card-v7:focus-visible .service-card-no-v7{
+  background:var(--copper)!important;
+  color:#fff!important;
+  border-color:var(--copper)!important;
+  box-shadow:0 7px 16px rgba(201,121,59,.20);
+  transform:translateY(-1px);
+}
+@media (hover:none){
+  .service-card-v7:active .service-card-no-v7{
+    background:var(--copper)!important;
+    color:#fff!important;
+    border-color:var(--copper)!important;
+    box-shadow:0 6px 14px rgba(201,121,59,.18);
+    transform:scale(.96);
+  }
+}
+
+/* Mobile-only sitewide safe gutter.
+   Desktop 1200px container remains untouched. */
+@media(max-width:768px){
+  html,body{
+    overflow-x:clip!important;
+  }
+  .container{
+    width:100%!important;
+    max-width:100%!important;
+    margin-inline:auto!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Full-width sections may stay full bleed; their content never touches viewport edges. */
+  .home-proof-v5 .proof-v5-grid,
+  .home-section > .container,
+  .home-cta-line-v5 > .container,
+  .home-footer > .container,
+  .home-slider .home-slide-content,
+  .home-slider .home-slider-ui{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+
+  /* Cards/grids must respect the inner gutter and never create horizontal overflow. */
+  .services-grid-v7,
+  .process-grid-v6,
+  .projects-layout-v5,
+  .trust-region-v6,
+  .faq-contact-grid-v5,
+  .about-editorial-grid,
+  .why-editorial-grid{
+    min-width:0!important;
+    max-width:100%!important;
+  }
+}
+
+@media(max-width:420px){
+  .container{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  .home-proof-v5 .proof-v5-grid,
+  .home-section > .container,
+  .home-cta-line-v5 > .container,
+  .home-footer > .container,
+  .home-slider .home-slide-content,
+  .home-slider .home-slider-ui{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+}
