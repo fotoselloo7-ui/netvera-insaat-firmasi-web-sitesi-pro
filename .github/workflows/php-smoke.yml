@@ -46,16 +46,19 @@ jobs:
         run: php tests/smoke.php
       - name: Start PHP server
         run: |
-          php -S 127.0.0.1:8080 > /tmp/netvera-php.log 2>&1 &
+          php -S 127.0.0.1:8080 router.php > /tmp/netvera-php.log 2>&1 &
           echo $! > /tmp/netvera-php.pid
           sleep 2
       - name: Test dynamic pages
         run: |
           curl -fsS http://127.0.0.1:8080/ | grep -q "VERA YAPI"
           curl -fsS http://127.0.0.1:8080/admin/login.php | grep -q "Tekrar hoş geldiniz."
-          curl -fsS "http://127.0.0.1:8080/hizmet.php?slug=konut-projeleri" | grep -q "Konut Projeleri"
-          curl -fsS "http://127.0.0.1:8080/proje.php?slug=marina-villa" | grep -q "Marina Villa"
-          curl -fsS http://127.0.0.1:8080/blog.php | grep -q "Bilgi Merkezi"
+          curl -fsS "http://127.0.0.1:8080/hizmet/konut-projeleri" | grep -q "Konut Projeleri"
+          curl -fsS "http://127.0.0.1:8080/proje/marina-villa" | grep -q "Marina Villa"
+          curl -fsS http://127.0.0.1:8080/blog | grep -q "Bilgi Merkezi"
+          curl -fsS http://127.0.0.1:8080/bolge/alanya-merkez | grep -q "Alanya Merkez"
+          curl -fsS http://127.0.0.1:8080/sitemap.xml | grep -q "/hizmet/konut-projeleri"
+          curl -fsS http://127.0.0.1:8080/robots.txt | grep -q "Sitemap:"
       - name: Show PHP server log on failure
         if: failure()
         run: cat /tmp/netvera-php.log || true
