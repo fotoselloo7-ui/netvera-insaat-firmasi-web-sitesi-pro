@@ -591,12 +591,26 @@ $navGroups = [
           ?>
           <?php if($hasSeoFields): ?>
             <div class="seo-fieldset full">
+              <?php
+                $readiness=$edit?seo_readiness($edit):['score'=>0];
+                $previewPrefix=match($module){'services'=>'hizmet/','projects'=>'proje/','posts'=>'blog/','service_areas'=>'bolge/','pages'=>'',default=>''};
+                $previewSlug=(string)($edit['slug']??'ornek-sayfa');
+                $previewUrl=trim((string)($edit['canonical_url']??'')) ?: app_url($previewPrefix.$previewSlug);
+                $previewTitle=(string)($edit['meta_title']??($edit[$cfg['title']]??'SEO başlığınız burada görünecek'));
+                $previewDescription=(string)($edit['meta_description']??'Meta açıklamanız burada önizlenir.');
+              ?>
               <div class="seo-fieldset-head">
                 <div><span class="admin-card-kicker">SEO · GEO · AIO</span><h4>Arama görünürlüğü ayarları</h4><p>Canonical, görsel metadata, yapılandırılmış veri ve AI bağlamını burada yönetin.</p></div>
-                <?php if($edit): $readiness=seo_readiness($edit); ?><div class="seo-edit-score"><strong><?= $readiness['score'] ?>%</strong><span>hazırlık</span></div><?php endif; ?>
+                <div class="seo-edit-score" data-seo-live-score><strong><?= $readiness['score'] ?>%</strong><span>hazırlık</span></div>
               </div>
               <div class="admin-form seo-inner-form">
                 <?php foreach($cfg['fields'] as $name=>$meta){ if(in_array($name,$seoFieldNames,true)) echo admin_field($meta,$name,$edit[$name]??''); } ?>
+              </div>
+              <div class="seo-serp-preview" data-seo-preview data-preview-base="<?= e(app_url($previewPrefix)) ?>">
+                <div class="seo-preview-label">Arama sonucu önizlemesi <small>temsili görünüm</small></div>
+                <div class="seo-preview-url" data-preview-url><?= e($previewUrl) ?></div>
+                <div class="seo-preview-title" data-preview-title><?= e($previewTitle) ?></div>
+                <p data-preview-description><?= e($previewDescription) ?></p>
               </div>
             </div>
           <?php endif; ?>
