@@ -39,3 +39,36 @@ if(form){
     window.open(url,'_blank','noopener');
   });
 }
+
+const slider=document.querySelector('[data-slider]');
+if(slider){
+  const slides=[...slider.querySelectorAll('.home-slide')];
+  const dots=[...document.querySelectorAll('[data-slide-to]')];
+  const prev=document.querySelector('[data-slide-prev]');
+  const next=document.querySelector('[data-slide-next]');
+  let index=0;
+  let timer=null;
+
+  const show=i=>{
+    index=(i+slides.length)%slides.length;
+    slides.forEach((slide,n)=>slide.classList.toggle('is-active',n===index));
+    dots.forEach((dot,n)=>dot.classList.toggle('is-active',n===index));
+  };
+  const start=()=>{
+    clearInterval(timer);
+    timer=setInterval(()=>show(index+1),6500);
+  };
+  dots.forEach((dot,n)=>dot.addEventListener('click',()=>{show(n);start()}));
+  if(prev)prev.addEventListener('click',()=>{show(index-1);start()});
+  if(next)next.addEventListener('click',()=>{show(index+1);start()});
+  slider.addEventListener('mouseenter',()=>clearInterval(timer));
+  slider.addEventListener('mouseleave',start);
+  let touchStart=0;
+  slider.addEventListener('touchstart',e=>{touchStart=e.changedTouches[0].clientX},{passive:true});
+  slider.addEventListener('touchend',e=>{
+    const delta=e.changedTouches[0].clientX-touchStart;
+    if(Math.abs(delta)>45){show(index+(delta<0?1:-1));start()}
+  },{passive:true});
+  show(0);
+  start();
+}
