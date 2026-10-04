@@ -24,10 +24,9 @@ include __DIR__.'/partials/header.php';
   <div class="service-directory">
     <?php foreach($items as $i=>$s): ?><a class="service-directory-row" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
       <span class="service-no"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
-      <h2><?= e($s['title']) ?></h2>
-      <p><?= e($s['summary']) ?></p>
+      <div class="service-directory-copy"><h2><?= e($s['title']) ?></h2><p><?= e($s['summary']) ?></p></div>
       <figure><?php if($s['cover_image']): ?><img src="<?= e(media_url($s['cover_image'])) ?>" alt="<?= e($s['image_alt'] ?: $s['title']) ?>" loading="lazy"><?php endif; ?></figure>
-      <span class="service-arrow">↗</span>
+      <span class="service-arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M6 10h8M11 7l3 3-3 3"/></svg></span>
     </a><?php endforeach; ?>
   </div>
 </div></section>
