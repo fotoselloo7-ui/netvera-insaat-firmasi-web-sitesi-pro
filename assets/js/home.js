@@ -1,6 +1,35 @@
 const menuBtn=document.querySelector('.home-menu-btn');
 const menu=document.querySelector('.home-menu');
 
+
+/* static-preview mobile menu fallback: PHP header already renders this on production */
+if(menu && !menu.querySelector('.home-menu-mobile-extra')){
+  const phoneHref=document.querySelector('.home-mobile-phone')?.getAttribute('href')||'';
+  const waHref=document.querySelector('.home-mobile-wa')?.getAttribute('href')||'';
+  const socialDefs=[
+    ['Instagram','IG','instagram','a[href*="instagram.com"]'],
+    ['Facebook','f','facebook','a[href*="facebook.com"]'],
+    ['X / Twitter','X','twitter','a[href*="twitter.com"],a[href*="x.com"]'],
+    ['YouTube','▶','youtube','a[href*="youtube.com"],a[href*="youtu.be"]']
+  ];
+  const found=socialDefs.map(([label,short,cls,selector])=>{
+    const el=document.querySelector(selector);
+    return el?.href ? {label,short,cls,url:el.href} : null;
+  }).filter(Boolean);
+  const extra=document.createElement('div');
+  extra.className='home-menu-mobile-extra';
+  extra.innerHTML=
+    '<div class="home-menu-mobile-label">Hızlı İletişim</div>'+
+    '<div class="home-menu-mobile-contact">'+
+      (phoneHref?'<a href="'+phoneHref+'"><span>☎</span>Ara</a>':'')+
+      (waHref?'<a class="is-wa" href="'+waHref+'" target="_blank" rel="noopener"><span>◉</span>WhatsApp</a>':'')+
+    '</div>'+
+    (found.length?'<div class="home-menu-mobile-label">Sosyal Medya</div><div class="home-menu-mobile-socials">'+
+      found.map(s=>'<a class="is-'+s.cls+'" href="'+s.url+'" target="_blank" rel="noopener"><b>'+s.short+'</b><span>'+s.label+'</span></a>').join('')+
+    '</div>':'');
+  menu.appendChild(extra);
+}
+
 if(menuBtn&&menu){
   const backdrop=document.createElement('button');
   backdrop.type='button';
