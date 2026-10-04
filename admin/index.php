@@ -53,7 +53,7 @@ $modules = [
     ]],
     'services'=>['label'=>'Hizmetler','table'=>'services','title'=>'title','fields'=>[
         'title'=>['label'=>'Başlık','type'=>'text'],'slug'=>['label'=>'SEO Slug','type'=>'text','help'=>'Kısa, okunabilir, tireli URL yolu.'],
-        'summary'=>['label'=>'Kısa Açıklama','type'=>'textarea'],'body'=>['label'=>'Detay İçerik','type'=>'textarea'],
+        'summary'=>['label'=>'Hizmet Özeti','type'=>'textarea','maxlength'=>140,'help'=>'Ana sayfa hizmet kartında gösterilir. En fazla 140 karakter; kısa, net ve hizmeti anlatan tek bir özet yazın.'],'body'=>['label'=>'Detay İçerik','type'=>'textarea'],
         'cover_image'=>['label'=>'Kapak Görseli','type'=>'image'],
         ...$seoFields,
         'schema_type'=>['label'=>'Schema.org Türü','type'=>'text','help'=>'Hizmet sayfalarında önerilen temel tür: Service'],
@@ -212,7 +212,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $v = trim((string)($_POST[$field] ?? ''));
                 $data[$field] = $v === '' ? null : str_replace('T',' ',$v).':00';
             } else {
-                $data[$field] = trim((string)($_POST[$field] ?? ''));
+                $value = trim((string)($_POST[$field] ?? ''));
+                $maxLength = (int)($meta['maxlength'] ?? 0);
+                if ($maxLength > 0 && mb_strlen($value) > $maxLength) {
+                    $value = mb_substr($value, 0, $maxLength);
+                }
+                $data[$field] = $value;
             }
         }
         if (array_key_exists('slug',$data) && $data['slug']==='' && !empty($data['title'])) $data['slug']=slugify($data['title']);
@@ -308,7 +313,12 @@ function admin_field(array $meta, string $name, $value): string {
     $seoClass=in_array($name,$seoNames,true)?' seo-field':'';
 
     if ($type === 'textarea') {
-        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><textarea name="'.e($name).'">'.$v.'</textarea>'.$helpHtml.'</label>';
+        $maxLength = (int)($meta['maxlength'] ?? 0);
+        $maxAttr = $maxLength > 0 ? ' maxlength="'.$maxLength.'" data-char-limit="'.$maxLength.'"' : '';
+        $counterHtml = $maxLength > 0
+            ? '<span class="admin-char-counter"><b data-char-count>'.mb_strlen((string)$value).'</b> / '.$maxLength.' karakter</span>'
+            : '';
+        return '<label class="admin-field full'.$seoClass.'"><span>'.$label.'</span><textarea name="'.e($name).'"'.$maxAttr.'>'.$v.'</textarea>'.$counterHtml.$helpHtml.'</label>';
     }
 
     if ($type === 'checkbox') {
@@ -666,5 +676,15 @@ $navGroups = [
 </main>
 </div>
 <script src="admin.js" defer></script>
+
+<script>
+document.querySelectorAll('[data-char-limit]').forEach(function(field){
+  var counter = field.parentElement.querySelector('[data-char-count]');
+  if(!counter) return;
+  var sync = function(){ counter.textContent = String(field.value.length); };
+  field.addEventListener('input', sync);
+  sync();
+});
+</script>
 </body>
 </html>
