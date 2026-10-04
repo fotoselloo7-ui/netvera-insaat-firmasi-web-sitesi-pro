@@ -73,21 +73,21 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
 <header class="home-header"><div class="container home-nav">
 <a class="home-logo" href="<?= e(app_url()) ?>"><span class="home-logo-mark"><?= e(setting('logo_mark','VY')) ?></span><span><?= e($siteName) ?><small><?= e(setting('tagline','İNŞAAT & TAAHHÜT')) ?></small></span></a>
 <nav class="home-menu" aria-label="Ana menü">
-<a href="<?= e(app_url()) ?>"<?= $active==='home'?' aria-current="page"':'' ?>>Ana Sayfa</a>
-<a href="<?= e(app_url('hakkimizda')) ?>"<?= $active==='about'?' aria-current="page"':'' ?>>Kurumsal</a>
-<a href="<?= e(app_url('hizmetler')) ?>"<?= $active==='services'?' aria-current="page"':'' ?>>Hizmetler</a>
-<a href="<?= e(app_url('projeler')) ?>"<?= $active==='projects'?' aria-current="page"':'' ?>>Projeler</a>
-<a href="<?= e(app_url('blog')) ?>"<?= $active==='blog'?' aria-current="page"':'' ?>>Blog</a>
-<a href="<?= e(app_url('iletisim')) ?>"<?= $active==='contact'?' aria-current="page"':'' ?>>İletişim</a>
-<a class="home-nav-cta" href="<?= e(app_url('#teklif')) ?>">Ücretsiz Keşif Talebi</a>
+<a href="<?= e(app_url()) ?>"<?= $active==='home'?' aria-current="page"':'' ?>><?= e(setting('nav_home_label','Ana Sayfa')) ?></a>
+<a href="<?= e(app_url('hakkimizda')) ?>"<?= $active==='about'?' aria-current="page"':'' ?>><?= e(setting('nav_about_label','Kurumsal')) ?></a>
+<a href="<?= e(app_url('hizmetler')) ?>"<?= $active==='services'?' aria-current="page"':'' ?>><?= e(setting('nav_services_label','Hizmetler')) ?></a>
+<a href="<?= e(app_url('projeler')) ?>"<?= $active==='projects'?' aria-current="page"':'' ?>><?= e(setting('nav_projects_label','Projeler')) ?></a>
+<a href="<?= e(app_url('blog')) ?>"<?= $active==='blog'?' aria-current="page"':'' ?>><?= e(setting('nav_blog_label','Blog')) ?></a>
+<a href="<?= e(app_url('iletisim')) ?>"<?= $active==='contact'?' aria-current="page"':'' ?>><?= e(setting('nav_contact_label','İletişim')) ?></a>
+<a class="home-nav-cta" href="<?= e(app_url('#teklif')) ?>"><?= e(setting('nav_cta_label','Ücretsiz Keşif Talebi')) ?></a>
 <div class="home-menu-mobile-extra" aria-label="Mobil hızlı erişim">
-  <div class="home-menu-mobile-label">Hızlı İletişim</div>
+  <div class="home-menu-mobile-label"><?= e(setting('mobile_quick_label','Hızlı İletişim')) ?></div>
   <div class="home-menu-mobile-contact">
     <a href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>"><span>☎</span>Ara</a>
     <a class="is-wa" href="https://wa.me/<?= e($waMenu) ?>" target="_blank" rel="noopener"><span>◉</span>WhatsApp</a>
   </div>
   <?php if($hasMenuSocials): ?>
-  <div class="home-menu-mobile-label">Sosyal Medya</div>
+  <div class="home-menu-mobile-label"><?= e(setting('mobile_social_label','Sosyal Medya')) ?></div>
   <div class="home-menu-mobile-socials">
     <?php foreach($menuSocials as $social): if($social['url']==='') continue; ?>
       <a class="is-<?= e($social['class']) ?>" href="<?= e($social['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>"><b><?= e($social['short']) ?></b><span><?= e($social['label']) ?></span></a>
