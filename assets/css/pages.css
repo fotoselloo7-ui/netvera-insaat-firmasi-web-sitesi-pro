@@ -221,7 +221,7 @@
 .detail-hero.is-service .detail-hero-grid{grid-template-columns:minmax(0,.8fr) minmax(450px,1.2fr);gap:64px}
 .detail-hero.is-service img{height:470px!important}
 .detail-eyebrow-line{display:flex;gap:10px;align-items:center;color:#efcfb3;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.detail-eyebrow-line:before{content:"";width:34px;height:1px;background:#c9793b}
+
 .scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0 8px}
 .scope-card{padding:20px;border:1px solid var(--ip-line);border-radius:9px;background:#fff}
 .scope-card span{display:block;color:var(--ip-copper);font-size:9px;font-weight:700}
@@ -2475,5 +2475,31 @@
 .home-kicker,
 .detail-eyebrow-line{
   gap:0!important;
+  padding-left:0!important;
+}
+
+
+/* V16 — absolute heading-decoration kill switch */
+.eyebrow::before,.eyebrow:before,
+.home-eyebrow::before,.home-eyebrow:before,
+.home-kicker::before,.home-kicker:before,
+.detail-eyebrow-line::before,.detail-eyebrow-line:before{
+  content:none!important;
+  display:none!important;
+  inline-size:0!important;
+  block-size:0!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  flex:0 0 0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.eyebrow,.home-eyebrow,.home-kicker,.detail-eyebrow-line{
+  gap:0!important;
+  column-gap:0!important;
   padding-left:0!important;
 }
