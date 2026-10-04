@@ -323,9 +323,9 @@ foreach(['services','projects','sliders','posts'] as $t){$counts[$t]=(int)db()->
 $activeCounts=[];
 foreach(['services','projects','sliders','posts'] as $t){$activeCounts[$t]=(int)db()->query("SELECT COUNT(*) FROM {$t} WHERE is_active=1")->fetchColumn();}
 
-$pageTitle = $module==='dashboard' ? 'Dashboard' : ($module==='settings' ? 'Genel Ayarlar' : ($module==='account' ? 'Hesap & Güvenlik' : ($modules[$module]['label'] ?? 'Yönetim')));
+$pageTitle = $module==='dashboard' ? 'Dashboard' : ($module==='seo_center' ? 'SEO & AIO Merkezi' : ($module==='settings' ? 'Genel Ayarlar' : ($module==='account' ? 'Hesap & Güvenlik' : ($modules[$module]['label'] ?? 'Yönetim'))));
 $navGroups = [
-    'Site Yönetimi' => ['settings','home_sections','sliders','home_stats'],
+    'Site Yönetimi' => ['settings','seo_center','home_sections','sliders','home_stats'],
     'İçerik' => ['services','projects','posts','pages'],
     'Güven & Dönüşüm' => ['home_features','testimonials','service_areas','faqs'],
 ];
@@ -354,6 +354,8 @@ $navGroups = [
       <?php foreach($keys as $key): ?>
         <?php if($key==='settings'): ?>
           <a href="?module=settings" class="admin-nav-link <?= $module==='settings'?'active':'' ?>"><?= admin_icon('settings') ?><span>Genel Ayarlar</span></a>
+        <?php elseif($key==='seo_center'): ?>
+          <a href="?module=seo_center" class="admin-nav-link <?= $module==='seo_center'?'active':'' ?>"><?= admin_icon('chart') ?><span>SEO & AIO Merkezi</span></a>
         <?php elseif(isset($modules[$key])): ?>
           <a href="?module=<?= e($key) ?>" class="admin-nav-link <?= $module===$key?'active':'' ?>"><?= admin_icon(module_icon($key)) ?><span><?= e($modules[$key]['label']) ?></span></a>
         <?php endif; ?>
