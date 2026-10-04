@@ -4,6 +4,7 @@ RewriteEngine On
 # Dynamic SEO endpoints must win before physical demo files.
 RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
 RewriteRule ^robots\.txt$ robots.php [L,QSA]
+RewriteRule ^([A-Fa-f0-9-]{8,128})\.txt$ indexnow-key.php?key=$1 [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
