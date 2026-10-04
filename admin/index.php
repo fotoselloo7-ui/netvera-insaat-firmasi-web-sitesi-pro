@@ -116,7 +116,8 @@ $settingsGroups = [
         'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','tagline'=>'Alt Slogan',
         'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
         'working_hours'=>'Çalışma Saatleri','footer_text'=>'Footer Açıklaması',
-        'about_image'=>'Hakkımızda Görsel URL','why_image'=>'Neden Biz Görsel URL',
+        'about_image'=>'Hakkımızda Görsel URL','about_image_alt'=>'Hakkımızda Görsel Alt Metni','about_image_title'=>'Hakkımızda Görsel Başlığı',
+        'why_image'=>'Neden Biz Görsel URL','why_image_alt'=>'Neden Biz Görsel Alt Metni','why_image_title'=>'Neden Biz Görsel Başlığı',
     ],
     'Ana Sayfa SEO'=>[
         'seo_home_title'=>'Ana Sayfa SEO Başlığı',
