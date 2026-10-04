@@ -156,7 +156,7 @@ INSERT IGNORE INTO admins (email,password_hash,name) VALUES
 INSERT IGNORE INTO settings (setting_key,setting_value) VALUES
 ('site_name','VERA YAPI'),('logo_mark','VY'),('tagline','İNŞAAT & TAAHHÜT'),
 ('phone','+90 500 000 00 00'),('whatsapp','905000000000'),('email','info@example.com'),
-('address','Alanya / Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
+('address','Alanya / Antalya'),('instagram_url',''),('facebook_url',''),('twitter_url',''),('youtube_url',''),('google_maps_url','Alanya, Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
 ('home_testimonials_limit','8'),
 ('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'),
 ('why_image','https://images.unsplash.com/photo-1780145769345-de98a1a6a982?auto=format&fit=crop&q=80&w=1400'),
@@ -205,7 +205,8 @@ INSERT IGNORE INTO services (id,title,slug,summary,body,cover_image,meta_title,m
 INSERT IGNORE INTO projects (id,title,slug,category,location,status,area,project_year,summary,body,cover_image,gallery_json,meta_title,meta_description,is_featured,is_active,sort_order) VALUES
 (1,'Marina Villa','marina-villa','Villa','Alanya','Tamamlandı','640 m²','2026','Modern çizgiler ve yüksek malzeme standardı.','Marina Villa projesinde iç-dış yaşam ilişkisi, doğal ışık ve uzun ömürlü malzeme seçimleri öne çıkarıldı.','https://images.unsplash.com/photo-1771366260867-7e07094579d7?auto=format&fit=crop&q=80&w=1400','[]','Marina Villa | Vera Yapı','Alanya Marina Villa proje detayı.',1,1,10),
 (2,'Park Residence','park-residence','Konut','Antalya','Devam Ediyor','8.900 m²','2026','Çağdaş cephe ve fonksiyonel konut planlaması.','Park Residence, ortak yaşam alanları ve çağdaş cephe karakteriyle çok katlı konut projesi olarak planlandı.','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400','[]','Park Residence | Vera Yapı','Antalya Park Residence konut projesi.',1,1,20),
-(3,'Kestel House','kestel-house','Konut','Kestel','Tamamlandı','420 m²','2026','Doğal taş ile çağdaş cephe detaylarını birleştiren konut.','Kestel House projesinde doğal malzemeler, koyu cephe detayları ve sade peyzaj dili birlikte kullanıldı.','https://images.unsplash.com/photo-1773427457869-6fbded8b89b9?auto=format&fit=crop&q=80&w=1400','[]','Kestel House | Vera Yapı','Kestel House konut proje detayı.',1,1,30);
+(3,'Kestel House','kestel-house','Konut','Kestel','Tamamlandı','420 m²','2026','Doğal taş ile çağdaş cephe detaylarını birleştiren konut.','Kestel House projesinde doğal malzemeler, koyu cephe detayları ve sade peyzaj dili birlikte kullanıldı.','https://images.unsplash.com/photo-1773427457869-6fbded8b89b9?auto=format&fit=crop&q=80&w=1400','[]','Kestel House | Vera Yapı','Kestel House konut proje detayı.',1,1,30),
+(4,'Oba Courtyard','oba-courtyard','Villa','Oba','Tamamlandı','1.180 m²','2026','Avlu, gölge ve iç-dış yaşam ilişkisini merkeze alan çağdaş konut projesi.','Oba Courtyard projesinde mahremiyet, doğal ışık, gölgelendirme ve açık yaşam alanları tek mimari kurgu içinde ele alındı.','https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1400','[]','Oba Courtyard | Vera Yapı','Alanya Oba bölgesinde çağdaş villa ve avlulu konut proje detayı.',0,1,40);
 
 INSERT IGNORE INTO home_features (id,group_key,title,body,icon,is_active,sort_order) VALUES
 (1,'why','Şeffaf Bütçe','İş kapsamı ve maliyet kalemleri başlangıçta mümkün olduğunca netleştirilir.','01',1,10),
