@@ -3026,3 +3026,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .home-kicker:before{transition:none!important}
   .process-card-v6:before{transition:none!important}
 }
+
+
+/* V10.1 reveal stagger */
+.reveal-ready{
+  transition-delay:var(--reveal-delay,0ms)!important;
+}
+.reveal-ready.reveal-in{
+  transition-delay:var(--reveal-delay,0ms)!important;
+}
