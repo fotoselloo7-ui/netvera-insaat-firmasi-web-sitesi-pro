@@ -1575,3 +1575,287 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .social-contact-v6{display:grid;grid-template-columns:1fr 1fr}
   .social-btn-v6{justify-content:center}
 }
+
+
+/* ==========================================================
+   V7 — image-card services, 4-up reviews, FAQ social actions
+   ========================================================== */
+
+/* Headings: natural two-line composition, longer first line */
+.home-section-head-v5,
+.home-section-head-v6,
+.home-section-head-v7,
+.services-head-v7,
+.blog-section-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,7fr) minmax(0,5fr)!important;
+  gap:40px!important;
+  align-items:end!important;
+  margin-bottom:28px!important;
+}
+.home-section-head-v5 h2,
+.home-section-head-v6 h2,
+.home-section-head-v7 h2,
+.services-head-v7 h2,
+.blog-section-head h2,
+.about-editorial-copy h2,
+.why-editorial-copy h2,
+.faq-column-v5 h2{
+  max-width:720px!important;
+  font-size:clamp(2rem,2.8vw,2.65rem)!important;
+  line-height:1.08!important;
+  letter-spacing:-.035em!important;
+  text-wrap:pretty!important;
+}
+.home-section-head-v5>p,
+.home-section-head-v6>p,
+.home-section-head-v7>p,
+.services-head-v7>p{
+  max-width:480px!important;
+  justify-self:end!important;
+  margin:0!important;
+  font-size:14px!important;
+  line-height:1.7!important;
+}
+
+/* Slider: 7/5 ratio and wider copy = two lines instead of a 3-line tower */
+.home-slider,.home-slides,.home-slide-content{min-height:500px!important}
+.home-slide-content{
+  display:grid!important;
+  grid-template-columns:minmax(0,7fr) minmax(0,5fr)!important;
+  align-items:center!important;
+}
+.home-slide-copy{max-width:760px!important;width:100%!important;padding:42px 0 62px!important}
+.home-slide h1,.home-slide h2{
+  max-width:760px!important;
+  margin:13px 0 17px!important;
+  font-size:clamp(2.55rem,3.55vw,3rem)!important;
+  line-height:1.06!important;
+  letter-spacing:-.04em!important;
+  text-wrap:pretty!important;
+}
+.home-slide p{max-width:650px!important;font-size:14px!important;line-height:1.7!important}
+.home-slider-arrows button{width:36px!important;height:36px!important;font-size:14px!important}
+
+/* About: allow the full half-column to set the line break */
+.about-editorial-copy h2{max-width:none!important}
+.about-editorial-grid{grid-template-columns:1fr 1fr!important;gap:40px!important}
+
+/* Services: 3 cards x 2 rows */
+.services-cards-v7{background:var(--paper)}
+.services-grid-v7{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.service-card-v7{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid #d8e0e4;
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 8px 26px rgba(16,44,64,.045);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.service-card-v7:hover{
+  transform:translateY(-3px);
+  border-color:#c8d3d9;
+  box-shadow:0 15px 34px rgba(16,44,64,.085);
+}
+.service-card-v7 figure{
+  position:relative;
+  margin:0;
+  height:190px;
+  overflow:hidden;
+  background:#e9eef1;
+}
+.service-card-v7 figure:after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:42%;
+  background:linear-gradient(180deg,transparent,rgba(8,31,46,.3));
+  pointer-events:none;
+}
+.service-card-v7 img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1);
+}
+.service-card-v7:hover img{transform:scale(1.025)}
+.service-card-no-v7{
+  position:absolute;
+  z-index:2;
+  left:14px;
+  top:14px;
+  min-width:30px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  padding:0 8px;
+  border-radius:6px;
+  background:rgba(255,255,255,.92);
+  color:var(--copper);
+  font-size:9px;
+  font-weight:700;
+}
+.service-card-body-v7{
+  min-height:132px;
+  padding:17px;
+  display:grid;
+  grid-template-columns:1fr 30px;
+  gap:12px;
+  align-items:start;
+}
+.service-card-body-v7 h3{
+  margin:0 0 6px;
+  color:var(--navy);
+  font-size:17px;
+  line-height:1.2;
+  letter-spacing:-.02em;
+}
+.service-card-body-v7 p{
+  margin:0;
+  color:var(--muted);
+  font-size:11.5px;
+  line-height:1.6;
+}
+.service-card-arrow-v7{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:6px;
+  background:#f4eee8;
+  color:var(--copper);
+}
+.service-card-arrow-v7 svg{
+  width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round
+}
+.service-card-v7:hover .service-card-arrow-v7{background:var(--copper);color:#fff}
+.services-foot-v7{display:flex;justify-content:flex-end;margin-top:18px}
+
+/* Reviews: equal four-card system */
+.reputation-v7{background:#faf8f4}
+.testimonial-cards-v7{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:22px;
+}
+.testimonial-card-v7{
+  position:relative;
+  min-height:245px;
+  margin:0;
+  padding:22px 20px 20px;
+  display:flex;
+  flex-direction:column;
+  border:1px solid #d8e0e4;
+  border-radius:10px;
+  background:#fff;
+  overflow:hidden;
+}
+.testimonial-card-v7:nth-child(1){background:var(--navy);border-color:var(--navy);color:#fff}
+.testimonial-quote-v7{
+  position:absolute;
+  right:15px;
+  top:-12px;
+  font-family:Georgia,serif;
+  font-size:78px;
+  line-height:1;
+  color:rgba(201,121,59,.16);
+}
+.testimonial-card-v7:nth-child(1) .testimonial-quote-v7{color:rgba(255,255,255,.1)}
+.testimonial-card-v7>p{
+  position:relative;
+  z-index:1;
+  margin:16px 0 22px;
+  color:#34434e;
+  font-size:13px;
+  line-height:1.72;
+}
+.testimonial-card-v7:nth-child(1)>p{color:#f3f7f9}
+.testimonial-card-v7 footer{
+  display:grid;
+  gap:2px;
+  margin-top:auto;
+  padding-top:15px;
+  border-top:1px solid #e5eaed;
+}
+.testimonial-card-v7:nth-child(1) footer{border-color:rgba(255,255,255,.15)}
+.testimonial-card-v7 footer strong{color:var(--navy);font-size:12.5px}
+.testimonial-card-v7:nth-child(1) footer strong{color:#fff}
+.testimonial-card-v7 footer span{color:var(--muted);font-size:10.5px}
+.testimonial-card-v7:nth-child(1) footer span{color:#b9c8d1}
+
+/* Social actions now live under FAQ, not under the form */
+.faq-social-v7{
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid #d5dde2;
+}
+.faq-social-v7>span{
+  display:block;
+  margin-bottom:10px;
+  color:#8a959d;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.faq-social-v7 .social-contact-v6{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  justify-content:flex-start!important;
+}
+.faq-social-v7 .social-btn-v6.is-call{background:var(--navy)}
+.contact-panel-v5 .social-contact-v6{display:none!important}
+
+/* Other homepage headings: no balanced pyramid effect */
+.why-editorial-copy h2,
+.faq-column-v5 h2,
+.trust-panel-v6 h3,
+.region-panel-v6 h3{
+  text-wrap:pretty!important;
+}
+
+@media(max-width:980px){
+  .home-section-head-v5,.home-section-head-v6,.home-section-head-v7,.services-head-v7,.blog-section-head{
+    grid-template-columns:1fr!important;gap:14px!important
+  }
+  .home-section-head-v5>p,.home-section-head-v6>p,.home-section-head-v7>p,.services-head-v7>p{
+    justify-self:start!important;max-width:650px!important
+  }
+  .home-slide-content{grid-template-columns:minmax(0,4fr) minmax(0,1fr)!important}
+  .home-slide h1,.home-slide h2{max-width:720px!important}
+  .services-grid-v7{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .testimonial-cards-v7{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .home-slider,.home-slides,.home-slide-content{min-height:520px!important}
+  .home-slide-content{display:flex!important}
+  .home-slide-copy{padding:38px 0 72px!important}
+  .home-slide h1,.home-slide h2{font-size:2.15rem!important;line-height:1.08!important}
+  .services-grid-v7{grid-template-columns:1fr}
+  .service-card-v7 figure{height:185px}
+  .testimonial-cards-v7{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+    margin-right:-16px;
+    padding-right:16px;
+  }
+  .testimonial-cards-v7::-webkit-scrollbar{display:none}
+  .testimonial-card-v7{
+    flex:0 0 84%;
+    min-height:225px;
+    scroll-snap-align:start;
+  }
+  .testimonial-card-v7:nth-child(n+3){display:none}
+  .faq-social-v7 .social-contact-v6{display:grid!important;grid-template-columns:1fr 1fr}
+}
