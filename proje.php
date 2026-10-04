@@ -11,6 +11,10 @@ $pageSchema=['@type'=>seo_clean_schema_type($item['schema_type']??'','CreativeWo
 if($ogImage!=='') $pageSchema['image']=media_url($ogImage);
 $gallery=json_decode((string)$item['gallery_json'],true);if(!is_array($gallery))$gallery=[];
 $related=array_values(array_filter(rows('projects'),fn($p)=>(int)$p['id']!==(int)$item['id']));$related=array_slice($related,0,2);
+$secStory=page_section('proje-detay','story');
+$secApproach=page_section('proje-detay','approach');
+$secQuality=page_section('proje-detay','quality');
+$secRelated=page_section('proje-detay','related');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -23,17 +27,17 @@ include __DIR__.'/partials/header.php';
 <section class="page-section"><div class="container">
   <div class="project-facts"><div><small>Konum</small><strong><?= e($item['location']) ?></strong></div><div><small>Proje Türü</small><strong><?= e($item['category']) ?></strong></div><div><small>Uygulama Alanı</small><strong><?= e($item['area']) ?></strong></div><div><small>Yıl</small><strong><?= e($item['project_year']) ?></strong></div></div>
   <div class="case-story">
-    <aside class="case-story-nav"><span>Case Study</span><h2>Projeyi yalnız göstermiyoruz; nasıl düşündüğümüzü de anlatıyoruz.</h2></aside>
+    <aside class="case-story-nav"><span><?= e($secStory['eyebrow']) ?></span><h2><?= e($secStory['title']) ?></h2></aside>
     <article class="case-story-copy"><p class="lead"><?= e($item['aio_summary'] ?: $item['summary']) ?></p><?= render_content_blocks((string)$item['body']) ?>
-      <h2>Uygulama yaklaşımı</h2><p>Planlama kararları, malzeme seçimi, saha koordinasyonu ve bitiş detaylarını birbirinden kopuk iş kalemleri olarak değil, aynı sonucun parçaları olarak ele aldık.</p>
-      <h2>Kaliteyi nerede koruduk?</h2><p>Proje boyunca kritik imalat noktalarını, malzeme geçişlerini ve teslim öncesi kontrolleri görünür bir kontrol listesiyle takip etmek; estetik kadar uzun ömürlü kullanım için de belirleyiciydi.</p>
+      <h2><?= e($secApproach['title']) ?></h2><p><?= e($secApproach['body']) ?></p>
+      <h2><?= e($secQuality['title']) ?></h2><p><?= e($secQuality['body']) ?></p>
       <?php if($gallery): ?><div class="project-gallery-wide"><?php foreach($gallery as $img): ?><img src="<?= e(media_url((string)$img)) ?>" alt="<?= e($item['image_alt'] ?: ($item['title'].' proje görseli')) ?>" loading="lazy"><?php endforeach; ?></div><?php endif; ?>
     </article>
   </div>
 </div></section>
 
 <?php if($related): ?><section class="page-section soft"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Sonraki Projeler</div><h2>Farklı ölçeklerde aynı uygulama disiplini.</h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url('projeler')) ?>">Tüm Portföy</a></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secRelated['eyebrow']) ?></div><h2><?= e($secRelated['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url($secRelated['button_url'] ?: 'projeler')) ?>"><?= e($secRelated['button_label'] ?: 'Tüm Portföy') ?></a></div>
   <div class="project-case-grid"><?php foreach($related as $p): ?><a class="project-case-card" href="<?= e(app_url('proje/'.$p['slug'])) ?>"><figure><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></figure><small class="home-kicker"><?= e($p['location']) ?> · <?= e($p['category']) ?></small><h2><?= e($p['title']) ?></h2><p><?= e($p['summary']) ?></p></a><?php endforeach; ?></div>
 </div></section><?php endif; ?>
 </main>
