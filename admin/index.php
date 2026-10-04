@@ -172,7 +172,7 @@ function admin_field(array $meta, string $name, $value): string {
 
 $counts=[];
 foreach(['services','projects','sliders','posts'] as $t){$counts[$t]=(int)db()->query("SELECT COUNT(*) FROM {$t}")->fetchColumn();}
-?><!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NetVera Admin</title><link rel="stylesheet" href="<?= e(app_url('admin/admin.css')) ?>"></head><body>
+?><!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NetVera Admin</title><link rel="stylesheet" href="admin.css"></head><body>
 <div class="admin-shell">
 <aside class="admin-sidebar"><h2>NetVera İnşaat Pro</h2>
 <a href="?module=dashboard" class="<?= $module==='dashboard'?'active':'' ?>">Dashboard</a>
