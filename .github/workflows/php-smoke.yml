@@ -63,6 +63,10 @@ jobs:
           grep -q "Marina Villa" /tmp/project.html
           curl -fsS http://127.0.0.1:8080/blog -o /tmp/blog.html
           grep -q "Bilgi Merkezi" /tmp/blog.html
+          curl -fsS http://127.0.0.1:8080/blog/insaat-firmasi-secerken-nelere-dikkat-edilmeli -o /tmp/article.html
+          grep -q "İnşaat firması seçerken" /tmp/article.html
+          curl -fsS http://127.0.0.1:8080/iletisim -o /tmp/contact.html
+          grep -q "Projenizi birlikte değerlendirelim" /tmp/contact.html
           curl -fsS http://127.0.0.1:8080/bolge/alanya-merkez -o /tmp/region.html
           grep -q "Alanya Merkez" /tmp/region.html
           curl -fsS http://127.0.0.1:8080/sitemap.xml -o /tmp/sitemap.xml
