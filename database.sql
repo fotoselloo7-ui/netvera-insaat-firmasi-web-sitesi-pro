@@ -90,6 +90,8 @@ CREATE TABLE IF NOT EXISTS home_features (
   title VARCHAR(190) NOT NULL,
   body TEXT NULL,
   icon VARCHAR(80) NULL,
+  link_label VARCHAR(120) NULL,
+  link_url VARCHAR(500) NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   sort_order INT NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -149,6 +151,23 @@ CREATE TABLE IF NOT EXISTS pages (
   meta_description VARCHAR(320) NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS page_sections (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  page_key VARCHAR(80) NOT NULL,
+  section_key VARCHAR(80) NOT NULL,
+  eyebrow VARCHAR(190) NULL,
+  title VARCHAR(255) NULL,
+  body TEXT NULL,
+  secondary_text TEXT NULL,
+  image VARCHAR(500) NULL,
+  button_label VARCHAR(120) NULL,
+  button_url VARCHAR(500) NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  UNIQUE KEY uq_page_section (page_key,section_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 INSERT IGNORE INTO admins (email,password_hash,name) VALUES
 ('admin@netvera.local','$2y$12$atqlWseCnAFFDmpCfJgg2.CfPFxgHNu84fH9MctdlXtKheDSZjfgK','NetVera Admin');
