@@ -99,7 +99,15 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersecti
   const revealTargets=document.querySelectorAll(
     '.home-section-head-v5,.home-section-head-v6,.about-editorial-media,.about-editorial-copy,.about-principle,.services-head-v7,.service-card-v7,.home-cta-line-inner,.project-featured-v5,.project-side-v5,.why-editorial-media,.why-editorial-copy,.why-row-v5,.process-card-v6,.testimonial-card-v7,.testimonial-card-v8,.trust-panel-v6,.region-panel-v6,.insight-featured,.insight-side,.faq-v5 details,.contact-panel-v5,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
   );
-  revealTargets.forEach(el=>el.classList.add('reveal-ready'));
+  revealTargets.forEach((el,index)=>{
+    el.classList.add('reveal-ready');
+    const parent=el.parentElement;
+    if(parent){
+      const siblings=[...parent.children].filter(node=>node.matches?.('.service-card-v7,.process-card-v6,.project-side-v5,.insight-side,.faq-v5 details,.trust-panel-v6,.region-panel-v6'));
+      const localIndex=siblings.indexOf(el);
+      if(localIndex>=0) el.style.setProperty('--reveal-delay',Math.min(localIndex,5)*55+'ms');
+    }
+  });
   const revealObserver=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
