@@ -10,14 +10,35 @@ function e(?string $value): string {
 }
 
 function app_url(string $path = ''): string {
-    $base = $GLOBALS['app_config']['app']['url'] ?? '';
-    if ($base === '') {
-        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $configured = trim((string)($GLOBALS['app_config']['app']['url'] ?? ''));
+
+    $forwardedHost = trim(explode(',', (string)($_SERVER['HTTP_X_FORWARDED_HOST'] ?? ''))[0] ?? '');
+    $requestHost = $forwardedHost !== '' ? $forwardedHost : (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+    $requestHost = preg_replace('/[^A-Za-z0-9.:-]/', '', $requestHost) ?: 'localhost';
+
+    $forwardedProto = trim(explode(',', (string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0] ?? '');
+    if (in_array($forwardedProto, ['http','https'], true)) {
+        $scheme = $forwardedProto;
+    } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        $scheme = 'https';
+    } elseif (str_ends_with($requestHost, '.app.github.dev')) {
+        $scheme = 'https';
+    } else {
+        $scheme = 'http';
+    }
+
+    $configuredHost = $configured !== '' ? (string)(parse_url($configured, PHP_URL_HOST) ?? '') : '';
+    $configuredIsLocal = in_array($configuredHost, ['localhost','127.0.0.1','0.0.0.0'], true);
+    $requestIsLocal = preg_match('/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/', $requestHost) === 1;
+
+    if ($configured === '' || ($configuredIsLocal && !$requestIsLocal)) {
         $script = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
         $script = preg_replace('#/admin$#', '', rtrim($script, '/'));
-        $base = $scheme . '://' . $host . ($script === '' ? '' : $script);
+        $base = $scheme . '://' . $requestHost . ($script === '' || $script === '.' ? '' : $script);
+    } else {
+        $base = rtrim($configured, '/');
     }
+
     return rtrim($base, '/') . '/' . ltrim($path, '/');
 }
 
