@@ -140,3 +140,53 @@ function upload_image(string $field): ?string {
     if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $name)) throw new RuntimeException('Görsel kaydedilemedi.');
     return 'uploads/' . $name;
 }
+
+
+function render_content_blocks(string $text): string {
+    $lines=preg_split('/\R/',trim($text)) ?: [];
+    $html='';
+    $paragraph=[];
+    $list=[];
+
+    $flushParagraph=function() use (&$html,&$paragraph){
+        if(!$paragraph) return;
+        $value=trim(implode(' ',array_map('trim',$paragraph)));
+        if($value!=='') $html.='<p>'.nl2br(e($value)).'</p>';
+        $paragraph=[];
+    };
+    $flushList=function() use (&$html,&$list){
+        if(!$list) return;
+        $html.='<ul class="content-list">';
+        foreach($list as $item) $html.='<li>'.e($item).'</li>';
+        $html.='</ul>';
+        $list=[];
+    };
+
+    foreach($lines as $line){
+        $trim=trim($line);
+        if($trim===''){
+            $flushParagraph();$flushList();continue;
+        }
+        if(str_starts_with($trim,'### ')){
+            $flushParagraph();$flushList();
+            $html.='<h3>'.e(trim(substr($trim,4))).'</h3>';continue;
+        }
+        if(str_starts_with($trim,'## ')){
+            $flushParagraph();$flushList();
+            $html.='<h2>'.e(trim(substr($trim,3))).'</h2>';continue;
+        }
+        if(str_starts_with($trim,'- ')){
+            $flushParagraph();
+            $list[]=trim(substr($trim,2));continue;
+        }
+        $flushList();
+        $paragraph[]=$trim;
+    }
+    $flushParagraph();$flushList();
+    return $html;
+}
+
+function estimated_reading_minutes(string $text): int {
+    $words=preg_split('/\s+/u',trim(strip_tags($text))) ?: [];
+    return max(1,(int)ceil(count(array_filter($words))/190));
+}
