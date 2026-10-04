@@ -1,6 +1,10 @@
 DirectoryIndex index.php index.html
 RewriteEngine On
 
+# Dynamic SEO endpoints must win before physical demo files.
+RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
+RewriteRule ^robots\.txt$ robots.php [L,QSA]
+
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
@@ -12,4 +16,6 @@ RewriteRule ^projeler/?$ projeler.php [L,QSA]
 RewriteRule ^proje/([a-z0-9-]+)/?$ proje.php?slug=$1 [L,QSA]
 RewriteRule ^blog/?$ blog.php [L,QSA]
 RewriteRule ^blog/([a-z0-9-]+)/?$ yazi.php?slug=$1 [L,QSA]
+RewriteRule ^bolgeler/?$ bolgeler.php [L,QSA]
+RewriteRule ^bolge/([a-z0-9-]+)/?$ bolge.php?slug=$1 [L,QSA]
 RewriteRule ^iletisim/?$ iletisim.php [L,QSA]
