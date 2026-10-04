@@ -81,7 +81,7 @@ include __DIR__.'/partials/header.php';
     <div class="services-head-v6">
       <div>
         <div class="home-kicker"><?= e($sec['eyebrow']) ?></div>
-        <h2 data-human-heading><?= e($sec['title']) ?></h2>
+        <h2><?= e($sec['title']) ?></h2>
       </div>
       <p><?= e($sec['body']) ?></p>
     </div>
