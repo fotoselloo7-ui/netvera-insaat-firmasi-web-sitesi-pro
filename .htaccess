@@ -28,6 +28,9 @@ RewriteRule ^blog/([a-z0-9-]+)/?$ yazi.php?slug=$1 [L,QSA]
 RewriteRule ^bolgeler/?$ bolgeler.php [L,QSA]
 RewriteRule ^bolge/([a-z0-9-]+)/?$ bolge.php?slug=$1 [L,QSA]
 RewriteRule ^iletisim/?$ iletisim.php [L,QSA]
+RewriteRule ^kvkk-aydinlatma-metni/?$ sayfa.php?slug=kvkk-aydinlatma-metni [L,QSA]
+RewriteRule ^gizlilik-politikasi/?$ sayfa.php?slug=gizlilik-politikasi [L,QSA]
+RewriteRule ^cerez-politikasi/?$ sayfa.php?slug=cerez-politikasi [L,QSA]
 
 # Admin panelindeki Sayfalar / Landing kayıtlarını kök URL'den yayınlar.
 RewriteRule ^([a-z0-9-]+)/?$ sayfa.php?slug=$1 [L,QSA]
