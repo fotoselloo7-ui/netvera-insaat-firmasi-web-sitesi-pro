@@ -377,6 +377,28 @@ function upload_image(string $field): ?string {
 }
 
 
+
+function upload_images(string $field, int $maxFiles = 12): array {
+    if (empty($_FILES[$field]) || !is_array($_FILES[$field]['name'] ?? null)) return [];
+    $files=$_FILES[$field];
+    $count=min(count($files['name']),$maxFiles);
+    $uploaded=[];
+    for($i=0;$i<$count;$i++){
+        if(($files['error'][$i] ?? UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_NO_FILE || empty($files['name'][$i])) continue;
+        $_FILES['_nv_multi_tmp']=[
+            'name'=>$files['name'][$i],
+            'type'=>$files['type'][$i] ?? '',
+            'tmp_name'=>$files['tmp_name'][$i] ?? '',
+            'error'=>$files['error'][$i] ?? UPLOAD_ERR_NO_FILE,
+            'size'=>$files['size'][$i] ?? 0,
+        ];
+        $path=upload_image('_nv_multi_tmp');
+        unset($_FILES['_nv_multi_tmp']);
+        if($path) $uploaded[]=$path;
+    }
+    return $uploaded;
+}
+
 function render_content_blocks(string $text): string {
     $lines=preg_split('/\R/',trim($text)) ?: [];
     $html='';
