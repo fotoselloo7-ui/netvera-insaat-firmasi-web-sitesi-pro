@@ -3024,3 +3024,14 @@
     min-width:0!important;
   }
 }
+
+
+/* CMS visibility layout fallbacks */
+.contact-premium-grid.is-single,
+.content-layout.no-aside{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+.contact-premium-grid.is-single>.contact-panel,
+.contact-premium-grid.is-single>.contact-form-shell{
+  width:100%;
+}
