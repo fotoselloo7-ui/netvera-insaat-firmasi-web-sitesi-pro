@@ -911,3 +911,51 @@
     line-height:1.08!important;
   }
 }
+
+
+/* ==========================================================
+   V6.2 Inner-page container rhythm
+   ========================================================== */
+.page-title-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:40px!important;
+  align-items:end!important;
+}
+.page-title-row>div{min-width:0}
+.page-title-row h2{
+  max-width:620px!important;
+  font-size:clamp(1.9rem,2.7vw,2.55rem)!important;
+  line-height:1.1!important;
+  letter-spacing:-.035em!important;
+  text-wrap:balance!important;
+}
+.page-title-row>p{
+  max-width:520px!important;
+  justify-self:end!important;
+  margin:0!important;
+  font-size:14px!important;
+  line-height:1.7!important;
+}
+.page-title-row .home-btn,
+.page-title-row .micro-action,
+.page-title-row .read-more{
+  min-height:34px!important;
+  padding:0 11px!important;
+  border:1px solid #d5dde2!important;
+  border-radius:6px!important;
+  background:#fff!important;
+  color:var(--ip-ink)!important;
+  font-size:11px!important;
+  font-weight:600!important;
+}
+.page-section{padding:58px 0!important}
+.page-hero-modern+ .page-section{padding-top:52px!important}
+@media(max-width:900px){
+  .page-title-row{grid-template-columns:1fr!important;gap:14px!important}
+  .page-title-row>p{justify-self:start!important;max-width:640px!important}
+}
+@media(max-width:620px){
+  .page-section{padding:44px 0!important}
+  .page-title-row h2{font-size:1.85rem!important}
+}
