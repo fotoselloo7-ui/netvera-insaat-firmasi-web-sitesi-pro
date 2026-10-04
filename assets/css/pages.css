@@ -540,3 +540,327 @@
   .service-directory-row{padding:13px!important}
   .project-facts{grid-template-columns:1fr 1fr!important}
 }
+
+
+/* ==========================================================
+   Inner Pages V6 — compact, balanced, human-made
+   User feedback: smaller heroes/headings, compact cards, short arrows
+   ========================================================== */
+
+/* 1) All inner-page heroes: remove oversized "slider" feel */
+.page-hero-modern{
+  padding:54px 0 48px!important;
+}
+.page-hero-modern .container{
+  display:block!important;
+  max-width:1200px;
+}
+.page-hero-modern .page-breadcrumb,
+.page-hero-modern .home-kicker,
+.page-hero-modern h1,
+.page-hero-modern p{
+  grid-column:auto!important;
+}
+.page-breadcrumb{
+  margin-bottom:12px!important;
+  font-size:10px!important;
+}
+.page-hero-modern .home-kicker{
+  margin-bottom:8px;
+}
+.page-hero-modern h1{
+  max-width:900px!important;
+  margin:0!important;
+  font-size:clamp(38px,4.25vw,54px)!important;
+  line-height:1.03!important;
+  letter-spacing:-.045em!important;
+  text-wrap:balance;
+}
+.page-hero-modern p{
+  max-width:700px!important;
+  margin-top:14px!important;
+  font-size:14px!important;
+  line-height:1.65!important;
+}
+.page-hero-modern:before{
+  right:5%!important;
+  bottom:14px!important;
+  font-size:clamp(38px,5.5vw,72px)!important;
+  color:rgba(16,44,64,.032)!important;
+  letter-spacing:-.045em!important;
+}
+.page-hero-modern:after{
+  width:220px!important;
+  height:220px!important;
+  right:-90px!important;
+  top:-120px!important;
+  border-color:rgba(16,44,64,.04)!important;
+}
+
+/* 2) Global inner-page type scale: calmer and more intentional */
+.page-title-row{
+  margin-bottom:24px!important;
+}
+.page-title-row h2{
+  max-width:760px;
+  font-size:clamp(25px,2.8vw,36px)!important;
+  line-height:1.12!important;
+  letter-spacing:-.035em!important;
+  text-wrap:balance;
+}
+.page-title-row p{
+  font-size:13px!important;
+  line-height:1.65;
+}
+.editorial-copy .lead{
+  font-size:clamp(20px,2vw,26px)!important;
+}
+.editorial-copy h2,
+.content-prose h2,
+.case-story-nav h2,
+.article-body h2{
+  font-size:clamp(24px,2.5vw,34px)!important;
+  line-height:1.18!important;
+  text-wrap:balance;
+}
+.content-prose h3,
+.article-body h3{
+  font-size:clamp(18px,1.7vw,22px)!important;
+}
+.detail-hero h1{
+  font-size:clamp(36px,4.3vw,52px)!important;
+  line-height:1.04!important;
+  text-wrap:balance;
+}
+.detail-hero.is-service{
+  padding:50px 0 46px!important;
+}
+.detail-hero.is-service img{
+  height:380px!important;
+}
+.project-detail-head h1{
+  max-width:900px;
+  font-size:clamp(40px,5vw,60px)!important;
+  line-height:1!important;
+  text-wrap:balance;
+}
+.article-hero{
+  padding:52px 0 30px!important;
+}
+.article-hero h1{
+  max-width:900px;
+  font-size:clamp(38px,4.6vw,56px)!important;
+  line-height:1.06!important;
+  text-wrap:balance;
+}
+
+/* 3) Services: compact 2-column horizontal cards instead of long stacked rows */
+.service-directory{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  border-top:0!important;
+}
+.service-directory-row{
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) 96px 30px!important;
+  gap:12px!important;
+  align-items:center!important;
+  min-height:118px!important;
+  padding:14px!important;
+  border:1px solid var(--ip-line)!important;
+  border-radius:9px!important;
+  background:#fff!important;
+  box-shadow:0 6px 18px rgba(16,44,64,.035)!important;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease!important;
+}
+.service-directory-row:hover{
+  padding:14px!important;
+  transform:translateY(-2px);
+  border-color:#cbd6dc!important;
+  background:#fff!important;
+  box-shadow:0 12px 28px rgba(16,44,64,.065)!important;
+}
+.service-directory-row .service-no{
+  width:30px!important;
+  height:24px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid #e0e6e9!important;
+  border-radius:6px!important;
+  background:#f6f8f9!important;
+  color:#7c8991!important;
+  font-size:9px!important;
+  font-weight:700!important;
+}
+.service-directory-copy{
+  min-width:0;
+}
+.service-directory-copy h2{
+  margin:0 0 5px!important;
+  color:var(--ip-ink)!important;
+  font-size:17px!important;
+  line-height:1.18!important;
+  letter-spacing:-.02em!important;
+}
+.service-directory-copy p{
+  margin:0!important;
+  color:var(--ip-muted)!important;
+  font-size:11px!important;
+  line-height:1.52!important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.service-directory-row figure{
+  width:96px!important;
+  height:76px!important;
+  margin:0!important;
+  border-radius:6px!important;
+}
+.service-directory-row img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+.service-arrow{
+  width:28px!important;
+  height:28px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:6px!important;
+  background:#f4eee8!important;
+  color:var(--ip-copper)!important;
+  transition:background .2s ease,color .2s ease!important;
+}
+.service-arrow svg{
+  width:13px;
+  height:13px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.service-directory-row:hover .service-arrow{
+  background:var(--ip-copper)!important;
+  color:#fff!important;
+  transform:none!important;
+}
+
+/* 4) Cards stay compact — avoid vertical card towers */
+.principle-card{
+  min-height:150px!important;
+  padding:22px!important;
+}
+.principle-card h3{
+  margin:18px 0 7px!important;
+  font-size:18px!important;
+}
+.project-case-grid{
+  gap:18px!important;
+}
+.project-case-card{
+  padding-bottom:15px!important;
+}
+.project-case-card figure{
+  height:250px!important;
+}
+.project-case-card h2{
+  font-size:19px!important;
+}
+.blog-lead-card{
+  min-height:410px!important;
+}
+.blog-side-card{
+  min-height:126px!important;
+  grid-template-columns:126px 1fr!important;
+}
+.blog-side-copy{
+  padding:14px!important;
+}
+.region-list{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.region-card{
+  padding:19px!important;
+}
+.region-card h2{
+  margin:11px 0 6px!important;
+  font-size:18px!important;
+}
+.region-card p{
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+
+/* 5) Tiny filled actions, no long decorative arrows */
+.list-card .title-link:after{
+  content:none!important;
+}
+.blog-side-copy span{
+  display:inline-flex;
+  width:max-content;
+  margin-top:2px;
+  padding:5px 8px;
+  border-radius:5px;
+  background:#f3f5f6;
+  color:#7d8991!important;
+  font-size:9px!important;
+}
+.micro-action,
+.region-card .list-meta .micro-action{
+  display:inline-flex!important;
+  align-items:center;
+  width:max-content;
+  padding:5px 9px;
+  border-radius:5px;
+  background:#f5eee8;
+  color:#aa6333!important;
+  font-size:9px!important;
+  font-weight:600;
+}
+.inline-editorial-cta{
+  padding:22px 24px!important;
+}
+.inline-editorial-cta h3{
+  font-size:21px!important;
+}
+.inline-editorial-cta .home-btn{
+  min-height:38px!important;
+  padding:0 13px!important;
+  border-radius:6px!important;
+}
+
+/* Mobile */
+@media(max-width:900px){
+  .page-hero-modern{padding:46px 0 42px!important}
+  .page-hero-modern h1{font-size:clamp(34px,6vw,46px)!important}
+  .service-directory{grid-template-columns:1fr!important}
+  .detail-hero.is-service img{height:320px!important}
+  .region-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  .page-hero-modern{padding:38px 0 34px!important}
+  .page-hero-modern h1{font-size:34px!important;line-height:1.06!important}
+  .page-hero-modern p{font-size:13px!important}
+  .page-hero-modern:before,.page-hero-modern:after{display:none!important}
+  .page-section{padding:46px 0!important}
+  .service-directory-row{
+    grid-template-columns:30px minmax(0,1fr) 70px 28px!important;
+    gap:9px!important;
+    min-height:104px!important;
+    padding:11px!important;
+  }
+  .service-directory-row:hover{padding:11px!important}
+  .service-directory-row figure{width:70px!important;height:62px!important}
+  .service-directory-copy h2{font-size:16px!important}
+  .project-case-card figure{height:215px!important}
+  .blog-lead-card{min-height:350px!important}
+  .blog-side-card{grid-template-columns:104px 1fr!important;min-height:110px!important}
+  .region-list{grid-template-columns:1fr!important}
+  .inline-editorial-cta{padding:19px!important}
+}
