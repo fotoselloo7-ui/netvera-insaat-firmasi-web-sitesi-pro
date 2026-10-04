@@ -11,6 +11,11 @@ $ogImage=$page['og_image'] ?? '';$ogImageAlt=$page['image_alt'] ?: $page['title'
 $breadcrumbs=[['name'=>'Ana Sayfa','url'=>app_url()],['name'=>'Hizmetler','url'=>$canonical]];
 $pageSchema=['@type'=>seo_clean_schema_type($page['schema_type']??'','CollectionPage'),'@id'=>$canonical.'#webpage','url'=>$canonical,'name'=>$page['title'],'description'=>$page['aio_summary'] ?: $metaDescription,'about'=>['@id'=>rtrim(app_url(),'/').'#business']];
 $items=rows('services');
+$secDirectory=page_section('hizmetler','directory');
+$secMethod=page_section('hizmetler','method');
+$secCta=page_section('hizmetler','cta');
+$serviceFlow=feature_group('service_flow');
+$serviceMethods=feature_group('service_method');
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -20,7 +25,7 @@ include __DIR__.'/partials/header.php';
 </div></section>
 
 <section class="page-section"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Kapsamı Netleştirin</div><h2>Hizmet seçmekten önce ihtiyacı doğru tanımlayın.</h2></div><p>Her proje aynı değildir. Yapı tipi, mevcut proje durumu, hedef takvim ve uygulama kapsamına göre doğru çalışma modeli değişir.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secDirectory['eyebrow']) ?></div><h2><?= e($secDirectory['title']) ?></h2></div><p><?= e($secDirectory['body']) ?></p></div>
   <div class="service-directory">
     <?php foreach($items as $i=>$s): ?><a class="service-directory-row" href="<?= e(app_url('hizmet/'.$s['slug'])) ?>">
       <span class="service-no"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span>
@@ -33,25 +38,20 @@ include __DIR__.'/partials/header.php';
 
 <section class="page-section soft"><div class="container">
   <div class="fact-ribbon">
-    <div><strong>01</strong><span>İhtiyaç & keşif</span></div>
-    <div><strong>02</strong><span>Kapsam & bütçe</span></div>
-    <div><strong>03</strong><span>Uygulama & kontrol</span></div>
-    <div><strong>04</strong><span>Teslim & kapanış</span></div>
+    <?php foreach(array_slice($serviceFlow,0,4) as $f): ?><div><strong><?= e($f['icon']) ?></strong><span><?= e($f['title']) ?></span></div><?php endforeach; ?>
   </div>
 </div></section>
 
 <section class="page-section service-method-section"><div class="container">
-  <div class="page-title-row"><div><div class="home-kicker">Çalışma Modeli</div><h2>Projenin bulunduğu aşamaya göre doğru yerden başlarız.</h2></div><p>Hazır projeniz olabilir, yalnızca arsanız olabilir veya mevcut yapınızı yenilemek isteyebilirsiniz. Süreci ihtiyaçtan başlatırız.</p></div>
+  <div class="page-title-row"><div><div class="home-kicker"><?= e($secMethod['eyebrow']) ?></div><h2><?= e($secMethod['title']) ?></h2></div><p><?= e($secMethod['body']) ?></p></div>
   <div class="service-method-grid">
-    <article class="service-method-card"><span>01</span><div><h3>Fikir / Arsa Aşaması</h3><p>İhtiyaç programı, yapı tipi, yaklaşık kapsam ve ilk teknik kararlar birlikte netleştirilir.</p></div><a href="<?= e(app_url('hizmet/konut-projeleri')) ?>">Kapsamı incele <b>›</b></a></article>
-    <article class="service-method-card"><span>02</span><div><h3>Hazır Proje Aşaması</h3><p>Mimari ve mühendislik projeleri saha uygulanabilirliği, takvim ve koordinasyon açısından değerlendirilir.</p></div><a href="<?= e(app_url('hizmet/proje-uygulama')) ?>">Uygulamayı incele <b>›</b></a></article>
-    <article class="service-method-card"><span>03</span><div><h3>Mevcut Yapı Aşaması</h3><p>Teknik durum, kullanım hedefi ve yenileme kapsamı üzerinden kontrollü renovasyon planı oluşturulur.</p></div><a href="<?= e(app_url('hizmet/renovasyon')) ?>">Renovasyonu incele <b>›</b></a></article>
+    <?php foreach($serviceMethods as $f): ?><article class="service-method-card"><span><?= e($f['icon']) ?></span><div><h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p></div><?php if(!empty($f['link_url'])): ?><a href="<?= e(app_url($f['link_url'])) ?>"><?= e($f['link_label'] ?: 'İncele') ?> <b>›</b></a><?php endif; ?></article><?php endforeach; ?>
   </div>
 </div></section>
 
 <section class="page-section"><div class="container"><div class="inline-editorial-cta">
-  <div><div class="home-kicker">Kararsız mısınız?</div><h3>Hangi hizmetin projenize uyduğunu birlikte belirleyelim.</h3><p>Kısa proje bilgisini gönderin; doğru hizmet modelini ve sonraki adımı netleştirelim.</p></div>
-  <a class="home-btn home-btn-primary" href="<?= e(app_url('iletisim')) ?>">Detaylı Bilgi Al</a>
+  <div><div class="home-kicker"><?= e($secCta['eyebrow']) ?></div><h3><?= e($secCta['title']) ?></h3><p><?= e($secCta['body']) ?></p></div>
+  <a class="home-btn home-btn-primary" href="<?= e(app_url($secCta['button_url'] ?: 'iletisim')) ?>"><?= e($secCta['button_label'] ?: 'Detaylı Bilgi Al') ?></a>
 </div></div></section>
 </main>
 <?php include __DIR__.'/partials/footer.php'; ?>
