@@ -85,7 +85,7 @@ if(header){
 
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window){
   const revealTargets=document.querySelectorAll(
-    '.home-section-head-v5,.about-editorial-media,.about-editorial-copy,.about-principle,.services-intro-v5,.service-row-v5,.home-cta-line-inner,.project-featured-v5,.project-side-v5,.why-editorial-media,.why-editorial-copy,.why-row-v5,.process-step-v5,.testimonial-featured-v5,.testimonial-side-v5,.trust-column-v5,.areas-column-v5,.insight-featured,.insight-side,.faq-v5 details,.contact-panel-v5,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
+    '.home-section-head-v5,.about-editorial-media,.about-editorial-copy,.about-principle,.services-head-v6,.service-row-v6,.home-cta-line-inner,.project-featured-v5,.project-side-v5,.why-editorial-media,.why-editorial-copy,.why-row-v5,.process-step-v5,.testimonial-featured-v5,.testimonial-side-v5,.trust-column-v5,.areas-column-v5,.insight-featured,.insight-side,.faq-v5 details,.contact-panel-v5,.page-hero-modern .container,.list-card,.detail-hero-grid,.content-prose,.detail-aside,.editorial-intro,.fact-ribbon,.principle-card,.service-directory-row,.project-featured-card,.project-case-card,.project-detail-head,.project-detail-cover,.project-facts,.case-story,.blog-lead-card,.blog-side-card,.article-hero-inner,.article-cover,.article-body,.article-author,.contact-panel,.contact-form-shell,.contact-expectation>div,.scope-card,.related-project-card,.region-card'
   );
   revealTargets.forEach(el=>el.classList.add('reveal-ready'));
   const revealObserver=new IntersectionObserver(entries=>{
@@ -98,48 +98,3 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersecti
   },{threshold:.12,rootMargin:'0px 0px -35px'});
   revealTargets.forEach(el=>revealObserver.observe(el));
 }
-
-
-/* Human heading composition:
-   first line intentionally shorter, second line longer.
-   Works with dynamic admin content and static preview alike. */
-const humanHeadingSelector=[
-  '[data-human-heading]',
-  '.page-hero-modern h1',
-  '.detail-hero h1',
-  '.project-detail-head h1',
-  '.article-hero h1',
-  '.home-section-head-v5 h2',
-  '.home-section-head h2',
-  '.about-editorial-copy h2',
-  '.why-editorial-copy h2',
-  '.faq-column-v5 h2',
-  '.page-title-row h2'
-].join(',');
-
-function composeHumanHeading(el){
-  if(!el || el.dataset.humanComposed==='1') return;
-  const text=(el.textContent||'').replace(/\s+/g,' ').trim();
-  const words=text.split(' ').filter(Boolean);
-  if(words.length<5) return;
-
-  let firstCount=Math.max(2,Math.floor(words.length*.40));
-  if(words.length-firstCount<=firstCount) firstCount=Math.max(1,firstCount-1);
-
-  const first=words.slice(0,firstCount).join(' ');
-  const second=words.slice(firstCount).join(' ');
-  if(!first || !second) return;
-
-  el.textContent='';
-  const line1=document.createElement('span');
-  const line2=document.createElement('span');
-  line1.className='heading-line heading-line-first';
-  line2.className='heading-line heading-line-second';
-  line1.textContent=first;
-  line2.textContent=second;
-  el.append(line1,line2);
-  el.classList.add('human-heading');
-  el.dataset.humanComposed='1';
-}
-
-document.querySelectorAll(humanHeadingSelector).forEach(composeHumanHeading);
