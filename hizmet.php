@@ -33,23 +33,23 @@ include __DIR__.'/partials/header.php';
   <?php if($item['cover_image']): ?><img src="<?= e(media_url($item['cover_image'])) ?>" alt="<?= e($item['image_alt'] ?: $item['title']) ?>"<?php if(!empty($item['image_title'])): ?> title="<?= e($item['image_title']) ?>"<?php endif; ?>><?php endif; ?>
 </div></section>
 
-<section class="page-section"><div class="container content-layout">
+<section class="page-section"><div class="container content-layout<?= (int)$secAside['is_active']===1 ? '' : ' no-aside' ?>">
   <article class="content-prose">
     <p class="lead"><?= e($item['aio_summary'] ?: $item['summary']) ?></p>
     <?= render_content_blocks((string)$item['body']) ?>
-    <h2><?= e($secScope['title']) ?></h2>
-    <div class="scope-grid"><?php foreach($scope as $s): ?><div class="scope-card"><span><?= e($s['icon']) ?></span><strong><?= e($s['title']) ?></strong><p><?= e($s['body']) ?></p></div><?php endforeach; ?></div>
-    <div class="service-proof"><div class="home-kicker"><?= e($secProof['eyebrow']) ?></div><h3><?= e($secProof['title']) ?></h3><p><?= e($secProof['body']) ?></p></div>
+    <?php if((int)$secScope['is_active']===1): ?><h2><?= e($secScope['title']) ?></h2>
+    <div class="scope-grid"><?php foreach($scope as $s): ?><div class="scope-card"><span><?= e($s['icon']) ?></span><strong><?= e($s['title']) ?></strong><p><?= e($s['body']) ?></p></div><?php endforeach; ?></div><?php endif; ?>
+    <?php if((int)$secProof['is_active']===1): ?><div class="service-proof"><div class="home-kicker"><?= e($secProof['eyebrow']) ?></div><h3><?= e($secProof['title']) ?></h3><p><?= e($secProof['body']) ?></p></div><?php endif; ?>
   </article>
-  <aside class="detail-aside"><h3><?= e($item['title'].' '.$secAside['title']) ?></h3><p><?= e($secAside['body']) ?></p><a class="home-btn home-btn-primary" href="<?= e(app_url($secAside['button_url'] ?: 'iletisim')) ?>"><?= e($secAside['button_label'] ?: 'Detaylı Bilgi Al') ?></a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e(preg_replace('/\D+/','',setting('whatsapp',setting('phone')))) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, '.$item['title'].' hizmeti hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">WhatsApp'tan Sor</a></aside>
+  <?php if((int)$secAside['is_active']===1): ?><aside class="detail-aside"><h3><?= e($item['title'].' '.$secAside['title']) ?></h3><p><?= e($secAside['body']) ?></p><a class="home-btn home-btn-primary" href="<?= e(app_url($secAside['button_url'] ?: 'iletisim')) ?>"><?= e($secAside['button_label'] ?: 'Detaylı Bilgi Al') ?></a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e(preg_replace('/\D+/','',setting('whatsapp',setting('phone')))) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, '.$item['title'].' hizmeti hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">WhatsApp'tan Sor</a></aside><?php endif; ?>
 </div></section>
 
-<section class="page-section soft"><div class="container">
+<?php if((int)$secProcess['is_active']===1): ?><section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
-</div></section>
+</div></section><?php endif; ?>
 
-<?php if($projects): ?><section class="page-section"><div class="container">
+<?php if($projects && (int)$secProjects['is_active']===1): ?><section class="page-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProjects['eyebrow']) ?></div><h2><?= e($secProjects['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url($secProjects['button_url'] ?: 'projeler')) ?>"><?= e($secProjects['button_label'] ?: 'Tüm Projeler') ?></a></div>
   <div class="related-projects"><?php foreach($projects as $p): ?><a class="related-project-card" href="<?= e(app_url('proje/'.$p['slug'])) ?>"><figure><img src="<?= e(media_url($p['cover_image'])) ?>" alt="<?= e($p['image_alt'] ?: $p['title']) ?>" loading="lazy"></figure><small><?= e($p['location']) ?> · <?= e($p['category']) ?></small><strong><?= e($p['title']) ?></strong></a><?php endforeach; ?></div>
 </div></section><?php endif; ?>
