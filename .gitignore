@@ -1,0 +1,5 @@
+.env.php
+/uploads/*
+!/uploads/.gitkeep
+.DS_Store
+Thumbs.db
