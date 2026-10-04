@@ -56,6 +56,23 @@ function ensure_content_management_schema(): void {
             if(!isset($featureCols['link_url'])) $pdo->exec("ALTER TABLE home_features ADD COLUMN link_url VARCHAR(500) NULL AFTER link_label");
         }
 
+        $uiDefaults=[
+            'nav_home_label'=>'Ana Sayfa',
+            'nav_about_label'=>'Kurumsal',
+            'nav_services_label'=>'Hizmetler',
+            'nav_projects_label'=>'Projeler',
+            'nav_blog_label'=>'Blog',
+            'nav_contact_label'=>'İletişim',
+            'nav_cta_label'=>'Ücretsiz Keşif Talebi',
+            'footer_corporate_title'=>'Kurumsal',
+            'footer_services_title'=>'Hizmetler',
+            'footer_contact_title'=>'İletişim',
+            'mobile_quick_label'=>'Hızlı İletişim',
+            'mobile_social_label'=>'Sosyal Medya',
+        ];
+        $settingInsert=$pdo->prepare("INSERT IGNORE INTO settings (setting_key,setting_value) VALUES (?,?)");
+        foreach($uiDefaults as $key=>$value) $settingInsert->execute([$key,$value]);
+
         $sections=[
             ['hakkimizda','editorial','Nasıl Çalışıyoruz?','Gösterişten önce düzen, vaatten önce süreç.','Bizim için premium hizmet; daha fazla söz vermek değil, daha az belirsizlik üretmektir. Bütçe, takvim, malzeme ve uygulama kararlarının izlenebilir olması bu yüzden çalışma modelimizin merkezindedir.','İyi bir yapı yalnızca malzeme ve işçilikten değil; doğru kararların doğru sırayla alınmasından oluşur.','','',10],
             ['hakkimizda','principles','Çalışma Prensipleri','Projeyi güçlü kılan görünmeyen disiplin.','İnşaat sürecinde güven; yalnızca sonuçtan değil, kararların nasıl alındığından doğar.','','','',20],
