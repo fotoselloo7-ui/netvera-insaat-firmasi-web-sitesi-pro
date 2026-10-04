@@ -1,6 +1,6 @@
 <?php
 $siteName = setting('site_name','Vera Yapı');
-$footerLogoImage = trim(setting('logo_image','assets/brand/netvera-mark.png'));
+$footerLogoImage = trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.png';
 $phone = setting('phone','+90 500 000 00 00');
 $email = setting('email','info@example.com');
 $wa = preg_replace('/\D+/', '', setting('whatsapp',$phone));
