@@ -2488,3 +2488,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .testimonial-group-v8{scroll-snap-type:x mandatory}
   .testimonial-card-v8{scroll-snap-align:start}
 }
+
+
+/* V8.1 mobile header correction */
+@media(max-width:980px){
+  .home-topbar{display:none!important}
+  .home-header{top:0!important}
+  .home-menu{top:74px!important}
+}
