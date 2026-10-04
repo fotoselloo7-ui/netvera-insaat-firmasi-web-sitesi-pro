@@ -394,8 +394,8 @@ function upload_image(string $field): ?string {
     if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) throw new RuntimeException('Dosya yükleme hatası.');
     if (($file['size'] ?? 0) > ($GLOBALS['app_config']['upload']['max_bytes'] ?? 5242880)) throw new RuntimeException('Görsel 5 MB sınırını aşıyor.');
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
-    $exts = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/avif'=>'avif'];
-    if (!isset($exts[$mime])) throw new RuntimeException('Yalnız JPG, PNG, WebP veya AVIF yüklenebilir.');
+    $exts = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/avif'=>'avif','image/x-icon'=>'ico','image/vnd.microsoft.icon'=>'ico'];
+    if (!isset($exts[$mime])) throw new RuntimeException('Yalnız JPG, PNG, WebP, AVIF veya ICO yüklenebilir.');
     $dir = $GLOBALS['app_config']['upload']['dir'];
     if (!is_dir($dir)) mkdir($dir, 0775, true);
     $name = date('YmdHis') . '-' . bin2hex(random_bytes(5)) . '.' . $exts[$mime];
