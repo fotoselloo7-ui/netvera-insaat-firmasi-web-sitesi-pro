@@ -40,7 +40,28 @@ include __DIR__.'/partials/header.php';
 
 <?php $sec=section('areas'); if($sec['is_active']): ?><section class="home-section area-clean"><div class="container area-clean-grid"><div class="area-clean-copy"><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2><p><?= e($sec['body']) ?></p></div><div class="area-list"><?php foreach($areas as $a): ?><div><strong><?= e($a['title']) ?></strong><span><?= e($a['services_text']) ?></span></div><?php endforeach; ?></div></div></section><?php endif; ?>
 
-<?php $sec=section('blog'); if($sec['is_active']): ?><section class="home-section"><div class="container"><div class="home-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url('blog')) ?>">Tüm Yazılar</a></div><div class="insights-clean"><?php foreach(array_slice($posts,0,3) as $p): ?><article class="insight-clean"><time><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></time><h3><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h3><a href="<?= e(app_url('blog/'.$p['slug'])) ?>">Yazıyı oku →</a></article><?php endforeach; ?></div></div></section><?php endif; ?>
+<?php $sec=section('blog'); if($sec['is_active']): ?>
+<?php
+$blogItems=array_slice($posts,0,3);
+$blogFallbacks=[
+  'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=82&w=1400',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=700',
+  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=700'
+];
+?>
+<section class="home-section"><div class="container">
+<div class="home-section-head blog-section-head"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2><?= e($sec['title']) ?></h2></div><a class="home-btn home-btn-secondary" href="<?= e(app_url('blog')) ?>">Tüm Yazılar</a></div>
+<?php if($blogItems): $featured=$blogItems[0]; ?>
+<div class="insights-premium">
+<article class="insight-featured"><a href="<?= e(app_url('blog/'.$featured['slug'])) ?>" aria-label="<?= e($featured['title']) ?>"><img src="<?= e(media_url($featured['cover_image'] ?: $blogFallbacks[0])) ?>" alt="<?= e($featured['title']) ?>" loading="lazy"><div class="insight-featured-content"><time><?= e($featured['published_at']?date('d.m.Y',strtotime($featured['published_at'])):'Rehber') ?></time><h3><?= e($featured['title']) ?></h3><p><?= e($featured['excerpt']) ?></p></div></a></article>
+<div class="insight-side-list">
+<?php foreach(array_slice($blogItems,1,2) as $i=>$p): ?>
+<article class="insight-side"><a class="insight-side-image" href="<?= e(app_url('blog/'.$p['slug'])) ?>"><img src="<?= e(media_url($p['cover_image'] ?: $blogFallbacks[$i+1])) ?>" alt="<?= e($p['title']) ?>" loading="lazy"></a><div class="insight-side-content"><time><?= e($p['published_at']?date('d.m.Y',strtotime($p['published_at'])):'Rehber') ?></time><h3><a href="<?= e(app_url('blog/'.$p['slug'])) ?>"><?= e($p['title']) ?></a></h3><a class="read-more" href="<?= e(app_url('blog/'.$p['slug'])) ?>">Yazıyı oku →</a></div></article>
+<?php endforeach; ?>
+</div></div>
+<?php endif; ?>
+</div></section>
+<?php endif; ?>
 
 <?php $sec=section('faq'); if($sec['is_active']): ?><section class="home-section home-section-soft" id="teklif"><div class="container home-faq-contact"><div><div class="home-kicker"><?= e($sec['eyebrow']) ?></div><h2 style="color:var(--navy);font-size:34px;line-height:1.2;margin:7px 0 22px"><?= e($sec['title']) ?></h2><div class="home-faq"><?php foreach($faqs as $i=>$f): ?><details<?= $i===0?' open':'' ?>><summary><?= e($f['question']) ?></summary><p><?= e($f['answer']) ?></p></details><?php endforeach; ?></div></div><aside class="home-contact-card"><h3><?= e(setting('contact_title','Projenizi bize anlatın.')) ?></h3><p><?= e(setting('contact_body','Kısa bilgileri paylaşın; form sizi doğrudan WhatsApp görüşmesine yönlendirsin.')) ?></p><form class="home-form" data-home-form data-whatsapp="<?= e($wa) ?>"><div class="home-field"><label>Ad Soyad<input name="name" required></label></div><div class="home-field"><label>Telefon<input name="phone" required inputmode="tel"></label></div><div class="home-field"><label>Proje Türü<select name="type"><option>Konut / Villa</option><option>Ticari Yapı</option><option>Anahtar Teslim</option><option>Renovasyon</option></select></label></div><div class="home-field"><label>Konum<input name="location"></label></div><div class="home-field full"><label>Kısa Proje Bilgisi<textarea name="message"></textarea></label></div><div class="home-field full"><button class="home-btn home-btn-primary" type="submit">WhatsApp'tan Teklif İste</button></div><div class="home-field full"><p class="home-form-note" data-form-note>Gönder butonu WhatsApp mesajını hazırlar.</p></div></form></aside></div></section><?php endif; ?>
 </main>
