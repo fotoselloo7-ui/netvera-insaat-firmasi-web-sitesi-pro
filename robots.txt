@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fotoselloo7-ui.github.io/netvera-insaat-firmasi-web-sitesi-pro/sitemap.xml
