@@ -17,8 +17,6 @@ $getAny = static function(array $keys, $default = '') use ($get) {
 };
 
 $appKey = (string)$get('APP_KEY', '');
-$legacyEncryptedLicenseKey = (string)$getAny(['LICENSE_KEY','DIGIKEY_LICENSE_KEY','DIGIKEY_KEY'], '');
-$legacyLicenseKey = $legacyEncryptedLicenseKey !== '' ? netvera_decrypt_secret($legacyEncryptedLicenseKey, $appKey) : '';
 $graceHours = (int)$get('LICENSE_GRACE_HOURS', 0);
 if ($graceHours <= 0) {
     $graceHours = max(0, (int)$getAny(['DIGIKEY_GRACE_DAYS','LICENSE_GRACE_DAYS'], 7)) * 24;
@@ -47,7 +45,6 @@ return [
         'enabled' => filter_var((string)$getAny(['LICENSE_ENABLED','DIGIKEY_ENABLED'], 'true'), FILTER_VALIDATE_BOOLEAN),
         'server_url' => rtrim((string)$getAny(['LICENSE_SERVER_URL','DIGIKEY_BASE_URL'], 'https://lisans.netvera.tr'), '/'),
         'product_slug' => (string)$getAny(['LICENSE_PRODUCT_SLUG','DIGIKEY_PRODUCT_SLUG'], 'netvera-insaat-pro'),
-        'legacy_key' => $legacyLicenseKey,
         'install_id' => (string)$getAny(['LICENSE_INSTALL_ID','DIGIKEY_INSTALL_ID'], ''),
         'site_url' => rtrim((string)$get('APP_URL', ''), '/'),
         'app_version' => (string)$get('APP_VERSION', '1.0.0'),
