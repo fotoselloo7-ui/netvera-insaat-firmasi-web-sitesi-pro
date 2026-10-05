@@ -1,50 +1,61 @@
-NETVERA İNŞAAT FİRMASI WEB SİTESİ PRO — CPANEL CANLI KURULUM
+NETVERA İNŞAAT FİRMASI WEB SİTESİ PRO — CPANEL MANUEL KURULUM
 
-Bu klasörün İÇERİĞİNİ domainin document root klasörüne (genelde public_html) yükleyin.
-deploy/cpanel-live klasörünün kendisini public_html içine atmayın; içindekileri atın.
+ÖNEMLİ
+Bu pakette web installer YOKTUR ve install.php bulunmaz.
+Kurulum cPanel + phpMyAdmin + .env.php üzerinden manuel yapılır.
 
-HIZLI KURULUM
-1. cPanel > MySQL Databases üzerinden boş bir veritabanı ve kullanıcı oluşturun.
+KURULUM
+1. cPanel > MySQL Databases bölümünden boş bir veritabanı ve kullanıcı oluşturun.
 2. Kullanıcıyı veritabanına ALL PRIVILEGES ile bağlayın.
-3. Bu klasörün tüm içeriğini public_html içine yükleyin.
-4. Tarayıcıdan https://alanadiniz.com/install.php adresini açın.
-5. NetVera lisans anahtarınızı ve lisans merkezindeki ÜRÜN SLUG değerini girin.
-   - Varsayılan ürün slug: netvera-insaat-pro
-   - Bu değer lisans.netvera.tr üzerindeki ürün kaydıyla BİREBİR aynı olmalıdır.
-6. DB Host, DB Port, DB adı, DB kullanıcı, DB şifre, site URL, admin e-posta ve yeni admin şifresini girin.
-7. Kurulum önce lisansı https://lisans.netvera.tr/api/v1/activate üzerinden doğrular.
-8. Lisans başarılıysa TEK database.sql dosyası otomatik çalıştırılır ve .env.php oluşturulur.
-9. Lisans anahtarı APP_KEY ile şifrelenmiş olarak .env.php içinde saklanır.
-10. Kurulumdan sonra siteyi ve /admin/ panelini kontrol edin.
-11. /admin/ > NetVera Lisansı ekranından lisans durumunu kontrol edin.
-12. Güvenlik için install.php dosyasını silin veya yeniden adlandırın.
+3. phpMyAdmin üzerinden bu paketteki TEK database.sql dosyasını veritabanına içe aktarın.
+4. deploy/cpanel-live klasörünün İÇERİĞİNİ domain document root'una (genelde public_html) yükleyin.
+5. env.example.php dosyasını sunucuda .env.php olarak kopyalayın.
+6. .env.php içinde şu alanları kendi hosting bilgilerinizle doldurun:
+   - APP_URL
+   - APP_KEY
+   - DB_HOST
+   - DB_PORT
+   - DB_DATABASE
+   - DB_USERNAME
+   - DB_PASSWORD
+7. Lisans altyapısı için .env.php içinde şunlar kalmalıdır:
+   - LICENSE_ENABLED=true
+   - LICENSE_SERVER_URL=https://lisans.netvera.tr
+   - LICENSE_PRODUCT_SLUG=netvera-insaat-pro
+   - LICENSE_VERIFY_INTERVAL_HOURS=24
+   - LICENSE_GRACE_HOURS=168
+   - LICENSE_TIMEOUT_SECONDS=10
+8. GERÇEK DIGI-... lisans anahtarını .env.php içine yazmayın.
+9. /admin/ paneline giriş yapın.
+10. Admin > NetVera Lisansı bölümüne gidin.
+11. DIGI-... lisans anahtarını girip "Lisansı Doğrula ve Etkinleştir" butonuna basın.
+12. Başarılı aktivasyondan sonra anahtar APP_KEY ile şifrelenerek veritabanındaki license_settings tablosunda saklanır.
+13. Admin ekranından "Şimdi Doğrula" ile verify, "Lisansı Yenile" ile heartbeat çağrısı yapılabilir.
 
 LİSANS ÇALIŞMA MANTIĞI
-- Üretim lisans sunucusu: https://lisans.netvera.tr
-- Aktivasyon: /api/v1/activate
-- Doğrulama: /api/v1/verify
-- Deaktivasyon desteği: /api/v1/deactivate
-- Başarılı doğrulama 24 saat yerel cache ile kullanılır.
-- SADECE lisans sunucusuna erişilememesi / 5xx ağ-sunucu hatalarında, son başarılı kontrolden itibaren 168 saat (7 gün) tolerans uygulanır.
-- Invalid, expired, suspended, revoked, domain_mismatch ve product_mismatch gibi gerçek lisans hatalarında tolerans uygulanmaz.
-- Lisans sorunu olduğunda public PHP sayfaları engellenir; /admin/ erişimi lisans düzeltilebilsin diye açık kalır.
-- Runtime cache storage/license-cache.json dosyasındadır ve web erişimine kapalıdır.
+- Sunucu: https://lisans.netvera.tr
+- Aktivasyon: POST /api/v1/activate
+- Doğrulama: POST /api/v1/verify
+- Yenileme/heartbeat: POST /api/v1/heartbeat
+- Deaktivasyon altyapısı: POST /api/v1/deactivate
+- Ürün slug .env.php üzerinden gelir; lisans merkezindeki ürün kaydıyla birebir eşleşmelidir.
+- Başarılı doğrulama 24 saat cache edilir.
+- Yalnız ağ/sunucu erişim hatalarında son başarılı kontrolden itibaren 168 saat / 7 gün tolerans uygulanır.
+- invalid, expired, suspended, revoked, domain_mismatch ve product_mismatch tolerans kapsamına girmez.
+- Lisans yoksa public PHP site engellenir.
+- /admin/ açık kalır; böylece yeni DIGI anahtarı girilip lisans düzeltilebilir.
+- Runtime cache: storage/license-cache.json
 
-MEVCUT KURULUMU GÜNCELLEME
-Bu paketi daha önce kurulmuş bir siteye dosya güncellemesi olarak yüklerseniz, eski .env.php içinde lisans bilgisi olmayabilir.
-Bu durumda public site lisans isteyebilir. /admin/ paneline giriş yapın > NetVera Lisansı ekranından anahtar ve doğru ürün slug ile aktivasyon yapın.
-Mevcut .env.php dosyanızı güncelleme sırasında SİLMEYİN.
-
-ALTERNATİF SQL KURULUMU
-phpMyAdmin kullanmak isterseniz yalnızca database.sql dosyasını bir kez içe aktarın.
-Lisans/APP_KEY/.env.php oluşturma işlemleri için install.php ekranını kullanmanız önerilir.
+APP_KEY
+APP_KEY lisans anahtarını veritabanında şifrelemek için kullanılır.
+Canlı site kurulduktan sonra APP_KEY değerini sebepsiz değiştirmeyin; değişirse kayıtlı lisans anahtarı çözülemez ve admin panelden DIGI anahtarını yeniden etkinleştirmeniz gerekir.
 
 DOSYA İZİNLERİ
 - Klasörler: genelde 755
 - Dosyalar: genelde 644
-- uploads/: görsel yükleme çalışmazsa 775 deneyin.
-- storage/: lisans cache yazılamazsa 775 deneyin.
-- .env.php: kurulumdan sonra mümkünse 600/640 kullanın.
+- uploads/: görsel yükleme sorunu varsa 775
+- storage/: lisans cache yazma sorunu varsa 775
+- .env.php: mümkünse 600/640
 
 YÖNETİM
 /admin/
@@ -52,12 +63,10 @@ Logo, favicon, slider, hizmet, proje, galeri, blog, bölgeler, yorumlar, SSS, sa
 yasal sayfalar, SEO/GEO/AIO, sosyal medya bağlantıları, iletişim ayarları ve NetVera lisansı admin panelden yönetilir.
 
 SOSYAL MEDYA
-Admin > Genel Ayarlar > Marka & İletişim alanından Instagram, Facebook, LinkedIn, X / Twitter ve YouTube URL'lerini girebilirsiniz.
-Ana sayfa, iletişim sayfası ve mobil menü gerçek platform SVG ikonlarını kullanır. Harici ikon kütüphanesi gerekmez.
+Admin > Genel Ayarlar > Marka & İletişim alanından Instagram, Facebook, LinkedIn, X / Twitter ve YouTube URL'lerini yönetin.
+Ana sayfa, iletişim sayfası ve mobil menü gerçek platform SVG ikonlarını kullanır.
 
 YASAL SAYFALAR
 /kvkk-aydinlatma-metni
 /gizlilik-politikasi
 /cerez-politikasi
-İlk metinler başlangıç şablonudur. Şirketin resmi unvan/vergi/MERSİS/veri sorumlusu bilgilerine göre
-canlıya çıkmadan önce Sayfalar / Landing modülünden gözden geçirilmelidir.
