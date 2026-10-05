@@ -34,6 +34,7 @@ try {
 $GLOBALS['pdo'] = $pdo;
 $GLOBALS['app_config'] = $config;
 
+ensure_license_schema();
 ensure_seo_schema();
 ensure_testimonial_schema();
 ensure_content_management_schema();
