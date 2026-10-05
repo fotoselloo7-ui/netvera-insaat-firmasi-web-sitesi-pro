@@ -155,7 +155,7 @@ $modules = [
 
 $settingsGroups = [
     'Marka & İletişim'=>[
-        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Site Logo Görseli','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
+        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Yatay Logo · Açık Zemin','footer_logo_image'=>'Yatay Logo · Koyu Zemin','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
         'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
         'instagram_url'=>'Instagram URL','facebook_url'=>'Facebook URL',
         'twitter_url'=>'X / Twitter URL','youtube_url'=>'YouTube URL',
@@ -229,7 +229,8 @@ $settingsGroups = [
 $settingsFields=[];
 foreach($settingsGroups as $groupFields) $settingsFields=array_merge($settingsFields,$groupFields);
 $settingsImageFields = [
-    'logo_image'=>'Site Logo Görseli',
+    'logo_image'=>'Yatay Logo · Açık Zemin',
+    'footer_logo_image'=>'Yatay Logo · Koyu Zemin',
     'favicon_image'=>'Favicon / Tarayıcı İkonu',
     'about_image'=>'Hakkımızda Görseli',
     'why_image'=>'Neden Biz Görseli',
@@ -477,8 +478,7 @@ $navGroups = [
 <aside class="admin-sidebar" data-sidebar>
   <div class="admin-brand-wrap">
     <a class="admin-brand-horizontal" href="<?= e(app_url()) ?>" target="_blank" rel="noopener" aria-label="<?= e(setting('site_name','Vera Yapı')) ?> sitesini aç">
-      <span class="admin-brand-mark"><img src="<?= e(media_url(trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.svg')) ?>" alt="" width="42" height="42"></span>
-      <span class="admin-brand-copy"><strong><?= e(setting('site_name','Vera Yapı')) ?></strong><span><?= e(setting('tagline','İNŞAAT & TAAHHÜT')) ?></span></span>
+      <img class="admin-brand-horizontal-logo" src="<?= e(media_url(trim(setting('footer_logo_image','')) ?: 'assets/brand/vera-yapi-horizontal-light.svg')) ?>" alt="<?= e(setting('site_name','Vera Yapı')) ?>" width="178" height="44">
     </a>
     <button class="admin-mobile-close" type="button" data-sidebar-close aria-label="Menüyü kapat">×</button>
   </div>
