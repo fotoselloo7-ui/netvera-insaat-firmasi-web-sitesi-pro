@@ -4614,3 +4614,31 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:420px){
   .home-logo-horizontal{width:154px;height:40px}
 }
+
+/* ==========================================================
+   V24 — real social brand icons
+   ========================================================== */
+.social-btn-v6 .brand-icon{
+  width:16px;
+  height:16px;
+  flex:0 0 auto;
+  color:#fff;
+}
+.social-btn-v6.is-instagram{background:linear-gradient(135deg,#f58529,#dd2a7b 48%,#8134af 78%,#515bd4)!important}
+.social-btn-v6.is-facebook{background:#1877f2!important}
+.social-btn-v6.is-linkedin{background:#0a66c2!important}
+.social-btn-v6.is-twitter{background:#111!important}
+.social-btn-v6.is-youtube{background:#ff0033!important}
+.social-btn-v6.is-instagram .brand-icon{fill:none!important;stroke:none!important}
+.social-btn-v6.is-instagram .brand-icon rect,
+.social-btn-v6.is-instagram .brand-icon circle:first-of-type{fill:none!important;stroke:currentColor!important}
+.social-btn-v6.is-instagram .brand-icon circle:last-of-type{fill:currentColor!important;stroke:none!important}
+
+.home-menu-mobile-socials b .brand-icon{
+  width:13px;
+  height:13px;
+  display:block;
+  color:#fff;
+}
+.home-menu-mobile-socials .is-linkedin b{background:#0a66c2}
+
