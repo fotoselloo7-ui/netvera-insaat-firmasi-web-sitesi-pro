@@ -263,38 +263,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ?module=settings&saved=1'); exit;
     }
 
-    if ($action === 'license_activate') {
-        $licenseKey = trim((string)($_POST['license_key'] ?? ''));
-        $productSlug = trim((string)($_POST['product_slug'] ?? ($GLOBALS['app_config']['license']['product_slug'] ?? 'netvera-insaat-pro')));
-        $appKey = trim((string)($GLOBALS['app_config']['app']['key'] ?? ''));
-        if ($appKey === '') $appKey = 'base64:' . base64_encode(random_bytes(32));
-        $installId = trim((string)($GLOBALS['app_config']['license']['install_id'] ?? ''));
-        if ($installId === '') $installId = bin2hex(random_bytes(16));
-
-        $cfg = $GLOBALS['app_config']['license'] ?? [];
-        $cfg['key'] = $licenseKey;
-        $cfg['product_slug'] = $productSlug;
-        $cfg['install_id'] = $installId;
-        $cfg['site_url'] = app_url();
-        $service = new NetveraLicenseService($cfg);
-        $licenseActionResult = $service->activate($licenseKey, $productSlug, app_url(), $installId);
-
-        if (($licenseActionResult['success'] ?? false) === true && in_array((string)($licenseActionResult['status'] ?? ''), ['active','trial'], true)) {
-            netvera_update_local_env([
-                'APP_KEY'=>$appKey,
-                'LICENSE_ENABLED'=>'true',
-                'LICENSE_SERVER_URL'=>'https://lisans.netvera.tr',
-                'LICENSE_PRODUCT_SLUG'=>$productSlug,
-                'LICENSE_KEY'=>netvera_encrypt_secret($licenseKey, $appKey),
-                'LICENSE_INSTALL_ID'=>$installId,
-                'LICENSE_VERIFY_INTERVAL_HOURS'=>'24',
-                'LICENSE_GRACE_HOURS'=>'168',
-                'LICENSE_TIMEOUT_SECONDS'=>'8',
-            ]);
-            header('Location: ?module=license&activated=1'); exit;
-        }
-    }
-
     if ($action === 'license_verify') {
         $licenseActionResult = netvera_license_status(true);
     }
@@ -808,14 +776,7 @@ try{
       </section>
 
       <section class="admin-card admin-card-narrow">
-        <div class="admin-card-head"><div><span class="admin-card-kicker">AKTİVASYON / DEĞİŞTİRME</span><h3>Lisans anahtarını bağlayın</h3><p>Anahtar şifrelenerek <code>.env.php</code> içinde saklanır. Ürün slug lisans merkezindeki kayıtla birebir aynı olmalıdır.</p></div></div>
-        <form class="admin-form" method="post">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="action" value="license_activate">
-          <label class="admin-field full"><span>Lisans Anahtarı</span><input type="text" name="license_key" required autocomplete="off" placeholder="DIGI-...."></label>
-          <label class="admin-field full"><span>Ürün Slug</span><input type="text" name="product_slug" required value="<?= e((string)($GLOBALS['app_config']['license']['product_slug'] ?? 'netvera-insaat-pro')) ?>"></label>
-          <div class="admin-form-actions full"><button class="admin-btn" type="submit"><?= admin_icon('check') ?> Lisansı Etkinleştir</button></div>
-        </form>
+        <div class="admin-card-head"><div><span class="admin-card-kicker">YAPILANDIRMA</span><h3>Lisans bilgileri yalnızca .env.php üzerinden yönetilir.</h3><p>Müşteri panelinden lisans anahtarı değiştirilemez. Lisans anahtarı, ürün slug, domain ve veritabanı bilgilerini sunucuda siz yönetirsiniz.</p></div></div>
       </section>
 
     <?php elseif($module==='account'): ?>
