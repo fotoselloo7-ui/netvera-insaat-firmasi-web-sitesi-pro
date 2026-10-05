@@ -263,8 +263,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ?module=settings&saved=1'); exit;
     }
 
+    if ($action === 'license_activate') {
+        $licenseKeyInput = trim((string)($_POST['license_key'] ?? ''));
+        $licenseActionResult = netvera_license_activate($licenseKeyInput);
+        if (($licenseActionResult['success'] ?? false) === true && in_array((string)($licenseActionResult['status'] ?? ''), ['active','trial'], true)) {
+            header('Location: ?module=license&activated=1'); exit;
+        }
+    }
+
     if ($action === 'license_verify') {
         $licenseActionResult = netvera_license_status(true);
+    }
+
+    if ($action === 'license_refresh') {
+        $licenseActionResult = netvera_license_heartbeat();
     }
 
     if ($action === 'change_password') {
@@ -356,7 +368,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_GET['saved'])) $notice='Değişiklikler kaydedildi.';
 if (isset($_GET['deleted'])) $notice='Kayıt silindi.';
-if (isset($_GET['activated'])) $notice='NetVera lisansı etkinleştirildi ve yerel yapılandırma güncellendi.';
+if (isset($_GET['activated'])) $notice='NetVera lisansı doğrulandı, etkinleştirildi ve güvenli biçimde veritabanına kaydedildi.';
 
 function admin_icon(string $name): string {
     $icons = [
@@ -730,7 +742,8 @@ try{
       $expiresAt=(string)($licenseStatus['license']['expires_at'] ?? $licenseStatus['expires_at'] ?? '');
       $lastSuccess=(int)($licenseCache['last_success_at'] ?? 0);
       $graceUntil=(int)($licenseStatus['grace_until'] ?? 0);
-      $currentLicenseKey=(string)($GLOBALS['app_config']['license']['key'] ?? '');
+      $currentLicenseKey=netvera_license_key();
+      $licenseRecord=netvera_license_record();
     ?>
       <section class="admin-hero">
         <div>
@@ -757,11 +770,18 @@ try{
             <div><span>Bitiş tarihi</span><b><?= $expiresAt!==''?e($expiresAt):'—' ?></b></div>
             <?php if($graceUntil): ?><div><span>Tolerans bitişi</span><b><?= e(date('d.m.Y H:i',$graceUntil)) ?></b></div><?php endif; ?>
           </div>
-          <form method="post" style="margin-top:18px">
-            <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-            <input type="hidden" name="action" value="license_verify">
-            <button class="admin-btn admin-btn-light" type="submit"><?= admin_icon('check') ?> Şimdi Doğrula</button>
-          </form>
+          <div class="admin-form-actions" style="margin-top:18px">
+            <form method="post">
+              <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+              <input type="hidden" name="action" value="license_verify">
+              <button class="admin-btn admin-btn-light" type="submit"><?= admin_icon('check') ?> Şimdi Doğrula</button>
+            </form>
+            <form method="post">
+              <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+              <input type="hidden" name="action" value="license_refresh">
+              <button class="admin-btn admin-btn-light" type="submit">Lisansı Yenile</button>
+            </form>
+          </div>
         </div>
 
         <div class="admin-card">
@@ -770,13 +790,25 @@ try{
             <div><span>Sunucu</span><b><?= e((string)($GLOBALS['app_config']['license']['server_url'] ?? 'https://lisans.netvera.tr')) ?></b></div>
             <div><span>Kontrol aralığı</span><b><?= (int)($GLOBALS['app_config']['license']['verify_interval_hours'] ?? 24) ?> saat</b></div>
             <div><span>Ağ toleransı</span><b><?= (int)($GLOBALS['app_config']['license']['grace_hours'] ?? 168) ?> saat</b></div>
-            <div><span>Install ID</span><b><?= e((string)($GLOBALS['app_config']['license']['install_id'] ?? '—')) ?></b></div>
+            <div><span>Install ID</span><b><?= e((string)(netvera_license_install_id() ?: '—')) ?></b></div>
           </div>
         </div>
       </section>
 
       <section class="admin-card admin-card-narrow">
-        <div class="admin-card-head"><div><span class="admin-card-kicker">YAPILANDIRMA</span><h3>Lisans bilgileri yalnızca .env.php üzerinden yönetilir.</h3><p>Müşteri panelinden lisans anahtarı değiştirilemez. Lisans anahtarı, ürün slug, domain ve veritabanı bilgilerini sunucuda siz yönetirsiniz.</p></div></div>
+        <div class="admin-card-head"><div><span class="admin-card-kicker">LİSANS ANAHTARI</span><h3>DIGI anahtarını doğrulayın ve etkinleştirin.</h3><p>DB bağlantısı ve ürün ayarları .env.php üzerinden gelir. Lisans anahtarı burada girilir; başarılı doğrulamada APP_KEY ile şifrelenerek veritabanında saklanır.</p></div></div>
+        <form class="admin-form" method="post" autocomplete="off">
+          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+          <input type="hidden" name="action" value="license_activate">
+          <label class="admin-field full">
+            <span>NetVera Lisans Anahtarı</span>
+            <input type="text" name="license_key" required placeholder="DIGI-XXXX-XXXX-XXXX-XXXX" pattern="DIGI-[A-Za-z0-9-]+" spellcheck="false" autocomplete="off">
+            <small>Yeni anahtar yalnız doğrulama başarılı olursa kaydedilir. Mevcut anahtar: <?= e(netvera_mask_license_key($currentLicenseKey)) ?></small>
+          </label>
+          <div class="admin-form-actions full">
+            <button class="admin-btn" type="submit"><?= admin_icon('check') ?> Lisansı Doğrula ve Etkinleştir</button>
+          </div>
+        </form>
       </section>
 
     <?php elseif($module==='account'): ?>
