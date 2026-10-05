@@ -1,14 +1,20 @@
 <?php
 /**
  * NetVera İnşaat Pro — cPanel manuel ortam ayarları
- * Bu dosyayı sunucuda .env.php adıyla kopyalayın ve değerleri değiştirin.
- * Gerçek şifre/lisans anahtarını GitHub'a commit etmeyin.
+ *
+ * 1) Bu dosyayı sunucuda .env.php adıyla kopyalayın.
+ * 2) DB ve APP_URL değerlerini doldurun.
+ * 3) APP_KEY için uzun ve benzersiz bir değer kullanın.
+ * 4) Lisans anahtarını BURAYA yazmayın; Admin > NetVera Lisansı ekranından DIGI-... anahtarını girin.
+ *
+ * Gerçek veritabanı şifresini veya APP_KEY değerini GitHub'a commit etmeyin.
  */
 return [
     'APP_NAME' => 'NetVera İnşaat Firması Web Sitesi Pro',
     'APP_URL' => 'https://alanadiniz.com',
     'APP_TIMEZONE' => 'Europe/Istanbul',
     'APP_VERSION' => '1.0.0',
+    'APP_KEY' => 'BURAYA_UZUN_BENZERSIZ_APP_KEY',
 
     'DB_HOST' => 'localhost',
     'DB_PORT' => '3306',
@@ -16,15 +22,11 @@ return [
     'DB_USERNAME' => 'cpanel_kullanici',
     'DB_PASSWORD' => 'VERITABANI_SIFRENIZ',
 
-    // NetVera lisans sistemi
+    // NetVera lisans altyapısı — gerçek DIGI anahtarı admin panelden girilir.
     'LICENSE_ENABLED' => 'true',
     'LICENSE_SERVER_URL' => 'https://lisans.netvera.tr',
     'LICENSE_PRODUCT_SLUG' => 'netvera-insaat-pro',
-    // Düz anahtar desteklenir. Örn: DIGI-XXXX-XXXX-XXXX
-    'LICENSE_KEY' => 'LISANS_ANAHTARINIZ',
-    // İsterseniz kurulum başına sabit benzersiz bir değer yazın.
-    'LICENSE_INSTALL_ID' => '',
     'LICENSE_VERIFY_INTERVAL_HOURS' => '24',
     'LICENSE_GRACE_HOURS' => '168',
-    'LICENSE_TIMEOUT_SECONDS' => '8',
+    'LICENSE_TIMEOUT_SECONDS' => '10',
 ];
