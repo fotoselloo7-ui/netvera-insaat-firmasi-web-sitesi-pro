@@ -8,25 +8,52 @@ HIZLI KURULUM
 2. Kullanıcıyı veritabanına ALL PRIVILEGES ile bağlayın.
 3. Bu klasörün tüm içeriğini public_html içine yükleyin.
 4. Tarayıcıdan https://alanadiniz.com/install.php adresini açın.
-5. DB Host, DB Port, DB adı, DB kullanıcı, DB şifre, site URL, admin e-posta ve yeni admin şifresini girin.
-6. Kurulum ekranı bu klasördeki TEK database.sql dosyasını otomatik çalıştırır ve .env.php dosyasını oluşturur.
-7. Kurulumdan sonra siteyi ve /admin/ panelini kontrol edin.
-8. Güvenlik için install.php dosyasını silin veya yeniden adlandırın.
+5. NetVera lisans anahtarınızı ve lisans merkezindeki ÜRÜN SLUG değerini girin.
+   - Varsayılan ürün slug: netvera-insaat-pro
+   - Bu değer lisans.netvera.tr üzerindeki ürün kaydıyla BİREBİR aynı olmalıdır.
+6. DB Host, DB Port, DB adı, DB kullanıcı, DB şifre, site URL, admin e-posta ve yeni admin şifresini girin.
+7. Kurulum önce lisansı https://lisans.netvera.tr/api/v1/activate üzerinden doğrular.
+8. Lisans başarılıysa TEK database.sql dosyası otomatik çalıştırılır ve .env.php oluşturulur.
+9. Lisans anahtarı APP_KEY ile şifrelenmiş olarak .env.php içinde saklanır.
+10. Kurulumdan sonra siteyi ve /admin/ panelini kontrol edin.
+11. /admin/ > NetVera Lisansı ekranından lisans durumunu kontrol edin.
+12. Güvenlik için install.php dosyasını silin veya yeniden adlandırın.
+
+LİSANS ÇALIŞMA MANTIĞI
+- Üretim lisans sunucusu: https://lisans.netvera.tr
+- Aktivasyon: /api/v1/activate
+- Doğrulama: /api/v1/verify
+- Deaktivasyon desteği: /api/v1/deactivate
+- Başarılı doğrulama 24 saat yerel cache ile kullanılır.
+- SADECE lisans sunucusuna erişilememesi / 5xx ağ-sunucu hatalarında, son başarılı kontrolden itibaren 168 saat (7 gün) tolerans uygulanır.
+- Invalid, expired, suspended, revoked, domain_mismatch ve product_mismatch gibi gerçek lisans hatalarında tolerans uygulanmaz.
+- Lisans sorunu olduğunda public PHP sayfaları engellenir; /admin/ erişimi lisans düzeltilebilsin diye açık kalır.
+- Runtime cache storage/license-cache.json dosyasındadır ve web erişimine kapalıdır.
+
+MEVCUT KURULUMU GÜNCELLEME
+Bu paketi daha önce kurulmuş bir siteye dosya güncellemesi olarak yüklerseniz, eski .env.php içinde lisans bilgisi olmayabilir.
+Bu durumda public site lisans isteyebilir. /admin/ paneline giriş yapın > NetVera Lisansı ekranından anahtar ve doğru ürün slug ile aktivasyon yapın.
+Mevcut .env.php dosyanızı güncelleme sırasında SİLMEYİN.
 
 ALTERNATİF SQL KURULUMU
 phpMyAdmin kullanmak isterseniz yalnızca database.sql dosyasını bir kez içe aktarın.
-Daha sonra .env.php bağlantı bilgilerini oluşturmak için install.php ekranını kullanmanız önerilir.
+Lisans/APP_KEY/.env.php oluşturma işlemleri için install.php ekranını kullanmanız önerilir.
 
 DOSYA İZİNLERİ
 - Klasörler: genelde 755
 - Dosyalar: genelde 644
 - uploads/: görsel yükleme çalışmazsa 775 deneyin.
+- storage/: lisans cache yazılamazsa 775 deneyin.
 - .env.php: kurulumdan sonra mümkünse 600/640 kullanın.
 
 YÖNETİM
 /admin/
 Logo, favicon, slider, hizmet, proje, galeri, blog, bölgeler, yorumlar, SSS, sayfa bölümleri,
-yasal sayfalar, SEO/GEO/AIO ve iletişim ayarları admin panelden yönetilir.
+yasal sayfalar, SEO/GEO/AIO, sosyal medya bağlantıları, iletişim ayarları ve NetVera lisansı admin panelden yönetilir.
+
+SOSYAL MEDYA
+Admin > Genel Ayarlar > Marka & İletişim alanından Instagram, Facebook, LinkedIn, X / Twitter ve YouTube URL'lerini girebilirsiniz.
+Ana sayfa, iletişim sayfası ve mobil menü gerçek platform SVG ikonlarını kullanır. Harici ikon kütüphanesi gerekmez.
 
 YASAL SAYFALAR
 /kvkk-aydinlatma-metni
