@@ -36,13 +36,13 @@ include __DIR__.'/partials/header.php';
   </div>
 </div></section><?php endif; ?>
 
-<section class="page-section soft"><div class="container">
+<?php if($serviceFlow): ?><section class="page-section soft"><div class="container">
   <div class="fact-ribbon">
     <?php foreach(array_slice($serviceFlow,0,4) as $f): ?><div><strong><?= e($f['icon']) ?></strong><span><?= e($f['title']) ?></span></div><?php endforeach; ?>
   </div>
-</div></section>
+</div></section><?php endif; ?>
 
-<?php if((int)$secMethod['is_active']===1): ?><section class="page-section service-method-section"><div class="container">
+<?php if((int)$secMethod['is_active']===1 && $serviceMethods): ?><section class="page-section service-method-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secMethod['eyebrow']) ?></div><h2><?= e($secMethod['title']) ?></h2></div><p><?= e($secMethod['body']) ?></p></div>
   <div class="service-method-grid">
     <?php foreach($serviceMethods as $f): ?><article class="service-method-card"><span><?= e($f['icon']) ?></span><div><h3><?= e($f['title']) ?></h3><p><?= e($f['body']) ?></p></div><?php if(!empty($f['link_url'])): ?><a href="<?= e(app_url($f['link_url'])) ?>"><?= e($f['link_label'] ?: 'İncele') ?> <b>›</b></a><?php endif; ?></article><?php endforeach; ?>
