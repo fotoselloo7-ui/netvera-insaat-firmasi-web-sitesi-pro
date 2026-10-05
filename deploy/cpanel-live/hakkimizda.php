@@ -59,14 +59,14 @@ include __DIR__.'/partials/header.php';
   <?php foreach(array_slice($stats,0,4) as $s): ?><div><strong><?= e($s['stat_value']) ?></strong><span><?= e($s['label']) ?></span></div><?php endforeach; ?>
 </div></div></section><?php endif; ?>
 
-<?php if((int)$secPrinciples['is_active']===1): ?><section class="page-section"><div class="container">
+<?php if((int)$secPrinciples['is_active']===1 && $principles): ?><section class="page-section"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secPrinciples['eyebrow']) ?></div><h2><?= e($secPrinciples['title']) ?></h2></div><p><?= e($secPrinciples['body']) ?></p></div>
   <div class="principle-grid">
     <?php foreach($principles as $p): ?><article class="principle-card"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></article><?php endforeach; ?>
   </div>
 </div></section><?php endif; ?>
 
-<?php if((int)$secProcess['is_active']===1): ?><section class="page-section navy"><div class="container">
+<?php if((int)$secProcess['is_active']===1 && $process): ?><section class="page-section navy"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2 style="color:#fff"><?= e($secProcess['title']) ?></h2></div><p style="color:#afbdc6"><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
 </div></section><?php endif; ?>
