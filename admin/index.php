@@ -470,14 +470,16 @@ $navGroups = [
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0c2232">
 <title><?= e($pageTitle) ?> · NetVera Admin</title>
-<link rel="stylesheet" href="admin.css?v=4">
+<link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body>
 <div class="admin-shell">
 <aside class="admin-sidebar" data-sidebar>
   <div class="admin-brand-wrap">
-    <div class="admin-brand-mark">NV</div>
-    <div class="admin-brand-copy"><strong>NetVera</strong><span>Construction CMS</span></div>
+    <a class="admin-brand-horizontal" href="<?= e(app_url()) ?>" target="_blank" rel="noopener" aria-label="<?= e(setting('site_name','Vera Yapı')) ?> sitesini aç">
+      <span class="admin-brand-mark"><img src="<?= e(media_url(trim(setting('logo_image','')) ?: 'assets/brand/netvera-mark.svg')) ?>" alt="" width="42" height="42"></span>
+      <span class="admin-brand-copy"><strong><?= e(setting('site_name','Vera Yapı')) ?></strong><span><?= e(setting('tagline','İNŞAAT & TAAHHÜT')) ?></span></span>
+    </a>
     <button class="admin-mobile-close" type="button" data-sidebar-close aria-label="Menüyü kapat">×</button>
   </div>
 
