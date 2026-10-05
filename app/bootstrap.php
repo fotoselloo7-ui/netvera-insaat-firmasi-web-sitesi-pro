@@ -38,3 +38,6 @@ ensure_seo_schema();
 ensure_testimonial_schema();
 ensure_content_management_schema();
 ensure_v17_content_seed();
+
+// Public PHP pages require a valid NetVera license. Admin remains reachable for license recovery.
+netvera_public_license_guard();
