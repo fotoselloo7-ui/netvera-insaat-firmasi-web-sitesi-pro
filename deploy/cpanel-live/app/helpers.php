@@ -345,9 +345,29 @@ function app_url(string $path = ''): string {
         $base = $scheme . '://' . $requestHost . ($script === '' || $script === '.' ? '' : $script);
     } else {
         $base = rtrim($configured, '/');
+
+        // If the live request is HTTPS but APP_URL was accidentally left as HTTP,
+        // keep same-host application/assets on HTTPS. In-app browsers are much
+        // stricter about mixed-content stylesheets and images.
+        $baseHost = strtolower((string)(parse_url($base, PHP_URL_HOST) ?? ''));
+        $requestHostOnly = strtolower((string)preg_replace('/:\\d+$/', '', $requestHost));
+        if ($scheme === 'https' && $baseHost !== '' && $baseHost === $requestHostOnly) {
+            $base = preg_replace('#^http://#i', 'https://', $base) ?: $base;
+        }
     }
 
     return rtrim($base, '/') . '/' . ltrim($path, '/');
+}
+
+function local_media_exists(?string $value): bool {
+    $value = trim((string)$value);
+    if ($value === '') return false;
+    if (preg_match('#^https?://#i', $value)) return true;
+
+    $clean = ltrim((string)(parse_url($value, PHP_URL_PATH) ?? $value), '/');
+    if ($clean === '' || str_contains($clean, '..')) return false;
+
+    return is_file(dirname(__DIR__) . '/' . $clean);
 }
 
 function media_url(?string $value): string {
