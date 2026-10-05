@@ -155,7 +155,7 @@ $modules = [
 
 $settingsGroups = [
     'Marka & İletişim'=>[
-        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Site Logo Görseli','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
+        'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Yatay Logo · Açık Zemin','footer_logo_image'=>'Yatay Logo · Koyu Zemin','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
         'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
         'instagram_url'=>'Instagram URL','facebook_url'=>'Facebook URL',
         'twitter_url'=>'X / Twitter URL','youtube_url'=>'YouTube URL',
@@ -229,7 +229,8 @@ $settingsGroups = [
 $settingsFields=[];
 foreach($settingsGroups as $groupFields) $settingsFields=array_merge($settingsFields,$groupFields);
 $settingsImageFields = [
-    'logo_image'=>'Site Logo Görseli',
+    'logo_image'=>'Yatay Logo · Açık Zemin',
+    'footer_logo_image'=>'Yatay Logo · Koyu Zemin',
     'favicon_image'=>'Favicon / Tarayıcı İkonu',
     'about_image'=>'Hakkımızda Görseli',
     'why_image'=>'Neden Biz Görseli',
@@ -463,6 +464,13 @@ $navGroups = [
     'İçerik' => ['services','projects','posts','pages'],
     'Güven & Dönüşüm' => ['home_features','testimonials','service_areas','faqs'],
 ];
+$legalAdminPages=[];
+try{
+    $legalSlugs=['kvkk-aydinlatma-metni','gizlilik-politikasi','cerez-politikasi'];
+    $legalStmt=db()->prepare("SELECT id,slug,title FROM pages WHERE slug IN (?,?,?) ORDER BY FIELD(slug,?,?,?)");
+    $legalStmt->execute(array_merge($legalSlugs,$legalSlugs));
+    $legalAdminPages=$legalStmt->fetchAll();
+}catch(Throwable $e){ $legalAdminPages=[]; }
 ?><!doctype html>
 <html lang="tr">
 <head>
@@ -470,14 +478,15 @@ $navGroups = [
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0c2232">
 <title><?= e($pageTitle) ?> · NetVera Admin</title>
-<link rel="stylesheet" href="admin.css?v=4">
+<link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body>
 <div class="admin-shell">
 <aside class="admin-sidebar" data-sidebar>
   <div class="admin-brand-wrap">
-    <div class="admin-brand-mark">NV</div>
-    <div class="admin-brand-copy"><strong>NetVera</strong><span>Construction CMS</span></div>
+    <a class="admin-brand-horizontal" href="<?= e(app_url()) ?>" target="_blank" rel="noopener" aria-label="<?= e(setting('site_name','Vera Yapı')) ?> sitesini aç">
+      <img class="admin-brand-horizontal-logo" src="<?= e(media_url(trim(setting('footer_logo_image','')) ?: 'assets/brand/vera-yapi-horizontal-light.svg')) ?>" alt="<?= e(setting('site_name','Vera Yapı')) ?>" width="178" height="44">
+    </a>
     <button class="admin-mobile-close" type="button" data-sidebar-close aria-label="Menüyü kapat">×</button>
   </div>
 
@@ -495,6 +504,12 @@ $navGroups = [
         <?php endif; ?>
       <?php endforeach; ?>
     <?php endforeach; ?>
+    <?php if($legalAdminPages): ?>
+      <div class="admin-nav-group-title">Yasal Sayfalar</div>
+      <?php foreach($legalAdminPages as $legalPage): ?>
+        <a href="?module=pages&edit=<?= (int)$legalPage['id'] ?>" class="admin-nav-link"><?= admin_icon('pages') ?><span><?= e($legalPage['title']) ?></span></a>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </nav>
 
   <div class="admin-sidebar-footer">
@@ -681,7 +696,7 @@ $navGroups = [
                     <?php $currentImage=setting($key); ?>
                     <?php if($currentImage!==''): ?><div class="admin-setting-image-preview"><img src="<?= e(media_url($currentImage)) ?>" alt=""></div><?php endif; ?>
                     <input name="<?= e($key) ?>" value="<?= e($currentImage) ?>" placeholder="uploads/... veya https://...">
-                    <input class="admin-file" type="file" name="<?= e($key) ?>_upload" accept="image/jpeg,image/png,image/webp,image/avif">
+                    <input class="admin-file" type="file" name="<?= e($key) ?>_upload" accept="image/jpeg,image/png,image/webp,image/avif,image/x-icon,image/vnd.microsoft.icon,.ico">
                     <small>URL girebilir veya bilgisayardan JPG, PNG, WebP, AVIF yükleyebilirsiniz.</small>
                   <?php elseif(in_array($key,$longSettings,true)): ?>
                     <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
