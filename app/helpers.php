@@ -84,6 +84,9 @@ function ensure_content_management_schema(): void {
         }
 
         $uiDefaults=[
+            'logo_image'=>'assets/brand/vera-yapi-horizontal.svg',
+            'footer_logo_image'=>'assets/brand/vera-yapi-horizontal-light.svg',
+            'favicon_image'=>'assets/brand/netvera-mark.svg',
             'nav_home_label'=>'Ana Sayfa',
             'nav_about_label'=>'Kurumsal',
             'nav_services_label'=>'Hizmetler',
@@ -99,6 +102,11 @@ function ensure_content_management_schema(): void {
         ];
         $settingInsert=$pdo->prepare("INSERT IGNORE INTO settings (setting_key,setting_value) VALUES (?,?)");
         foreach($uiDefaults as $key=>$value) $settingInsert->execute([$key,$value]);
+        $legacyLogoValue=(string)$pdo->query("SELECT setting_value FROM settings WHERE setting_key='logo_image' LIMIT 1")->fetchColumn();
+        if($legacyLogoValue==='' || $legacyLogoValue==='assets/brand/netvera-mark.svg'){
+            $pdo->prepare("INSERT INTO settings (setting_key,setting_value) VALUES ('logo_image',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)")
+                ->execute(['assets/brand/vera-yapi-horizontal.svg']);
+        }
 
         $sections=[
             ['hakkimizda','editorial','Nasıl Çalışıyoruz?','Gösterişten önce düzen, vaatten önce süreç.','Bizim için premium hizmet; daha fazla söz vermek değil, daha az belirsizlik üretmektir. Bütçe, takvim, malzeme ve uygulama kararlarının izlenebilir olması bu yüzden çalışma modelimizin merkezindedir.','İyi bir yapı yalnızca malzeme ve işçilikten değil; doğru kararların doğru sırayla alınmasından oluşur.','','',10],
