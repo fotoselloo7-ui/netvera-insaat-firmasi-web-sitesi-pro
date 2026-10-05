@@ -5,6 +5,25 @@ function db(): PDO {
     return $GLOBALS['pdo'];
 }
 
+
+
+function ensure_license_schema(): void {
+    try {
+        db()->exec("CREATE TABLE IF NOT EXISTS license_settings (
+            id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+            encrypted_key TEXT NULL,
+            install_id VARCHAR(80) NULL,
+            last_status VARCHAR(50) NULL,
+            last_message TEXT NULL,
+            activated_at DATETIME NULL,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        db()->exec("INSERT IGNORE INTO license_settings (id,encrypted_key,install_id,last_status,last_message) VALUES (1,NULL,NULL,'not_configured',NULL)");
+    } catch (Throwable $e) {
+        // Lisans tablosu self-healing çalışır; asıl hata lisans ekranında görünür.
+    }
+}
+
 function ensure_testimonial_schema(): void {
     $pdo = db();
     $tableExists = $pdo->query("SHOW TABLES LIKE 'testimonials'")->fetchColumn();
