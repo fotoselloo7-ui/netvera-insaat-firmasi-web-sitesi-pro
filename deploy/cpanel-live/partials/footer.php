@@ -22,5 +22,5 @@ $wa = preg_replace('/\D+/', '', setting('whatsapp',$phone));
 <a class="home-mobile-phone" href="tel:<?= e(preg_replace('/\D+/', '', $phone)) ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.8c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg>Ara</a>
 <a class="home-mobile-wa" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3A13 13 0 0 0 5 22.9L3.6 29 9.8 27.6A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.7.9.9-3.6-.2-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.7.1-1.9-.9-3.2-1.7-4.5-3.8-.3-.6.3-.6.9-1.8.1-.2.1-.4 0-.6l-1-2.4c-.3-.6-.5-.6-.7-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 3 0 1.8 1.3 3.5 1.5 3.8.2.2 2.6 4 6.4 5.6 3 1.3 4.2 1.4 5.7 1.2.9-.1 1.9-.8 2.2-1.5.3-.7.3-1.3.2-1.5-.1-.2-.3-.3-.6-.5Z"/></svg>WhatsApp</a>
 </div>
-<script src="<?= e(app_url('assets/js/home.js')) ?>?v=23" defer></script>
+<script src="<?= e(app_url('assets/js/home.js')) ?>?v=24" defer></script>
 </body></html>
