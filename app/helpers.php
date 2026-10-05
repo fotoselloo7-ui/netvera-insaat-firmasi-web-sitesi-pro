@@ -210,55 +210,60 @@ function ensure_content_management_schema(): void {
         }
 
         /*
-         * V25 content repair
-         * Older live databases may already contain page_sections/home_features rows
-         * created by an earlier release with empty content. INSERT-only seeding then
-         * sees the row and leaves it blank, while the frontend still renders the
-         * section shell. Repair only fully-empty legacy rows once; custom admin
-         * content is never overwritten.
+         * V26 legacy content repair
+         * Some older live databases contain partially populated page_sections rows:
+         * e.g. button_label exists while eyebrow/title/body are empty. The old V25
+         * repair treated such rows as "not empty" and skipped them. V26 fills only
+         * the individual empty fields from canonical defaults and never overwrites
+         * non-empty admin content.
          */
-        $repairMarker='content_repair_v25';
+        $repairMarker='content_repair_v26';
         $repairCheck=$pdo->prepare("SELECT setting_value FROM settings WHERE setting_key=? LIMIT 1");
         $repairCheck->execute([$repairMarker]);
         if(!$repairCheck->fetchColumn()){
             $sectionSelect=$pdo->prepare("SELECT * FROM page_sections WHERE page_key=? AND section_key=? LIMIT 1");
             $sectionUpdate=$pdo->prepare(
-                "UPDATE page_sections
-                 SET eyebrow=?,title=?,body=?,secondary_text=?,image=?,button_label=?,button_url=?,sort_order=?
+                "UPDATE page_sections SET
+                    eyebrow=CASE WHEN TRIM(COALESCE(eyebrow,''))='' THEN ? ELSE eyebrow END,
+                    title=CASE WHEN TRIM(COALESCE(title,''))='' THEN ? ELSE title END,
+                    body=CASE WHEN TRIM(COALESCE(body,''))='' THEN ? ELSE body END,
+                    secondary_text=CASE WHEN TRIM(COALESCE(secondary_text,''))='' THEN ? ELSE secondary_text END,
+                    image=CASE WHEN TRIM(COALESCE(image,''))='' THEN ? ELSE image END,
+                    button_label=CASE WHEN TRIM(COALESCE(button_label,''))='' THEN ? ELSE button_label END,
+                    button_url=CASE WHEN TRIM(COALESCE(button_url,''))='' THEN ? ELSE button_url END,
+                    sort_order=CASE WHEN COALESCE(sort_order,0)=0 THEN ? ELSE sort_order END
                  WHERE id=?"
             );
 
-            foreach($sections as $s){
+            foreach($sections as $seedRow){
+                $s=$seedRow;
+                if(count($s)===9) array_splice($s,8,0,['']);
+                if(count($s)!==10) continue;
+
                 $sectionSelect->execute([$s[0],$s[1]]);
                 $existing=$sectionSelect->fetch();
-                if(!$existing) continue;
-
-                $contentFields=['eyebrow','title','body','secondary_text','image','button_label','button_url'];
-                $hasContent=false;
-                foreach($contentFields as $field){
-                    if(trim((string)($existing[$field]??''))!==''){
-                        $hasContent=true;
-                        break;
-                    }
+                if(!$existing){
+                    $insert->execute($s);
+                    continue;
                 }
 
-                if(!$hasContent){
-                    $sectionUpdate->execute([
-                        $s[2],$s[3],$s[4],$s[5],$s[6],$s[7],$s[8],$s[9],$existing['id']
-                    ]);
-                }
+                $sectionUpdate->execute([
+                    $s[2],$s[3],$s[4],$s[5],$s[6],$s[7],$s[8],$s[9],$existing['id']
+                ]);
             }
 
             if($featureExists){
-                $blankFeatureDelete=$pdo->prepare(
-                    "DELETE FROM home_features
-                     WHERE group_key=?
-                       AND TRIM(COALESCE(title,''))=''
-                       AND TRIM(COALESCE(body,''))=''
-                       AND TRIM(COALESCE(icon,''))=''"
+                $featureSelect=$pdo->prepare(
+                    "SELECT * FROM home_features WHERE group_key=? AND title=? LIMIT 1"
                 );
-                $featureExistsByTitle=$pdo->prepare(
-                    "SELECT id FROM home_features WHERE group_key=? AND title=? LIMIT 1"
+                $featureUpdate=$pdo->prepare(
+                    "UPDATE home_features SET
+                        body=CASE WHEN TRIM(COALESCE(body,''))='' THEN ? ELSE body END,
+                        icon=CASE WHEN TRIM(COALESCE(icon,''))='' THEN ? ELSE icon END,
+                        link_label=CASE WHEN TRIM(COALESCE(link_label,''))='' THEN ? ELSE link_label END,
+                        link_url=CASE WHEN TRIM(COALESCE(link_url,''))='' THEN ? ELSE link_url END,
+                        sort_order=CASE WHEN COALESCE(sort_order,0)=0 THEN ? ELSE sort_order END
+                     WHERE id=?"
                 );
                 $featureRepairInsert=$pdo->prepare(
                     "INSERT INTO home_features
@@ -267,12 +272,16 @@ function ensure_content_management_schema(): void {
                 );
 
                 foreach($byGroup as $group=>$seeds){
-                    $blankFeatureDelete->execute([$group]);
                     foreach($seeds as $seed){
-                        $featureExistsByTitle->execute([$seed[0],$seed[1]]);
-                        if(!$featureExistsByTitle->fetchColumn()){
+                        $featureSelect->execute([$seed[0],$seed[1]]);
+                        $existingFeature=$featureSelect->fetch();
+                        if(!$existingFeature){
                             $featureRepairInsert->execute($seed);
+                            continue;
                         }
+                        $featureUpdate->execute([
+                            $seed[2],$seed[3],$seed[4],$seed[5],$seed[6],$existingFeature['id']
+                        ]);
                     }
                 }
             }
