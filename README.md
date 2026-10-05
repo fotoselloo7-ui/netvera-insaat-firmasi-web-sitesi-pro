@@ -85,3 +85,15 @@ ortamı hazırlanır.
 `.github/workflows/php-lint.yml` her `main` push'unda tüm PHP dosyalarını `php -l` ile kontrol eder.
 
 GitHub Pages deploy workflow'u da her `main` güncellemesinde statik demoyu yeniden yayınlar.
+
+## NetVera Lisans Sistemi
+
+Canlı PHP paketi NetVera lisans merkezine bağlıdır. Kurulumda lisans anahtarı ve lisans merkezindeki ürün slug değeri istenir; aktivasyon `https://lisans.netvera.tr/api/v1/activate`, periyodik kontrol `/api/v1/verify` üzerinden yapılır. Başarılı kontrol 24 saat cache edilir. Yalnız ağ/sunucu erişim hatalarında son başarılı kontrolden itibaren 168 saat tolerans vardır; invalid, expired, suspended, revoked, domain veya ürün uyuşmazlığı tolerans almaz.
+
+Lisans anahtarı `APP_KEY` ile şifrelenerek `.env.php` içinde tutulur. Public PHP sayfaları lisans korumasındadır; lisans düzeltme işlemi yapılabilsin diye `/admin/` erişilebilir kalır. Admin panelindeki **NetVera Lisansı** ekranından durum görülebilir, zorla doğrulama yapılabilir veya anahtar yeniden bağlanabilir.
+
+Varsayılan ürün slug değeri `netvera-insaat-pro` olarak hazırlanmıştır. Canlı kurulumda bu değer lisans merkezindeki ürün kaydıyla birebir eşleşmelidir.
+
+## Sosyal Medya İkonları
+
+Instagram, Facebook, LinkedIn, X / Twitter ve YouTube bağlantıları Admin > Genel Ayarlar > Marka & İletişim bölümünden yönetilir. Ana sayfa, iletişim sayfası ve mobil menü harici ikon kütüphanesine bağlı olmadan gerçek platform SVG ikonlarını kullanır.
