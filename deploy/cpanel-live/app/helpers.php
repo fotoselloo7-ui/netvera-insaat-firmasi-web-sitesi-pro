@@ -171,6 +171,11 @@ function ensure_content_management_schema(): void {
         $check=$pdo->prepare("SELECT id FROM page_sections WHERE page_key=? AND section_key=? LIMIT 1");
         $insert=$pdo->prepare("INSERT INTO page_sections (page_key,section_key,eyebrow,title,body,secondary_text,image,button_label,button_url,is_active,sort_order) VALUES (?,?,?,?,?,?,?,?,?,1,?)");
         foreach($sections as $s){
+            // Legacy seed rows without a button URL used 9 values instead of the
+            // 10-column page_sections insert shape. Normalize them before execute.
+            if(count($s)===9) array_splice($s,8,0,['']);
+            if(count($s)!==10) continue;
+
             $check->execute([$s[0],$s[1]]);
             if(!$check->fetchColumn()) $insert->execute($s);
         }
