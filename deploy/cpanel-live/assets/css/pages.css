@@ -3193,3 +3193,80 @@
 .contact-social-btn.is-instagram>i .brand-icon circle:first-of-type{fill:none!important;stroke:currentColor!important}
 .contact-social-btn.is-instagram>i .brand-icon circle:last-of-type{fill:currentColor!important;stroke:none!important}
 
+
+
+/* ==========================================================
+   V26 — live DB recovery visual QA / centered card geometry
+   ========================================================== */
+
+/* Three stats must occupy the full ribbon instead of leaving a phantom 4th cell. */
+.fact-ribbon{
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;
+  align-items:stretch!important;
+}
+.fact-ribbon>div{
+  width:100%!important;
+  justify-self:stretch!important;
+}
+
+/* CTA content stays vertically centered and its text column can never collapse. */
+.inline-editorial-cta{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+}
+.inline-editorial-cta>div{
+  min-width:0!important;
+  align-self:center!important;
+}
+.inline-editorial-cta .home-kicker,
+.inline-editorial-cta h3,
+.inline-editorial-cta p{
+  max-width:760px;
+}
+
+/* Equal visual rhythm for card groups on inner pages. */
+.principle-grid,
+.service-method-grid,
+.contact-expectation,
+.project-case-grid,
+.related-projects,
+.region-list,
+.page-grid-3,
+.article-related{
+  align-items:stretch!important;
+}
+.principle-grid>*,
+.service-method-grid>*,
+.contact-expectation>*,
+.project-case-grid>*,
+.related-projects>*,
+.region-list>*,
+.page-grid-3>*,
+.article-related>*{
+  min-width:0!important;
+  height:100%;
+}
+
+/* Desktop: three-item groups remain optically centered. */
+@media(min-width:901px){
+  .service-method-grid,
+  .contact-expectation{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
+/* Tablet/mobile keeps the existing compact card language without overflow. */
+@media(max-width:900px){
+  .inline-editorial-cta{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(max-width:620px){
+  .fact-ribbon{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .inline-editorial-cta .home-btn{
+    width:max-content!important;
+    max-width:100%;
+  }
+}
