@@ -36,6 +36,12 @@ jobs:
           grep -q "kvkk-aydinlatma-metni" deploy/cpanel-live/database.sql
           grep -q "gizlilik-politikasi" deploy/cpanel-live/database.sql
           grep -q "cerez-politikasi" deploy/cpanel-live/database.sql
+          grep -q "linkedin_url" deploy/cpanel-live/database.sql
+          grep -q "lisans.netvera.tr" deploy/cpanel-live/config/app.php
+          grep -q "LICENSE_PRODUCT_SLUG" deploy/cpanel-live/config/app.php
+          grep -q "netvera_public_license_guard" deploy/cpanel-live/app/bootstrap.php
+          grep -q "social_icon" deploy/cpanel-live/partials/header.php
+          grep -q "social_icon" deploy/cpanel-live/iletisim.php
 
       - name: PHP lint
         run: |
