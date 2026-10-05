@@ -3161,3 +3161,35 @@
   .legal-content{padding:24px 18px}
   .legal-content p{font-size:12px}
 }
+
+/* ==========================================================
+   V24 — contact social brand icons
+   ========================================================== */
+.contact-social-btn:before,
+.contact-social-btn::before{
+  content:none!important;
+  display:none!important;
+}
+.contact-social-btn>i{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:5px;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  font-style:normal;
+}
+.contact-social-btn>i .brand-icon{
+  width:13px;
+  height:13px;
+  display:block;
+  color:#fff;
+}
+.contact-social-btn.is-linkedin{background:#0a66c2}
+.contact-social-btn.is-instagram>i .brand-icon{fill:none!important;stroke:none!important}
+.contact-social-btn.is-instagram>i .brand-icon rect,
+.contact-social-btn.is-instagram>i .brand-icon circle:first-of-type{fill:none!important;stroke:currentColor!important}
+.contact-social-btn.is-instagram>i .brand-icon circle:last-of-type{fill:currentColor!important;stroke:none!important}
+
