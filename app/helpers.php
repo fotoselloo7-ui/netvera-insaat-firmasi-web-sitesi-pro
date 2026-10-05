@@ -203,6 +203,82 @@ function ensure_content_management_schema(): void {
                 }
             }
         }
+
+        /*
+         * V25 content repair
+         * Older live databases may already contain page_sections/home_features rows
+         * created by an earlier release with empty content. INSERT-only seeding then
+         * sees the row and leaves it blank, while the frontend still renders the
+         * section shell. Repair only fully-empty legacy rows once; custom admin
+         * content is never overwritten.
+         */
+        $repairMarker='content_repair_v25';
+        $repairCheck=$pdo->prepare("SELECT setting_value FROM settings WHERE setting_key=? LIMIT 1");
+        $repairCheck->execute([$repairMarker]);
+        if(!$repairCheck->fetchColumn()){
+            $sectionSelect=$pdo->prepare("SELECT * FROM page_sections WHERE page_key=? AND section_key=? LIMIT 1");
+            $sectionUpdate=$pdo->prepare(
+                "UPDATE page_sections
+                 SET eyebrow=?,title=?,body=?,secondary_text=?,image=?,button_label=?,button_url=?,sort_order=?
+                 WHERE id=?"
+            );
+
+            foreach($sections as $s){
+                $sectionSelect->execute([$s[0],$s[1]]);
+                $existing=$sectionSelect->fetch();
+                if(!$existing) continue;
+
+                $contentFields=['eyebrow','title','body','secondary_text','image','button_label','button_url'];
+                $hasContent=false;
+                foreach($contentFields as $field){
+                    if(trim((string)($existing[$field]??''))!==''){
+                        $hasContent=true;
+                        break;
+                    }
+                }
+
+                if(!$hasContent){
+                    $sectionUpdate->execute([
+                        $s[2],$s[3],$s[4],$s[5],$s[6],$s[7],$s[8],$s[9],$existing['id']
+                    ]);
+                }
+            }
+
+            if($featureExists){
+                $blankFeatureDelete=$pdo->prepare(
+                    "DELETE FROM home_features
+                     WHERE group_key=?
+                       AND TRIM(COALESCE(title,''))=''
+                       AND TRIM(COALESCE(body,''))=''
+                       AND TRIM(COALESCE(icon,''))=''"
+                );
+                $featureExistsByTitle=$pdo->prepare(
+                    "SELECT id FROM home_features WHERE group_key=? AND title=? LIMIT 1"
+                );
+                $featureRepairInsert=$pdo->prepare(
+                    "INSERT INTO home_features
+                     (group_key,title,body,icon,link_label,link_url,is_active,sort_order)
+                     VALUES (?,?,?,?,?,?,1,?)"
+                );
+
+                foreach($byGroup as $group=>$seeds){
+                    $blankFeatureDelete->execute([$group]);
+                    foreach($seeds as $seed){
+                        $featureExistsByTitle->execute([$seed[0],$seed[1]]);
+                        if(!$featureExistsByTitle->fetchColumn()){
+                            $featureRepairInsert->execute($seed);
+                        }
+                    }
+                }
+            }
+
+            $pdo->prepare(
+                "INSERT INTO settings (setting_key,setting_value)
+                 VALUES (?,?)
+                 ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value)"
+            )->execute([$repairMarker,date('Y-m-d H:i:s')]);
+            clear_settings_cache();
+        }
     } catch(Throwable $e) {
         // CMS schema migration must never block the public site.
     }
