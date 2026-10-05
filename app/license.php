@@ -279,7 +279,7 @@ function netvera_public_license_guard(): void {
     if (PHP_SAPI === 'cli') return;
     $uri = (string)($_SERVER['REQUEST_URI'] ?? '/');
     $path = '/' . ltrim((string)(parse_url($uri, PHP_URL_PATH) ?? ''), '/');
-    if (str_contains($path, '/admin/') || str_ends_with($path, '/admin') || str_ends_with($path, '/install.php')) return;
+    if (str_contains($path, '/admin/') || str_ends_with($path, '/admin')) return;
 
     $status = netvera_license_status(false);
     if (($status['success'] ?? false) === true && in_array((string)($status['status'] ?? ''), ['active','trial','grace','disabled'], true)) return;
@@ -291,18 +291,6 @@ function netvera_public_license_guard(): void {
     $state = htmlspecialchars((string)($status['status'] ?? 'invalid'), ENT_QUOTES, 'UTF-8');
     echo '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>NetVera Lisans Kontrolü</title><style>body{margin:0;background:#f4f6f7;color:#102c40;font-family:Arial,sans-serif}.nv{width:min(620px,calc(100% - 32px));margin:10vh auto;background:#fff;border:1px solid #dce4e8;border-radius:14px;padding:30px;box-shadow:0 20px 60px rgba(16,44,64,.08)}.nv b{display:inline-block;padding:6px 9px;border-radius:6px;background:#fff0ed;color:#9b432f;font-size:11px;text-transform:uppercase}.nv h1{font-size:26px;margin:18px 0 10px}.nv p{color:#60717c;line-height:1.7}.nv a{color:#b76732;font-weight:700}</style></head><body><main class="nv"><b>'.$state.'</b><h1>NetVera lisans doğrulaması gerekli.</h1><p>'.$message.'</p><p>Site yöneticisi lisans durumunu <a href="' . htmlspecialchars(app_url('admin/'), ENT_QUOTES, 'UTF-8') . '">yönetim panelinden</a> kontrol edebilir.</p></main></body></html>';
     exit;
-}
-
-function netvera_update_local_env(array $updates): void {
-    $root = dirname(__DIR__);
-    $file = $root . '/.env.php';
-    $current = is_file($file) ? require $file : [];
-    if (!is_array($current)) $current = [];
-    $next = array_merge($current, $updates);
-    $php = "<?php\nreturn " . var_export($next, true) . ";\n";
-    if (@file_put_contents($file, $php, LOCK_EX) === false) {
-        throw new RuntimeException('.env.php güncellenemedi. Kök klasör yazma iznini kontrol edin.');
-    }
 }
 
 function netvera_mask_license_key(string $key): string {
