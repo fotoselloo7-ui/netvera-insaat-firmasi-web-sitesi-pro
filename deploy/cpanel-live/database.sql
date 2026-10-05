@@ -175,7 +175,7 @@ INSERT IGNORE INTO admins (email,password_hash,name) VALUES
 INSERT IGNORE INTO settings (setting_key,setting_value) VALUES
 ('site_name','VERA YAPI'),('logo_mark','VY'),('tagline','İNŞAAT & TAAHHÜT'),
 ('phone','+90 500 000 00 00'),('whatsapp','905000000000'),('email','info@example.com'),
-('address','Alanya / Antalya'),('instagram_url',''),('facebook_url',''),('twitter_url',''),('youtube_url',''),('google_maps_url','Alanya, Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
+('address','Alanya / Antalya'),('instagram_url',''),('facebook_url',''),('linkedin_url',''),('twitter_url',''),('youtube_url',''),('google_maps_url','Alanya, Antalya'),('working_hours','Pzt–Cmt 08:30–18:30'),
 ('home_testimonials_limit','8'),
 ('logo_image','assets/brand/vera-yapi-horizontal.svg'),('footer_logo_image','assets/brand/vera-yapi-horizontal-light.svg'),('favicon_image','assets/brand/netvera-mark.svg'),('business_logo','assets/brand/netvera-mark.svg'),
 ('about_image','https://images.unsplash.com/photo-1759863468387-374e0362050a?auto=format&fit=crop&q=80&w=1400'),
