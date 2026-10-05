@@ -13,17 +13,19 @@ final class NetveraLicenseService {
 
     public function status(bool $force = false): array {
         if (!(bool)($this->config['enabled'] ?? true)) {
-            return ['success'=>true,'status'=>'disabled','message'=>'Lisans kontrolü açıkça devre dışı.','source'=>'config'];
+            return ['success'=>true,'status'=>'disabled','message'=>'Lisans kontrolü devre dışı.','source'=>'config'];
         }
+
         $key = trim((string)($this->config['key'] ?? ''));
         $product = trim((string)($this->config['product_slug'] ?? ''));
         if ($key === '' || $product === '') {
-            return ['success'=>false,'status'=>'not_configured','message'=>'Lisans anahtarı veya ürün slug bilgisi eksik.','source'=>'local'];
+            return ['success'=>false,'status'=>'not_configured','message'=>'Lisans anahtarı henüz admin panelden etkinleştirilmemiş.','source'=>'local'];
         }
 
         $cache = $this->readCache();
         $fingerprint = $this->fingerprint($key, $product);
         $verifyHours = max(1, (int)($this->config['verify_interval_hours'] ?? 24));
+
         if (!$force && $this->cacheMatches($cache, $fingerprint) && ($cache['status'] ?? '') === 'active') {
             $last = (int)($cache['last_success_at'] ?? 0);
             if ($last > 0 && time() - $last < $verifyHours * 3600) {
@@ -49,6 +51,7 @@ final class NetveraLicenseService {
         if ($key === '' || $productSlug === '') {
             return ['success'=>false,'status'=>'not_configured','message'=>'Lisans anahtarı ve ürün slug zorunludur.'];
         }
+
         $payload = $this->payload($key, $productSlug, $siteUrl, $installId);
         $remote = $this->request('activate', $payload);
         if ($this->isActive($remote)) {
@@ -57,14 +60,34 @@ final class NetveraLicenseService {
         return $remote;
     }
 
-    public function deactivate(?string $key = null, ?string $productSlug = null): array {
-        $key = trim((string)($key ?? $this->config['key'] ?? ''));
-        $productSlug = trim((string)($productSlug ?? $this->config['product_slug'] ?? ''));
-        if ($key === '' || $productSlug === '') {
-            return ['success'=>false,'status'=>'not_configured','message'=>'Lisans bilgisi eksik.'];
+    public function heartbeat(): array {
+        $key = trim((string)($this->config['key'] ?? ''));
+        $product = trim((string)($this->config['product_slug'] ?? ''));
+        if ($key === '' || $product === '') {
+            return ['success'=>false,'status'=>'not_configured','message'=>'Aktif lisans anahtarı bulunamadı.'];
         }
-        $remote = $this->request('deactivate', $this->payload($key, $productSlug));
-        if (($remote['success'] ?? false) === true) @unlink($this->cacheFile);
+
+        $remote = $this->request('heartbeat', $this->payload($key, $product));
+        if ($this->isActive($remote)) {
+            return $this->rememberSuccess($remote, $this->fingerprint($key, $product));
+        }
+        if ($this->isTransportFailure($remote)) {
+            return $this->graceOrFail($this->readCache(), $this->fingerprint($key, $product), $remote);
+        }
+        return $this->rememberFailure($remote, $this->fingerprint($key, $product));
+    }
+
+    public function deactivate(): array {
+        $key = trim((string)($this->config['key'] ?? ''));
+        $product = trim((string)($this->config['product_slug'] ?? ''));
+        if ($key === '' || $product === '') {
+            return ['success'=>false,'status'=>'not_configured','message'=>'Aktif lisans bilgisi bulunamadı.'];
+        }
+
+        $remote = $this->request('deactivate', $this->payload($key, $product));
+        if (($remote['success'] ?? false) === true) {
+            @unlink($this->cacheFile);
+        }
         return $remote;
     }
 
@@ -78,6 +101,7 @@ final class NetveraLicenseService {
         if ($host === '') {
             $host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? '')) ?: '';
         }
+
         return [
             'license_key' => $key,
             'product_slug' => $productSlug,
@@ -94,7 +118,7 @@ final class NetveraLicenseService {
         $base = rtrim((string)($this->config['server_url'] ?? 'https://lisans.netvera.tr'), '/');
         $url = $base . '/api/v1/' . $action;
         $body = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $timeout = max(3, (int)($this->config['timeout_seconds'] ?? 8));
+        $timeout = max(3, (int)($this->config['timeout_seconds'] ?? 10));
         $httpCode = 0;
         $raw = '';
         $networkError = '';
@@ -152,6 +176,7 @@ final class NetveraLicenseService {
             $decoded = array_merge($decoded, $decoded['data']);
             unset($decoded['data']);
         }
+
         $status = strtolower(trim((string)($decoded['license_status'] ?? $decoded['status'] ?? '')));
         if ($status === '' && ($decoded['success'] ?? false) === true) $status = 'active';
         $decoded['status'] = $status ?: 'unknown';
@@ -159,15 +184,18 @@ final class NetveraLicenseService {
         $decoded['http_code'] = $httpCode;
         $decoded['transport_error'] = $httpCode >= 500 || $httpCode === 0;
         if (empty($decoded['message']) && !empty($decoded['reason'])) $decoded['message'] = (string)$decoded['reason'];
+
         return $decoded;
     }
 
     private function isActive(array $result): bool {
-        return ($result['success'] ?? false) === true && in_array((string)($result['status'] ?? ''), ['active','trial'], true);
+        return ($result['success'] ?? false) === true
+            && in_array((string)($result['status'] ?? ''), ['active','trial'], true);
     }
 
     private function isTransportFailure(array $result): bool {
-        return ($result['transport_error'] ?? false) === true || in_array((string)($result['status'] ?? ''), ['server_error','server_unreachable','timeout'], true);
+        return ($result['transport_error'] ?? false) === true
+            || in_array((string)($result['status'] ?? ''), ['server_error','server_unreachable','timeout'], true);
     }
 
     private function graceOrFail(array $cache, string $fingerprint, array $remote): array {
@@ -185,13 +213,14 @@ final class NetveraLicenseService {
                 return $cache;
             }
         }
+
         $remote['success'] = false;
         return $remote;
     }
 
     private function rememberSuccess(array $result, string $fingerprint, ?array $payload = null): array {
         $now = time();
-        $cache = $result + [];
+        $cache = $result;
         $cache['success'] = true;
         $cache['status'] = 'active';
         $cache['source'] = 'remote';
@@ -206,7 +235,7 @@ final class NetveraLicenseService {
     }
 
     private function rememberFailure(array $result, string $fingerprint): array {
-        $cache = $result + [];
+        $cache = $result;
         $cache['success'] = false;
         $cache['fingerprint'] = $fingerprint;
         $cache['last_checked_at'] = time();
@@ -240,55 +269,190 @@ final class NetveraLicenseService {
     private function writeCache(array $data): void {
         $dir = dirname($this->cacheFile);
         if (!is_dir($dir)) @mkdir($dir, 0775, true);
-        @file_put_contents($this->cacheFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), LOCK_EX);
+        @file_put_contents(
+            $this->cacheFile,
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            LOCK_EX
+        );
     }
 }
 
 function netvera_encrypt_secret(string $plain, string $appKey): string {
     if ($plain === '') return '';
-    if (!function_exists('openssl_encrypt')) return $plain;
+    if ($appKey === '') throw new RuntimeException('APP_KEY tanımlı değil.');
+    if (!function_exists('openssl_encrypt')) throw new RuntimeException('OpenSSL eklentisi lisans anahtarını şifrelemek için gereklidir.');
+
     $key = hash('sha256', $appKey, true);
     $iv = random_bytes(12);
     $tag = '';
     $cipher = openssl_encrypt($plain, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
-    if ($cipher === false) return $plain;
+    if ($cipher === false) throw new RuntimeException('Lisans anahtarı şifrelenemedi.');
+
     return 'enc:v1:' . base64_encode($iv . $tag . $cipher);
 }
 
 function netvera_decrypt_secret(string $value, string $appKey): string {
+    if ($value === '') return '';
     if (!str_starts_with($value, 'enc:v1:')) return $value;
-    if (!function_exists('openssl_decrypt')) return '';
+    if ($appKey === '' || !function_exists('openssl_decrypt')) return '';
+
     $raw = base64_decode(substr($value, 7), true);
     if ($raw === false || strlen($raw) < 29) return '';
+
     $iv = substr($raw, 0, 12);
     $tag = substr($raw, 12, 16);
     $cipher = substr($raw, 28);
-    $plain = openssl_decrypt($cipher, 'aes-256-gcm', hash('sha256', $appKey, true), OPENSSL_RAW_DATA, $iv, $tag);
+    $plain = openssl_decrypt(
+        $cipher,
+        'aes-256-gcm',
+        hash('sha256', $appKey, true),
+        OPENSSL_RAW_DATA,
+        $iv,
+        $tag
+    );
+
     return is_string($plain) ? $plain : '';
 }
 
-function netvera_license_service(): NetveraLicenseService {
-    return new NetveraLicenseService($GLOBALS['app_config']['license'] ?? []);
+function netvera_license_record(): array {
+    if (!isset($GLOBALS['pdo']) || !($GLOBALS['pdo'] instanceof PDO)) return [];
+    try {
+        $row = $GLOBALS['pdo']->query('SELECT * FROM license_settings WHERE id=1 LIMIT 1')->fetch();
+        return is_array($row) ? $row : [];
+    } catch (Throwable $e) {
+        return [];
+    }
+}
+
+function netvera_license_key(): string {
+    $record = netvera_license_record();
+    $encrypted = trim((string)($record['encrypted_key'] ?? ''));
+    $appKey = trim((string)($GLOBALS['app_config']['app']['key'] ?? ''));
+    if ($encrypted !== '') {
+        return netvera_decrypt_secret($encrypted, $appKey);
+    }
+
+    // Geçiş kolaylığı: eski env tabanlı anahtar varsa yalnız fallback olarak okunur.
+    return trim((string)($GLOBALS['app_config']['license']['legacy_key'] ?? ''));
+}
+
+function netvera_license_install_id(): string {
+    $record = netvera_license_record();
+    $stored = trim((string)($record['install_id'] ?? ''));
+    if ($stored !== '') return $stored;
+
+    $configured = trim((string)($GLOBALS['app_config']['license']['install_id'] ?? ''));
+    return $configured;
+}
+
+function netvera_store_license(string $plainKey, string $installId, array $result): void {
+    $appKey = trim((string)($GLOBALS['app_config']['app']['key'] ?? ''));
+    $encrypted = netvera_encrypt_secret($plainKey, $appKey);
+    $status = trim((string)($result['status'] ?? 'active'));
+    $message = trim((string)($result['message'] ?? ''));
+
+    $stmt = db()->prepare(
+        "INSERT INTO license_settings (id,encrypted_key,install_id,last_status,last_message,activated_at)
+         VALUES (1,?,?,?,?,NOW())
+         ON DUPLICATE KEY UPDATE
+           encrypted_key=VALUES(encrypted_key),
+           install_id=VALUES(install_id),
+           last_status=VALUES(last_status),
+           last_message=VALUES(last_message),
+           activated_at=NOW()"
+    );
+    $stmt->execute([$encrypted,$installId,$status,$message]);
+}
+
+function netvera_update_license_state(array $result): void {
+    if (!isset($GLOBALS['pdo']) || !($GLOBALS['pdo'] instanceof PDO)) return;
+    try {
+        $stmt = db()->prepare(
+            "UPDATE license_settings SET last_status=?, last_message=? WHERE id=1"
+        );
+        $stmt->execute([
+            trim((string)($result['status'] ?? 'unknown')),
+            trim((string)($result['message'] ?? '')),
+        ]);
+    } catch (Throwable $e) {
+        // Durum yazılamasa da doğrulama cevabı kullanılabilir.
+    }
+}
+
+function netvera_license_service(?string $keyOverride = null, ?string $installIdOverride = null): NetveraLicenseService {
+    $cfg = $GLOBALS['app_config']['license'] ?? [];
+    $cfg['key'] = $keyOverride ?? netvera_license_key();
+    $cfg['install_id'] = $installIdOverride ?? netvera_license_install_id();
+    return new NetveraLicenseService($cfg);
+}
+
+function netvera_license_activate(string $licenseKey): array {
+    $licenseKey = strtoupper(trim($licenseKey));
+    if (!str_starts_with($licenseKey, 'DIGI-')) {
+        return ['success'=>false,'status'=>'invalid_key','message'=>'Lisans anahtarı DIGI- ile başlamalıdır.'];
+    }
+
+    $appKey = trim((string)($GLOBALS['app_config']['app']['key'] ?? ''));
+    if ($appKey === '') {
+        return ['success'=>false,'status'=>'config_error','message'=>'APP_KEY eksik. Önce .env.php içinde APP_KEY tanımlayın.'];
+    }
+
+    $product = trim((string)($GLOBALS['app_config']['license']['product_slug'] ?? ''));
+    if ($product === '') {
+        return ['success'=>false,'status'=>'config_error','message'=>'LICENSE_PRODUCT_SLUG eksik.'];
+    }
+
+    $installId = netvera_license_install_id();
+    if ($installId === '') $installId = bin2hex(random_bytes(16));
+
+    $service = netvera_license_service($licenseKey, $installId);
+    $result = $service->activate($licenseKey, $product, app_url(), $installId);
+
+    if (($result['success'] ?? false) === true && in_array((string)($result['status'] ?? ''), ['active','trial'], true)) {
+        netvera_store_license($licenseKey, $installId, $result);
+    } else {
+        netvera_update_license_state($result);
+    }
+
+    return $result;
 }
 
 function netvera_license_status(bool $force = false): array {
-    return netvera_license_service()->status($force);
+    $result = netvera_license_service()->status($force);
+    netvera_update_license_state($result);
+    return $result;
+}
+
+function netvera_license_heartbeat(): array {
+    $result = netvera_license_service()->heartbeat();
+    netvera_update_license_state($result);
+    return $result;
 }
 
 function netvera_public_license_guard(): void {
     if (PHP_SAPI === 'cli') return;
+
     $uri = (string)($_SERVER['REQUEST_URI'] ?? '/');
     $path = '/' . ltrim((string)(parse_url($uri, PHP_URL_PATH) ?? ''), '/');
     if (str_contains($path, '/admin/') || str_ends_with($path, '/admin')) return;
 
     $status = netvera_license_status(false);
-    if (($status['success'] ?? false) === true && in_array((string)($status['status'] ?? ''), ['active','trial','grace','disabled'], true)) return;
+    if (($status['success'] ?? false) === true
+        && in_array((string)($status['status'] ?? ''), ['active','trial','grace','disabled'], true)) {
+        return;
+    }
 
     $code = in_array((string)($status['status'] ?? ''), ['server_error','server_unreachable','timeout'], true) ? 503 : 403;
     http_response_code($code);
     header('Content-Type: text/html; charset=utf-8');
-    $message = htmlspecialchars((string)($status['message'] ?? 'Bu kurulum için geçerli bir NetVera lisansı bulunamadı.'), ENT_QUOTES, 'UTF-8');
+
+    $message = htmlspecialchars(
+        (string)($status['message'] ?? 'Bu kurulum için geçerli bir NetVera lisansı bulunamadı.'),
+        ENT_QUOTES,
+        'UTF-8'
+    );
     $state = htmlspecialchars((string)($status['status'] ?? 'invalid'), ENT_QUOTES, 'UTF-8');
+
     echo '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>NetVera Lisans Kontrolü</title><style>body{margin:0;background:#f4f6f7;color:#102c40;font-family:Arial,sans-serif}.nv{width:min(620px,calc(100% - 32px));margin:10vh auto;background:#fff;border:1px solid #dce4e8;border-radius:14px;padding:30px;box-shadow:0 20px 60px rgba(16,44,64,.08)}.nv b{display:inline-block;padding:6px 9px;border-radius:6px;background:#fff0ed;color:#9b432f;font-size:11px;text-transform:uppercase}.nv h1{font-size:26px;margin:18px 0 10px}.nv p{color:#60717c;line-height:1.7}.nv a{color:#b76732;font-weight:700}</style></head><body><main class="nv"><b>'.$state.'</b><h1>NetVera lisans doğrulaması gerekli.</h1><p>'.$message.'</p><p>Site yöneticisi lisans durumunu <a href="' . htmlspecialchars(app_url('admin/'), ENT_QUOTES, 'UTF-8') . '">yönetim panelinden</a> kontrol edebilir.</p></main></body></html>';
     exit;
 }
@@ -300,4 +464,3 @@ function netvera_mask_license_key(string $key): string {
     if ($len <= 8) return str_repeat('•', max(4, $len));
     return substr($key, 0, 5) . str_repeat('•', max(4, $len - 9)) . substr($key, -4);
 }
-
