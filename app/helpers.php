@@ -373,7 +373,22 @@ function local_media_exists(?string $value): bool {
 function media_url(?string $value): string {
     $value = trim((string)$value);
     if ($value === '') return '';
-    if (preg_match('#^https?://#i', $value)) return $value;
+
+    if (preg_match('#^https?://#i', $value)) {
+        $parts = parse_url($value);
+        $mediaHost = strtolower((string)($parts['host'] ?? ''));
+        $requestHost = strtolower((string)preg_replace('/:\\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? '')));
+        $isHttpsRequest = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || strtolower(trim(explode(',', (string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0] ?? '')) === 'https';
+
+        // Old admin records may contain absolute http:// URLs. Upgrade only
+        // same-host media on an HTTPS request; never rewrite third-party URLs.
+        if ($isHttpsRequest && $mediaHost !== '' && $mediaHost === $requestHost) {
+            $value = preg_replace('#^http://#i', 'https://', $value) ?: $value;
+        }
+        return $value;
+    }
+
     return app_url($value);
 }
 
