@@ -9,10 +9,11 @@ $address = setting('address', 'Alanya / Antalya');
 $hours = setting('working_hours', 'Pzt–Cmt 08:30–18:30');
 $waMenu = preg_replace('/\D+/', '', setting('whatsapp', $phone));
 $menuSocials = [
-    ['label'=>'Instagram','short'=>'IG','class'=>'instagram','url'=>trim(setting('instagram_url',''))],
-    ['label'=>'Facebook','short'=>'f','class'=>'facebook','url'=>trim(setting('facebook_url',''))],
-    ['label'=>'X / Twitter','short'=>'X','class'=>'twitter','url'=>trim(setting('twitter_url',''))],
-    ['label'=>'YouTube','short'=>'▶','class'=>'youtube','url'=>trim(setting('youtube_url',''))],
+    ['label'=>'Instagram','class'=>'instagram','icon'=>'instagram','url'=>trim(setting('instagram_url',''))],
+    ['label'=>'Facebook','class'=>'facebook','icon'=>'facebook','url'=>trim(setting('facebook_url',''))],
+    ['label'=>'LinkedIn','class'=>'linkedin','icon'=>'linkedin','url'=>trim(setting('linkedin_url',''))],
+    ['label'=>'X / Twitter','class'=>'twitter','icon'=>'twitter','url'=>trim(setting('twitter_url',''))],
+    ['label'=>'YouTube','class'=>'youtube','icon'=>'youtube','url'=>trim(setting('youtube_url',''))],
 ];
 $hasMenuSocials = count(array_filter($menuSocials, fn($s)=>$s['url']!=='')) > 0;
 
@@ -97,7 +98,7 @@ $schemaJson = json_encode(['@context'=>'https://schema.org','@graph'=>$graph], J
   <div class="home-menu-mobile-label"><?= e(setting('mobile_social_label','Sosyal Medya')) ?></div>
   <div class="home-menu-mobile-socials">
     <?php foreach($menuSocials as $social): if($social['url']==='') continue; ?>
-      <a class="is-<?= e($social['class']) ?>" href="<?= e($social['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>"><b><?= e($social['short']) ?></b><span><?= e($social['label']) ?></span></a>
+      <a class="is-<?= e($social['class']) ?>" href="<?= e($social['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>"><b><?= social_icon($social['icon']) ?></b><span><?= e($social['label']) ?></span></a>
     <?php endforeach; ?>
   </div>
   <?php endif; ?>
