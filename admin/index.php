@@ -464,6 +464,13 @@ $navGroups = [
     'İçerik' => ['services','projects','posts','pages'],
     'Güven & Dönüşüm' => ['home_features','testimonials','service_areas','faqs'],
 ];
+$legalAdminPages=[];
+try{
+    $legalSlugs=['kvkk-aydinlatma-metni','gizlilik-politikasi','cerez-politikasi'];
+    $legalStmt=db()->prepare("SELECT id,slug,title FROM pages WHERE slug IN (?,?,?) ORDER BY FIELD(slug,?,?,?)");
+    $legalStmt->execute(array_merge($legalSlugs,$legalSlugs));
+    $legalAdminPages=$legalStmt->fetchAll();
+}catch(Throwable $e){ $legalAdminPages=[]; }
 ?><!doctype html>
 <html lang="tr">
 <head>
@@ -497,6 +504,12 @@ $navGroups = [
         <?php endif; ?>
       <?php endforeach; ?>
     <?php endforeach; ?>
+    <?php if($legalAdminPages): ?>
+      <div class="admin-nav-group-title">Yasal Sayfalar</div>
+      <?php foreach($legalAdminPages as $legalPage): ?>
+        <a href="?module=pages&edit=<?= (int)$legalPage['id'] ?>" class="admin-nav-link"><?= admin_icon('pages') ?><span><?= e($legalPage['title']) ?></span></a>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </nav>
 
   <div class="admin-sidebar-footer">
@@ -683,7 +696,7 @@ $navGroups = [
                     <?php $currentImage=setting($key); ?>
                     <?php if($currentImage!==''): ?><div class="admin-setting-image-preview"><img src="<?= e(media_url($currentImage)) ?>" alt=""></div><?php endif; ?>
                     <input name="<?= e($key) ?>" value="<?= e($currentImage) ?>" placeholder="uploads/... veya https://...">
-                    <input class="admin-file" type="file" name="<?= e($key) ?>_upload" accept="image/jpeg,image/png,image/webp,image/avif">
+                    <input class="admin-file" type="file" name="<?= e($key) ?>_upload" accept="image/jpeg,image/png,image/webp,image/avif,image/x-icon,image/vnd.microsoft.icon,.ico">
                     <small>URL girebilir veya bilgisayardan JPG, PNG, WebP, AVIF yükleyebilirsiniz.</small>
                   <?php elseif(in_array($key,$longSettings,true)): ?>
                     <textarea name="<?= e($key) ?>"><?= e(setting($key)) ?></textarea>
