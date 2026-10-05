@@ -18,6 +18,11 @@ $checks['license_settings_table'] = (bool)db()->query("SHOW TABLES LIKE 'license
 $checks['license_admin_activation'] = function_exists('netvera_license_activate') && function_exists('netvera_license_heartbeat');
 $checks['license_key_database_only'] = !array_key_exists('key',$GLOBALS['app_config']['license']) && !array_key_exists('legacy_key',$GLOBALS['app_config']['license']);
 $checks['social_linkedin_setting'] = setting('linkedin_url','__missing__') !== '__missing__';
+$checks['legacy_blank_section_repair'] = setting('content_repair_v25','') !== '';
+$checks['page_section_cta_seed'] = trim((string)(page_section('projeler','cta')['title'] ?? '')) !== '';
+$checks['service_flow_seed'] = count(feature_group('service_flow')) >= 4;
+$checks['service_method_seed'] = count(feature_group('service_method')) >= 3;
+$checks['contact_process_seed'] = count(feature_group('contact_process')) >= 3;
 
 $admin = db()->query("SELECT * FROM admins ORDER BY id ASC LIMIT 1")->fetch();
 $checks['seed_password'] = $admin && password_verify('ChangeMe123!', $admin['password_hash']);
