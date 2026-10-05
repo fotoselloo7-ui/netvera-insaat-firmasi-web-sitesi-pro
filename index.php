@@ -29,8 +29,13 @@ $faqs=rows('faqs');
 $posts=rows('posts','is_active=1',[],'COALESCE(published_at,created_at) DESC,id DESC');
 $why=feature_group('why'); $process=feature_group('process'); $trust=feature_group('trust');
 $wa=preg_replace('/\D+/','',setting('whatsapp',setting('phone')));
-$instagram=trim((string)setting('instagram_url','https://instagram.com/'));
-$facebook=trim((string)setting('facebook_url','https://facebook.com/'));
+$socialLinks=[
+  ['label'=>'Instagram','class'=>'instagram','icon'=>'instagram','url'=>trim((string)setting('instagram_url',''))],
+  ['label'=>'Facebook','class'=>'facebook','icon'=>'facebook','url'=>trim((string)setting('facebook_url',''))],
+  ['label'=>'LinkedIn','class'=>'linkedin','icon'=>'linkedin','url'=>trim((string)setting('linkedin_url',''))],
+  ['label'=>'X / Twitter','class'=>'twitter','icon'=>'twitter','url'=>trim((string)setting('twitter_url',''))],
+  ['label'=>'YouTube','class'=>'youtube','icon'=>'youtube','url'=>trim((string)setting('youtube_url',''))],
+];
 include __DIR__.'/partials/header.php';
 ?>
 <main id="icerik">
@@ -319,14 +324,12 @@ $blogFallbacks=[
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3A13 13 0 0 0 5 22.9L3.6 29 9.8 27.6A13 13 0 1 0 16 3Zm0 23.6c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.7.9.9-3.6-.2-.4A10.6 10.6 0 1 1 16 26.6Z"/></svg>
           WhatsApp
         </a>
-        <?php if($instagram!==''): ?><a class="social-btn-v6 is-instagram" href="<?= e($instagram) ?>" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-          Instagram
-        </a><?php endif; ?>
-        <?php if($facebook!==''): ?><a class="social-btn-v6 is-facebook" href="<?= e($facebook) ?>" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.7.3-1 1-1Z"/></svg>
-          Facebook
-        </a><?php endif; ?>
+        <?php foreach($socialLinks as $social): if($social['url']==='') continue; ?>
+          <a class="social-btn-v6 is-<?= e($social['class']) ?>" href="<?= e($social['url']) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>">
+            <?= social_icon($social['icon']) ?>
+            <?= e($social['label']) ?>
+          </a>
+        <?php endforeach; ?>
       </div>
       </div>
     </div>
