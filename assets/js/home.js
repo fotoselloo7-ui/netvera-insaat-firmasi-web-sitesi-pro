@@ -27,15 +27,23 @@ if(menu && !menu.querySelector('.home-menu-mobile-extra')){
     cta.textContent='Ücretsiz Keşif Talebi';
     menu.appendChild(cta);
   }
+  const icons={
+    instagram:'<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/></svg>',
+    facebook:'<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.7 21v-8h2.8l.45-3.15H13.7V7.82c0-.91.28-1.53 1.62-1.53H17V3.48c-.29-.04-1.29-.13-2.46-.13-2.44 0-4.11 1.49-4.11 4.22v2.28H7.67V13h2.76v8h3.27Z"/></svg>',
+    linkedin:'<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.6" fill="currentColor"/><circle cx="8" cy="9" r="1.35" fill="#fff"/><rect x="6.8" y="11" width="2.4" height="6.2" fill="#fff"/><path d="M11 11h2.3v.85c.62-.75 1.48-1.15 2.55-1.15 2.13 0 3.35 1.35 3.35 3.82v2.68h-2.4v-2.52c0-1.21-.42-1.95-1.52-1.95-1.22 0-1.88.83-1.88 2.28v2.19H11V11Z" fill="#fff"/></svg>',
+    twitter:'<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5 19 19.5M19 4.5 5 19.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    youtube:'<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="4" fill="currentColor"/><path d="m10 9 5 3-5 3V9Z" fill="#fff"/></svg>'
+  };
   const socialDefs=[
-    ['Instagram','IG','instagram','a[href*="instagram.com"]','https://www.instagram.com/'],
-    ['Facebook','f','facebook','a[href*="facebook.com"]','https://www.facebook.com/'],
-    ['X / Twitter','X','twitter','a[href*="twitter.com"],a[href*="x.com"]','https://x.com/'],
-    ['YouTube','▶','youtube','a[href*="youtube.com"],a[href*="youtu.be"]','https://www.youtube.com/']
+    ['Instagram','instagram','a[href*="instagram.com"]','https://www.instagram.com/'],
+    ['Facebook','facebook','a[href*="facebook.com"]','https://www.facebook.com/'],
+    ['LinkedIn','linkedin','a[href*="linkedin.com"]','https://www.linkedin.com/'],
+    ['X / Twitter','twitter','a[href*="twitter.com"],a[href*="x.com"]','https://x.com/'],
+    ['YouTube','youtube','a[href*="youtube.com"],a[href*="youtu.be"]','https://www.youtube.com/']
   ];
-  const found=socialDefs.map(([label,short,cls,selector,fallback])=>{
+  const found=socialDefs.map(([label,cls,selector,fallback])=>{
     const el=document.querySelector(selector);
-    return {label,short,cls,url:el?.href||fallback};
+    return {label,cls,icon:icons[cls],url:el?.href||fallback};
   });
   const extra=document.createElement('div');
   extra.className='home-menu-mobile-extra';
@@ -46,7 +54,7 @@ if(menu && !menu.querySelector('.home-menu-mobile-extra')){
       (waHref?'<a class="is-wa" href="'+waHref+'" target="_blank" rel="noopener"><span>◉</span>WhatsApp</a>':'')+
     '</div>'+
     (found.length?'<div class="home-menu-mobile-label">Sosyal Medya</div><div class="home-menu-mobile-socials">'+
-      found.map(s=>'<a class="is-'+s.cls+'" href="'+s.url+'" target="_blank" rel="noopener"><b>'+s.short+'</b><span>'+s.label+'</span></a>').join('')+
+      found.map(s=>'<a class="is-'+s.cls+'" href="'+s.url+'" target="_blank" rel="noopener"><b>'+s.icon+'</b><span>'+s.label+'</span></a>').join('')+
     '</div>':'');
   menu.appendChild(extra);
 }
