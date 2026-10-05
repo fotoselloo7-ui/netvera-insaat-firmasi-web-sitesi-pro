@@ -34,6 +34,7 @@ jobs:
       DB_DATABASE: netvera_insaat
       DB_USERNAME: netvera
       DB_PASSWORD: netvera
+      LICENSE_ENABLED: 'false'
     steps:
       - uses: actions/checkout@v6
       - name: Setup PHP
