@@ -9,10 +9,11 @@ $pageSchema=['@type'=>seo_clean_schema_type($page['schema_type']??'','ContactPag
 $wa=preg_replace('/\D+/','',setting('whatsapp',setting('phone')));
 $mapEmbed=google_maps_embed_url(setting('google_maps_url',''),setting('address','Alanya / Antalya'));
 $socials=[
-  ['key'=>'instagram_url','label'=>'Instagram','class'=>'instagram'],
-  ['key'=>'facebook_url','label'=>'Facebook','class'=>'facebook'],
-  ['key'=>'twitter_url','label'=>'X / Twitter','class'=>'twitter'],
-  ['key'=>'youtube_url','label'=>'YouTube','class'=>'youtube'],
+  ['key'=>'instagram_url','label'=>'Instagram','class'=>'instagram','icon'=>'instagram'],
+  ['key'=>'facebook_url','label'=>'Facebook','class'=>'facebook','icon'=>'facebook'],
+  ['key'=>'linkedin_url','label'=>'LinkedIn','class'=>'linkedin','icon'=>'linkedin'],
+  ['key'=>'twitter_url','label'=>'X / Twitter','class'=>'twitter','icon'=>'twitter'],
+  ['key'=>'youtube_url','label'=>'YouTube','class'=>'youtube','icon'=>'youtube'],
 ];
 $secPanel=page_section('iletisim','panel');
 $secForm=page_section('iletisim','form');
@@ -40,8 +41,8 @@ include __DIR__.'/partials/header.php';
       <div class="contact-socials">
         <?php foreach($socials as $social): $url=trim(setting($social['key'],'')); ?>
           <?php if($url!==''): ?><a class="contact-social-btn is-<?= e($social['class']) ?>" href="<?= e($url) ?>" target="_blank" rel="noopener" aria-label="<?= e($social['label']) ?>">
-            <span><?= e($social['label']) ?></span>
-          </a><?php else: ?><span class="contact-social-btn is-<?= e($social['class']) ?> is-disabled" aria-label="<?= e($social['label']) ?> bağlantısı admin panelden eklenebilir"><span><?= e($social['label']) ?></span></span><?php endif; ?>
+            <i aria-hidden="true"><?= social_icon($social['icon']) ?></i><span><?= e($social['label']) ?></span>
+          </a><?php else: ?><span class="contact-social-btn is-<?= e($social['class']) ?> is-disabled" aria-label="<?= e($social['label']) ?> bağlantısı admin panelden eklenebilir"><i aria-hidden="true"><?= social_icon($social['icon']) ?></i><span><?= e($social['label']) ?></span></span><?php endif; ?>
         <?php endforeach; ?>
       </div>
     </div>
