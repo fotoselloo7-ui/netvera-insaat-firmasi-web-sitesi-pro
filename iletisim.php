@@ -75,7 +75,7 @@ include __DIR__.'/partials/header.php';
 </section>
 <?php endif; ?>
 
-<?php if((int)$secProcess['is_active']===1): ?><section class="page-section soft"><div class="container">
+<?php if((int)$secProcess['is_active']===1 && $contactProcess): ?><section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="contact-expectation">
     <?php foreach($contactProcess as $f): ?><div><small><?= e($f['icon']) ?></small><strong><?= e($f['title']) ?></strong><p><?= e($f['body']) ?></p></div><?php endforeach; ?>
