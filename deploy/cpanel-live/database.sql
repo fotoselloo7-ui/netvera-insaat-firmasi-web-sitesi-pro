@@ -9,6 +9,20 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+CREATE TABLE IF NOT EXISTS license_settings (
+  id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+  encrypted_key TEXT NULL,
+  install_id VARCHAR(80) NULL,
+  last_status VARCHAR(50) NULL,
+  last_message TEXT NULL,
+  activated_at DATETIME NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO license_settings (id,encrypted_key,install_id,last_status,last_message)
+VALUES (1,NULL,NULL,'not_configured',NULL);
+
 CREATE TABLE IF NOT EXISTS settings (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   setting_key VARCHAR(120) NOT NULL UNIQUE,
