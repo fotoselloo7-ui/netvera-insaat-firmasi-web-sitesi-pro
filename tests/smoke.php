@@ -12,6 +12,9 @@ $checks['seo_services_column'] = seo_column_exists('services','focus_keyword');
 $checks['seo_region_slug'] = seo_column_exists('service_areas','slug');
 $checks['seo_home_setting'] = setting('seo_home_title','') !== '';
 $checks['seo_listing_pages'] = (int)db()->query("SELECT COUNT(*) FROM pages WHERE slug IN ('hizmetler','projeler','blog','bolgeler')")->fetchColumn() >= 4;
+$checks['license_client'] = class_exists('NetveraLicenseService') && function_exists('netvera_license_status');
+$checks['license_server'] = (($GLOBALS['app_config']['license']['server_url'] ?? '') === 'https://lisans.netvera.tr');
+$checks['social_linkedin_setting'] = setting('linkedin_url','__missing__') !== '__missing__';
 
 $admin = db()->query("SELECT * FROM admins ORDER BY id ASC LIMIT 1")->fetch();
 $checks['seed_password'] = $admin && password_verify('ChangeMe123!', $admin['password_hash']);
