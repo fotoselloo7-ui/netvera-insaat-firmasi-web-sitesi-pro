@@ -37,14 +37,14 @@ include __DIR__.'/partials/header.php';
   <article class="content-prose">
     <p class="lead"><?= e($item['aio_summary'] ?: $item['summary']) ?></p>
     <?= render_content_blocks((string)$item['body']) ?>
-    <?php if((int)$secScope['is_active']===1): ?><h2><?= e($secScope['title']) ?></h2>
+    <?php if((int)$secScope['is_active']===1 && $scope): ?><h2><?= e($secScope['title']) ?></h2>
     <div class="scope-grid"><?php foreach($scope as $s): ?><div class="scope-card"><span><?= e($s['icon']) ?></span><strong><?= e($s['title']) ?></strong><p><?= e($s['body']) ?></p></div><?php endforeach; ?></div><?php endif; ?>
     <?php if((int)$secProof['is_active']===1): ?><div class="service-proof"><div class="home-kicker"><?= e($secProof['eyebrow']) ?></div><h3><?= e($secProof['title']) ?></h3><p><?= e($secProof['body']) ?></p></div><?php endif; ?>
   </article>
   <?php if((int)$secAside['is_active']===1): ?><aside class="detail-aside"><h3><?= e($item['title'].' '.$secAside['title']) ?></h3><p><?= e($secAside['body']) ?></p><a class="home-btn home-btn-primary" href="<?= e(app_url($secAside['button_url'] ?: 'iletisim')) ?>"><?= e($secAside['button_label'] ?: 'Detaylı Bilgi Al') ?></a><a class="home-btn home-btn-secondary" href="https://wa.me/<?= e(preg_replace('/\D+/','',setting('whatsapp',setting('phone')))) ?>?text=<?= rawurlencode('Merhaba Vera Yapı, '.$item['title'].' hizmeti hakkında bilgi almak istiyorum.') ?>" target="_blank" rel="noopener">WhatsApp'tan Sor</a></aside><?php endif; ?>
 </div></section>
 
-<?php if((int)$secProcess['is_active']===1): ?><section class="page-section soft"><div class="container">
+<?php if((int)$secProcess['is_active']===1 && $process): ?><section class="page-section soft"><div class="container">
   <div class="page-title-row"><div><div class="home-kicker"><?= e($secProcess['eyebrow']) ?></div><h2><?= e($secProcess['title']) ?></h2></div><p><?= e($secProcess['body']) ?></p></div>
   <div class="process-line"><?php foreach($process as $p): ?><div class="process-step"><small><?= e($p['icon']) ?></small><h3><?= e($p['title']) ?></h3><p><?= e($p['body']) ?></p></div><?php endforeach; ?></div>
 </div></section><?php endif; ?>
