@@ -157,7 +157,7 @@ $settingsGroups = [
     'Marka & İletişim'=>[
         'site_name'=>'Site / Firma Adı','logo_mark'=>'Logo Kısaltması','logo_image'=>'Yatay Logo · Açık Zemin','footer_logo_image'=>'Yatay Logo · Koyu Zemin','favicon_image'=>'Favicon / Tarayıcı İkonu','tagline'=>'Alt Slogan',
         'phone'=>'Telefon','whatsapp'=>'WhatsApp (905...)','email'=>'E-posta','address'=>'Adres / Konum',
-        'instagram_url'=>'Instagram URL','facebook_url'=>'Facebook URL',
+        'instagram_url'=>'Instagram URL','facebook_url'=>'Facebook URL','linkedin_url'=>'LinkedIn URL',
         'twitter_url'=>'X / Twitter URL','youtube_url'=>'YouTube URL',
         'google_maps_url'=>'Google Harita Linki / Embed URL / Konum',
         'working_hours'=>'Çalışma Saatleri','footer_text'=>'Footer Açıklaması',
@@ -240,6 +240,7 @@ $settingsImageFields = [
 
 $module = $_GET['module'] ?? 'dashboard';
 $notice = '';
+$licenseActionResult = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
@@ -260,6 +261,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         seo_indexnow_submit([app_url()]);
         header('Location: ?module=settings&saved=1'); exit;
+    }
+
+    if ($action === 'license_activate') {
+        $licenseKey = trim((string)($_POST['license_key'] ?? ''));
+        $productSlug = trim((string)($_POST['product_slug'] ?? ($GLOBALS['app_config']['license']['product_slug'] ?? 'netvera-insaat-pro')));
+        $appKey = trim((string)($GLOBALS['app_config']['app']['key'] ?? ''));
+        if ($appKey === '') $appKey = 'base64:' . base64_encode(random_bytes(32));
+        $installId = trim((string)($GLOBALS['app_config']['license']['install_id'] ?? ''));
+        if ($installId === '') $installId = bin2hex(random_bytes(16));
+
+        $cfg = $GLOBALS['app_config']['license'] ?? [];
+        $cfg['key'] = $licenseKey;
+        $cfg['product_slug'] = $productSlug;
+        $cfg['install_id'] = $installId;
+        $cfg['site_url'] = app_url();
+        $service = new NetveraLicenseService($cfg);
+        $licenseActionResult = $service->activate($licenseKey, $productSlug, app_url(), $installId);
+
+        if (($licenseActionResult['success'] ?? false) === true && in_array((string)($licenseActionResult['status'] ?? ''), ['active','trial'], true)) {
+            netvera_update_local_env([
+                'APP_KEY'=>$appKey,
+                'LICENSE_ENABLED'=>'true',
+                'LICENSE_SERVER_URL'=>'https://lisans.netvera.tr',
+                'LICENSE_PRODUCT_SLUG'=>$productSlug,
+                'LICENSE_KEY'=>netvera_encrypt_secret($licenseKey, $appKey),
+                'LICENSE_INSTALL_ID'=>$installId,
+                'LICENSE_VERIFY_INTERVAL_HOURS'=>'24',
+                'LICENSE_GRACE_HOURS'=>'168',
+                'LICENSE_TIMEOUT_SECONDS'=>'8',
+            ]);
+            header('Location: ?module=license&activated=1'); exit;
+        }
+    }
+
+    if ($action === 'license_verify') {
+        $licenseActionResult = netvera_license_status(true);
     }
 
     if ($action === 'change_password') {
@@ -351,6 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_GET['saved'])) $notice='Değişiklikler kaydedildi.';
 if (isset($_GET['deleted'])) $notice='Kayıt silindi.';
+if (isset($_GET['activated'])) $notice='NetVera lisansı etkinleştirildi ve yerel yapılandırma güncellendi.';
 
 function admin_icon(string $name): string {
     $icons = [
@@ -458,7 +496,7 @@ foreach(['services','projects','sliders','posts'] as $t){$counts[$t]=(int)db()->
 $activeCounts=[];
 foreach(['services','projects','sliders','posts'] as $t){$activeCounts[$t]=(int)db()->query("SELECT COUNT(*) FROM {$t} WHERE is_active=1")->fetchColumn();}
 
-$pageTitle = $module==='dashboard' ? 'Dashboard' : ($module==='seo_center' ? 'SEO & AIO Merkezi' : ($module==='settings' ? 'Genel Ayarlar' : ($module==='account' ? 'Hesap & Güvenlik' : ($modules[$module]['label'] ?? 'Yönetim'))));
+$pageTitle = $module==='dashboard' ? 'Dashboard' : ($module==='seo_center' ? 'SEO & AIO Merkezi' : ($module==='settings' ? 'Genel Ayarlar' : ($module==='license' ? 'NetVera Lisansı' : ($module==='account' ? 'Hesap & Güvenlik' : ($modules[$module]['label'] ?? 'Yönetim')))));
 $navGroups = [
     'Site Yönetimi' => ['settings','seo_center','home_sections','page_sections','sliders','home_stats'],
     'İçerik' => ['services','projects','posts','pages'],
@@ -513,6 +551,7 @@ try{
   </nav>
 
   <div class="admin-sidebar-footer">
+    <a href="?module=license" class="admin-nav-link <?= $module==='license'?'active':'' ?>"><?= admin_icon('lock') ?><span>NetVera Lisansı</span></a>
     <a href="?module=account" class="admin-nav-link <?= $module==='account'?'active':'' ?>"><?= admin_icon('lock') ?><span>Hesap & Şifre</span></a>
     <a href="<?= e(app_url()) ?>" target="_blank" rel="noopener" class="admin-nav-link"><?= admin_icon('external') ?><span>Siteyi Gör</span></a>
     <a href="<?= e(app_url('admin/logout.php')) ?>" class="admin-nav-link admin-nav-danger"><?= admin_icon('logout') ?><span>Çıkış Yap</span></a>
