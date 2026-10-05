@@ -17,16 +17,17 @@ PHP 8.2+ / 8.3+ ve MySQL 8 önerilir.
 
 ## Kurulum
 
-1. Hosting panelinden boş MySQL veritabanı ve kullanıcı oluşturun.
-2. Dosyaları sunucuya yükleyin.
-3. Tarayıcıdan `/install.php` açın.
-4. DB bilgileri, site URL'si ve admin hesabını girin.
-5. Kurulum tamamlanınca `install.php` dosyasını silin veya yeniden adlandırın.
+Bu projede web installer kullanılmaz. Canlı cPanel kurulumu manuel yapılır:
 
-Installer otomatik olarak:
-- `database.sql` şemasını kurar.
-- `.env.php` bağlantı dosyasını oluşturur.
-- Admin hesabını günceller.
+1. cPanel'de MySQL veritabanı ve kullanıcı oluşturulur.
+2. `database.sql` phpMyAdmin üzerinden tek seferde içe aktarılır.
+3. `env.example.php`, sunucuda `.env.php` olarak kopyalanır.
+4. `APP_URL`, `APP_KEY` ve veritabanı bağlantı bilgileri doldurulur.
+5. Dosyalar document root'a yüklenir.
+6. `/admin/` paneline giriş yapılır.
+7. **NetVera Lisansı** ekranında gerçek `DIGI-...` lisans anahtarı girilip **Lisansı Doğrula ve Etkinleştir** seçilir.
+
+Gerçek lisans anahtarı env dosyasına yazılmaz. Başarılı aktivasyonda anahtar `APP_KEY` ile şifrelenip veritabanındaki `license_settings` tablosunda saklanır.
 
 ## Admin Panel
 
@@ -48,12 +49,12 @@ Yönetilebilir modüller:
 - Admin şifresi
 - Görsel URL veya doğrudan dosya yükleme
 
-İlk SQL seed hesabı yalnız geliştirme içindir:
+İlk SQL seed hesabı yalnız geliştirme / ilk erişim içindir:
 
 - E-posta: `admin@netvera.local`
 - Şifre: `ChangeMe123!`
 
-Installer kullanırken kendi admin e-posta ve şifrenizi belirlersiniz.
+Canlı kurulumdan sonra Admin > Hesap & Şifre bölümünden yönetici şifresini mutlaka değiştirin.
 
 ## SEO / GEO / AIO
 
@@ -88,11 +89,20 @@ GitHub Pages deploy workflow'u da her `main` güncellemesinde statik demoyu yeni
 
 ## NetVera Lisans Sistemi
 
-Canlı PHP paketi NetVera lisans merkezine bağlıdır. Kurulumda lisans anahtarı ve lisans merkezindeki ürün slug değeri istenir; aktivasyon `https://lisans.netvera.tr/api/v1/activate`, periyodik kontrol `/api/v1/verify` üzerinden yapılır. Başarılı kontrol 24 saat cache edilir. Yalnız ağ/sunucu erişim hatalarında son başarılı kontrolden itibaren 168 saat tolerans vardır; invalid, expired, suspended, revoked, domain veya ürün uyuşmazlığı tolerans almaz.
+Canlı PHP paketi `https://lisans.netvera.tr` merkezine bağlıdır. Lisans sunucusu, ürün slug, kontrol aralığı ve tolerans ayarları `.env.php` üzerinden gelir; gerçek lisans anahtarı ise yalnız Admin > **NetVera Lisansı** ekranından girilir.
 
-Lisans anahtarı `APP_KEY` ile şifrelenerek `.env.php` içinde tutulur. Public PHP sayfaları lisans korumasındadır; lisans düzeltme işlemi yapılabilsin diye `/admin/` erişilebilir kalır. Admin panelindeki **NetVera Lisansı** ekranından durum görülebilir, zorla doğrulama yapılabilir veya anahtar yeniden bağlanabilir.
+Akış:
+- Aktivasyon: `POST /api/v1/activate`
+- Doğrulama: `POST /api/v1/verify`
+- Yenileme / heartbeat: `POST /api/v1/heartbeat`
+- Deaktivasyon altyapısı: `POST /api/v1/deactivate`
+- Başarılı doğrulama: 24 saat cache
+- Yalnız ağ/sunucu hatası: 168 saat / 7 gün tolerans
+- Invalid, expired, suspended, revoked, domain veya product mismatch: tolerans yok
 
-Varsayılan ürün slug değeri `netvera-insaat-pro` olarak hazırlanmıştır. Canlı kurulumda bu değer lisans merkezindeki ürün kaydıyla birebir eşleşmelidir.
+Başarılı aktivasyonda `DIGI-...` anahtarı `APP_KEY` ile şifrelenerek `license_settings` tablosunda saklanır ve admin ekranında yalnız maskeli gösterilir. Public PHP sayfaları lisans korumasındadır; lisansı düzeltmek için `/admin/` erişilebilir kalır.
+
+Varsayılan ürün slug değeri `netvera-insaat-pro` olarak hazırlanmıştır ve lisans merkezindeki ürün kaydıyla birebir aynı olmalıdır.
 
 ## Sosyal Medya İkonları
 
