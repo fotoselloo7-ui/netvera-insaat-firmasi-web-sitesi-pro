@@ -331,9 +331,7 @@ function netvera_license_key(): string {
     if ($encrypted !== '') {
         return netvera_decrypt_secret($encrypted, $appKey);
     }
-
-    // Geçiş kolaylığı: eski env tabanlı anahtar varsa yalnız fallback olarak okunur.
-    return trim((string)($GLOBALS['app_config']['license']['legacy_key'] ?? ''));
+    return '';
 }
 
 function netvera_license_install_id(): string {
