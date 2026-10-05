@@ -14,6 +14,9 @@ $checks['seo_home_setting'] = setting('seo_home_title','') !== '';
 $checks['seo_listing_pages'] = (int)db()->query("SELECT COUNT(*) FROM pages WHERE slug IN ('hizmetler','projeler','blog','bolgeler')")->fetchColumn() >= 4;
 $checks['license_client'] = class_exists('NetveraLicenseService') && function_exists('netvera_license_status');
 $checks['license_server'] = (($GLOBALS['app_config']['license']['server_url'] ?? '') === 'https://lisans.netvera.tr');
+$checks['license_settings_table'] = (bool)db()->query("SHOW TABLES LIKE 'license_settings'")->fetchColumn();
+$checks['license_admin_activation'] = function_exists('netvera_license_activate') && function_exists('netvera_license_heartbeat');
+$checks['license_key_not_env_primary'] = array_key_exists('legacy_key',$GLOBALS['app_config']['license']) && !array_key_exists('key',$GLOBALS['app_config']['license']);
 $checks['social_linkedin_setting'] = setting('linkedin_url','__missing__') !== '__missing__';
 
 $admin = db()->query("SELECT * FROM admins ORDER BY id ASC LIMIT 1")->fetch();
